@@ -1,38 +1,51 @@
 <template>
- <div class="board-list">
+  <div class="board-list">
     <div class="common-buttons">
-      <button type="button" class="w3-button w3-round w3-blue-gray" v-on:click="fnWrite">등록</button>
+      <button type="button" class="w3-button w3-round w3-blue-gray" @click="fetchManagers">등록</button>
     </div>
     <table class="w3-table-all">
       <thead>
-      <tr>
-        <th>No</th>
-        <th>제목</th>
-        <th>이름</th>
-        <th>휴대폰</th>
-      </tr>
+        <tr>
+          <th>No</th>
+          <th>이름</th>
+          <th>휴대폰</th>
+        </tr>
       </thead>
       <tbody>
-      <tr >
-        <td>1</td>
-        <td>제목</td>
-        <td>루이스</td>
-        <td>000</td>
-      </tr>
+        <tr v-for="(manager, index) in managers" :key="index">
+          <td>{{ index + 1 }}</td>
+          <td>{{ manager.name }}</td>
+          <td>{{ manager.phone }}</td>
+        </tr>
       </tbody>
     </table>
-    
   </div>
 </template>
 
-<script >
+<script>
+import { ref } from 'vue';
+import axios from 'axios';
+
 export default {
-  setup () {
-    return {}
+  setup() {
+    const managers = ref([]);
+
+    const fetchManagers = async () => {
+      try {
+        const response = await axios.get('/api/managers');  
+        managers.value = response.data;
+      } catch (error) {
+        console.error('Error fetching managers:', error);
+      }
+    };
+
+    return {
+      managers,
+      fetchManagers
+    };
   }
 }
 </script>
 
-<style lang="scss" scoped>
-
+<style  scoped>
 </style>
