@@ -28,7 +28,7 @@ const MenuList = ref({})
 MenuList.value = [
   { MenuId: '1', MenuNm: 'HOME', Lvl: 1, Src: 'home' },
   { MenuId: '2', MenuNm: '기업정보', Lvl: 1, Src: 'about' },
-  { MenuId: '3', MenuNm: '매니저관리', Lvl: 1, Src: 'manager' },
+  { MenuId: '3', MenuNm: '매니저관리', Lvl: 1, Src: 'ManagerList' },
   { MenuId: '4', MenuNm: '문의글', Lvl: 1, Src: '' },
   { MenuId: '5', MenuNm: '검사결과', Lvl: 1, Src: '' },
   { MenuId: '6', MenuNm: '기관용', Lvl: 2, Src: '' },

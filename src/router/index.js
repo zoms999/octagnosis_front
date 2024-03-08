@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import ManagerView from   '../views/Manager/ManagerView.vue'
+import ManagerListView from   '../views/Manager/ManagerListView.vue'
+import ManagerDetailView from   '../views/Manager/ManagerDetailView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,8 +21,15 @@ const router = createRouter({
     },
     {
       path: '/manager',
-      name: 'manager',
-      component: ManagerView
+      name: 'ManagerList',
+      component: ManagerListView
+    },
+    {
+      path: '/manager/:mngrId',
+      name: 'ManagerDetail',
+      component: ManagerDetailView,
+      props: true,
+      // props: route => ({ id: parseInt(route.params.id) }),
     },
   ]
 })
