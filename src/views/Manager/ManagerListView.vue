@@ -1,5 +1,15 @@
 <template>
-  <AppGrid :items="posts" col-class="col-12 col-md-6 col-lg-4" 
+			<hr class="my-4" />
+
+<AppLoading v-if="loading" />
+
+<AppError v-else-if="error" :message="error.message" />
+
+<template v-else-if="!isExist">
+	<p class="text-center py-4 text-muted">No Results</p>
+</template>
+<template v-else>
+	<AppGrid :items="posts" col-class="col-12 col-md-6 col-lg-4" 
 	>
     <template v-slot="{ item }" >
 			<ManagerItem
@@ -21,6 +31,8 @@
 				></ManagerItem>
     </template>
   </AppGrid>
+	</template>
+
 </template>
 
 <script setup>
@@ -29,7 +41,6 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 import { computed } from 'vue';
 import { useAxios } from '@/hooks/useAxios';
-import AppGrid from '@/components/app/AppGrid.vue';
 import ManagerItem from '@/components/manager/ManagerItem.vue';
 
 const router = useRouter();
@@ -47,7 +58,7 @@ const {
 	error,
 	loading,
 } = useAxios('/api/managers', { params });
-
+const isExist = computed(() => posts.value && posts.value.length > 0);
 const goPage = mngrId => {
 	// router.push(`/manager/${mngrId}`);
 	router.push({
