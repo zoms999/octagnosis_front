@@ -9,7 +9,7 @@
 	<p class="text-center py-4 text-muted">No Results</p>
 </template>
 <template v-else>
-	<AppGrid :items="posts" col-class="col-12 col-md-6 col-lg-4" 
+	<AppGrid :items="posts" col-class="col-12" 
 	>
     <template v-slot="{ item }" >
 			<ManagerItem

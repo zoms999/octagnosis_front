@@ -1,43 +1,88 @@
 <template>
-		 <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">mngrId</th>
-        <th scope="col">useYn</th>
-        <th scope="col">email</th>
-				<th scope="col">mngrNm</th>
-				<th scope="col">phone</th>
-				<th scope="col">tel</th>
-				<th scope="col">authPersn</th>
-				<th scope="col">authRsltView</th>
-				<th scope="col">authAdmin</th>
-				<th scope="col">authLogView</th>
-				<th scope="col">authStati</th>
-				<th scope="col">authBbs</th>
-				<th scope="col">authOrg</th>
-				<th scope="col">insDt</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr >
-        <th scope="row">{{ mngrId }}</th>
-        <td>{{ useYn }}</td>
-        <td>{{ email }}</td>
-        <td>{{ mngrNm }}</td>
-				<td>{{ phone }}</td>
-				<td>{{ tel }}</td>
-				<td>{{ authPersn }}</td>
-				<td>{{ authRsltView }}</td>
-				<td>{{ authAdmin }}</td>
-				<td>{{ authLogView }}</td>
-				<td>{{ authStati }}</td>
-				<td>{{ authBbs }}</td>
-				<td>{{ authOrg }}</td>
-				<td>{{ insDt }}</td>
-      </tr>
-    </tbody>
-  </table>
-	
+
+
+<div class="container-fluid">
+
+<!-- Page Heading -->
+<h1 class="h3 mb-2 text-gray-800">Tables</h1>
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+		<div class="card-header py-3">
+				<h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+		</div>
+		<div class="card-body">
+				<div class="table-responsive">
+						<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+								<thead>
+										<tr>
+											<th>mngrId</th>
+											<th>useYn</th>
+											<th>email</th>
+											<th>mngrNm</th>
+											<th>phone</th>
+											<th>tel</th>
+											<th>authPersn</th>
+											<th>authRsltView</th>
+											<th>authAdmin</th>
+											<th>authLogView</th>
+											<th>authStati</th>
+											<th>authBbs</th>
+											<th>authOrg</th>
+											<th>insDt</th>
+										</tr>
+								</thead>
+								<tfoot>
+										
+								</tfoot>
+								<tbody>
+										<tr>
+											<td>{{ mngrId }}</td>
+											<td >
+													{{ useYn }}
+											</td>
+											<td>{{ email }}</td>
+											<td>
+													{{ mngrNm }}
+											</td>
+											<td>
+													{{ phone }}
+											</td>
+											<td>
+													{{ tel }}
+											</td>
+											<td>
+													{{ authPersn }}
+											</td>
+											<td>
+													{{ authRsltView }}
+											</td>
+											<td>
+													{{ authAdmin }}
+											</td>
+											<td>
+													{{ authLogView }}
+											</td>
+											<td>
+													{{ authStati }}
+											</td>
+											<td>
+													{{ authBbs }}
+											</td>
+											<td>
+													{{ authOrg }}
+											</td>
+											<td>
+													{{ insDt }}
+											</td>
+            			</tr>
+								</tbody>
+						</table>
+				</div>
+		</div>
+</div>
+
+</div>
 </template>
 
 <script setup>
@@ -94,4 +139,6 @@ const insDt = computed(() =>
 );
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+</style>
