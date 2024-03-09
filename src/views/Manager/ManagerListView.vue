@@ -62,7 +62,7 @@ const isExist = computed(() => posts.value && posts.value.length > 0);
 const goPage = mngrId => {
 	// router.push(`/manager/${mngrId}`);
 	router.push({
-		name: 'ManagerDetail',
+		name: 'ManagerEdit',
 		params: {
 			mngrId,
 		},
