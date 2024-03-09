@@ -31,7 +31,7 @@
                     <form>
                         <!-- Form Group (username)-->
                         <div class="mb-3">
-                            <label class="small mb-1" for="inputUsername">Username (how your name will appear to other users on the site)</label>
+                            <label class="small mb-1" for="inputUsername">{{ post.mngrNm }}</label>
                             <input class="form-control" id="inputUsername" type="text" placeholder="Enter your username" value="username">
                         </div>
                         <!-- Form Row-->
@@ -89,7 +89,26 @@
 </template>
 
 <script setup>
+import { toRefs } from 'vue';
+import { onBeforeRouteLeave, onBeforeRouteUpdate, useRouter } from 'vue-router';
+import { useAxios } from '@/hooks/useAxios';
+import { computed } from 'vue';
 
+const props = defineProps({
+	mngrId: [String, Number],
+});
+const router = useRouter();
+const { mngrId: idRef } = toRefs(props);
+const url = computed(() => `/api/managers/${props.mngrId}`);
+const { error, loading, data: post } = useAxios(url);
+console.log(post)
+
+onBeforeRouteUpdate(() => {
+	console.log('onBeforeRouteUpdate');
+});
+onBeforeRouteLeave(() => {
+	console.log('onBeforeRouteLeave');
+});
 </script>
 
 <style lang="scss" scoped>
