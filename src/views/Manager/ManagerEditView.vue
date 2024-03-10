@@ -9,18 +9,8 @@
 		<hr class="my-4" />
 		<AppError v-if="editError" :message="editError.message" />
 		<ManagerForm
-			v-model:useYn="form.useYn"
 			v-model:email="form.email"
 			v-model:mngrNm="form.mngrNm"
-			v-model:phone="form.phone"
-			v-model:tel="form.tel"
-			v-model:authPersn="form.authPersn"
-			v-model:authRsltView="form.authRsltView"
-			v-model:authAdmin="form.authAdmin"
-			v-model:authLogView="form.authLogView"
-			v-model:authStati="form.authStati"
-			v-model:authBbs="form.authBbs"
-			v-model:authOrg="form.authOrg"
 			@submit.prevent="edit"
 		>
 			<template #actions>
@@ -68,8 +58,8 @@ const {
 	loading: editLoading,
 	execute,
 } = useAxios(
-	`/api/managers/${props.mngrId}`,
-	{ method: 'put' },
+	`/managers/${props.mngrId}`,
+	{ method: 'patch' },
 	{
 		immediate: false,
 		onSuccess: () => {
