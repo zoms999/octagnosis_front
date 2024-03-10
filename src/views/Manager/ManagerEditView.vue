@@ -1,8 +1,6 @@
 <template>
-
-
-<AppLoading v-if="loading" />
-  <AppError v-else-if="error" :message="error.message" />
+	<AppLoading v-if="loading" />
+	<AppError v-else-if="error" :message="error.message" />
 
 	<div v-else>
 		<h2>게시글 수정</h2>
@@ -38,10 +36,10 @@
 </template>
 
 <script setup>
-import { ref, toRefs , computed} from 'vue';
+import { ref, toRefs, computed } from 'vue';
 //import { getPostById, updatePost } from '@/api/managers';
 import ManagerForm from '@/components/manager/ManagerForm.vue';
-import {  useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { useAxios } from '@/hooks/useAxios';
 const router = useRouter();
 
@@ -51,7 +49,11 @@ const props = defineProps({
 
 const { mngrId: mngrIdRef } = toRefs(props);
 
-const { data: form, error, loading } = useAxios(`/api/managers/${props.mngrId}`);
+const {
+	data: form,
+	error,
+	loading,
+} = useAxios(`/api/managers/${props.mngrId}`);
 
 const {
 	error: editError,
@@ -78,69 +80,72 @@ const edit = () => {
 	});
 };
 
-
-const goDetailPage = () => router.push({ name: 'ManagerEdit', params: { mngrId } });
-
+const goDetailPage = () =>
+	router.push({ name: 'ManagerEdit', params: { mngrId } });
 </script>
 
 <style lang="scss" scoped>
-body{margin-top:20px;
-background-color:#f2f6fc;
-color:#69707a;
+body {
+	margin-top: 20px;
+	background-color: #f2f6fc;
+	color: #69707a;
 }
 .img-account-profile {
-    height: 10rem;
+	height: 10rem;
 }
 .rounded-circle {
-    border-radius: 50% !important;
+	border-radius: 50% !important;
 }
 .card {
-    box-shadow: 0 0.15rem 1.75rem 0 rgb(33 40 50 / 15%);
+	box-shadow: 0 0.15rem 1.75rem 0 rgb(33 40 50 / 15%);
 }
 .card .card-header {
-    font-weight: 500;
+	font-weight: 500;
 }
 .card-header:first-child {
-    border-radius: 0.35rem 0.35rem 0 0;
+	border-radius: 0.35rem 0.35rem 0 0;
 }
 .card-header {
-    padding: 1rem 1.35rem;
-    margin-bottom: 0;
-    background-color: rgba(33, 40, 50, 0.03);
-    border-bottom: 1px solid rgba(33, 40, 50, 0.125);
+	padding: 1rem 1.35rem;
+	margin-bottom: 0;
+	background-color: rgba(33, 40, 50, 0.03);
+	border-bottom: 1px solid rgba(33, 40, 50, 0.125);
 }
-.form-control, .dataTable-input {
-    display: block;
-    width: 100%;
-    padding: 0.875rem 1.125rem;
-    font-size: 0.875rem;
-    font-weight: 400;
-    line-height: 1;
-    color: #69707a;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #c5ccd6;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    border-radius: 0.35rem;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+.form-control,
+.dataTable-input {
+	display: block;
+	width: 100%;
+	padding: 0.875rem 1.125rem;
+	font-size: 0.875rem;
+	font-weight: 400;
+	line-height: 1;
+	color: #69707a;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #c5ccd6;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	border-radius: 0.35rem;
+	transition:
+		border-color 0.15s ease-in-out,
+		box-shadow 0.15s ease-in-out;
 }
 
 .nav-borders .nav-link.active {
-    color: #0061f2;
-    border-bottom-color: #0061f2;
+	color: #0061f2;
+	border-bottom-color: #0061f2;
 }
 .nav-borders .nav-link {
-    color: #69707a;
-    border-bottom-width: 0.125rem;
-    border-bottom-style: solid;
-    border-bottom-color: transparent;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    padding-left: 0;
-    padding-right: 0;
-    margin-left: 1rem;
-    margin-right: 1rem;
+	color: #69707a;
+	border-bottom-width: 0.125rem;
+	border-bottom-style: solid;
+	border-bottom-color: transparent;
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+	padding-left: 0;
+	padding-right: 0;
+	margin-left: 1rem;
+	margin-right: 1rem;
 }
 </style>
