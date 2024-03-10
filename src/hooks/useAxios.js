@@ -12,6 +12,8 @@ const defaultOptions = {
 };
 
 export const useAxios = (url, config = {}, options = {}) => {
+
+	console.log("useAxios  " + url );
 	const response = ref(null);
 	const data = ref(null);
 	const error = ref(null);
