@@ -2,7 +2,11 @@
 	<form>
 		<div class="mb-3"></div>
 		<div class="mb-3"></div>
+<<<<<<< HEAD
         <div class="mb-3"></div>
+=======
+
+>>>>>>> b30d6ee53dcb03969bc8ceb9a17baddd6377e0b3
 		<div class="container-xl px-4 mt-4">
 			<nav class="nav nav-borders">
 				<a
