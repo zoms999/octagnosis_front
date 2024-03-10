@@ -61,7 +61,6 @@
 										class="form-control"
 										id="email"
 										type="text"
-										v-focus
 										placeholder="Enter your email"
 										:value="email"
 										@input="$emit('update:email', $event.target.value)"
@@ -76,86 +75,121 @@
 											type="text"
 											placeholder="Enter your name"
 											:value="mngrNm"
-											@input="$emit('update:email', $event.target.value)"
+											@input="$emit('update:mngrNm', $event.target.value)"
 										/>
 									</div>
 									<div class="col-md-6">
-										<label class="small mb-1" for="inputLastName"
-											>Last name</label
-										>
+										<label class="small mb-1" for="phone">핸드폰</label>
 										<input
 											class="form-control"
-											id="inputLastName"
+											id="phone"
 											type="text"
-											placeholder="Enter your last name"
-											value="Luna"
+											placeholder="Enter your phone"
+											:value="phone"
+											@input="$emit('update:phone', $event.target.value)"
 										/>
 									</div>
 								</div>
 								<div class="row gx-3 mb-3">
 									<div class="col-md-6">
-										<label class="small mb-1" for="inputOrgName"
-											>Organization name</label
-										>
+										<label class="small mb-1" for="tel">연락처</label>
 										<input
 											class="form-control"
-											id="inputOrgName"
+											id="tel"
 											type="text"
-											placeholder="Enter your organization name"
-											value="Start Bootstrap"
+											placeholder="연락처"
+											:value="tel"
+											@input="$emit('update:tel', $event.target.value)"
 										/>
 									</div>
 									<div class="col-md-6">
-										<label class="small mb-1" for="inputLocation"
-											>Location</label
-										>
+										<label class="small mb-1" for="authPersn">authPersn</label>
 										<input
 											class="form-control"
-											id="inputLocation"
+											id="authPersn"
 											type="text"
-											placeholder="Enter your location"
-											value="San Francisco, CA"
+											placeholder="Enter your authPersn"
+											:value="authPersn"
+											@input="$emit('update:authPersn', $event.target.value)"
 										/>
 									</div>
 								</div>
 								<div class="mb-3">
-									<label class="small mb-1" for="inputEmailAddress"
-										>Email address</label
+									<label class="small mb-1" for="authRsltView"
+										>authRsltView</label
 									>
 									<input
 										class="form-control"
-										id="inputEmailAddress"
-										type="email"
-										placeholder="Enter your email address"
-										value="name@example.com"
+										id="authRsltView"
+										type="text"
+										placeholder="Enter your authRsltView"
+										:value="authRsltView"
+										@input="$emit('update:authRsltView', $event.target.value)"
 									/>
 								</div>
 								<div class="row gx-3 mb-3">
 									<div class="col-md-6">
-										<label class="small mb-1" for="inputPhone"
-											>Phone number</label
-										>
+										<label class="small mb-1" for="authAdmin">authAdmin</label>
 										<input
 											class="form-control"
-											id="inputPhone"
-											type="tel"
-											placeholder="Enter your phone number"
-											value="555-123-4567"
+											id="authAdmin"
+											type="text"
+											placeholder="Enter your authAdmin"
+											:value="authAdmin"
+											@input="$emit('update:authAdmin', $event.target.value)"
 										/>
 									</div>
 									<div class="col-md-6">
-										<label class="small mb-1" for="inputBirthday"
-											>Birthday</label
+										<label class="small mb-1" for="authLogView"
+											>authLogView</label
 										>
 										<input
 											class="form-control"
-											id="inputBirthday"
+											id="authLogView"
 											type="text"
-											name="birthday"
-											placeholder="Enter your birthday"
-											value="06/10/1988"
+											placeholder="Enter your authLogView"
+											:value="authLogView"
+											@input="$emit('update:authLogView', $event.target.value)"
 										/>
 									</div>
+								</div>
+								<div class="row gx-3 mb-3">
+									<div class="col-md-6">
+										<label class="small mb-1" for="authStati">authStati</label>
+										<input
+											class="form-control"
+											id="authStati"
+											type="text"
+											placeholder="Enter your authStati"
+											:value="authStati"
+											@input="$emit('update:authStati', $event.target.value)"
+										/>
+									</div>
+									<div class="col-md-6">
+										<label class="small mb-1" for="authBbs">authBbs</label>
+										<input
+											class="form-control"
+											id="authBbs"
+											type="text"
+											placeholder="Enter your authBbs"
+											:value="authBbs"
+											@input="$emit('update:authBbs', $event.target.value)"
+										/>
+									</div>
+								</div>
+								<div class="row gx-3 mb-3">
+									<div class="col-md-6">
+										<label class="small mb-1" for="authOrg">authOrg</label>
+										<input
+											class="form-control"
+											id="authOrg"
+											type="text"
+											placeholder="Enter your authOrg"
+											:value="authOrg"
+											@input="$emit('update:authOrg', $event.target.value)"
+										/>
+									</div>
+									<div class="col-md-6"></div>
 								</div>
 								<slot name="actions"> </slot>
 							</form>
@@ -174,10 +208,33 @@
 // 	},
 // };
 defineProps({
+	useYn: String,
 	email: String,
 	mngrNm: String,
+	phone: String,
+	tel: String,
+	authPersn: Number,
+	authRsltView: Number,
+	authAdmin: Number,
+	authLogView: Number,
+	authStati: Number,
+	authBbs: Number,
+	authOrg: Number,
 });
-defineEmits(['update:email', 'update:mngrNm']);
+defineEmits([
+	'update:useYn',
+	'update:email',
+	'update:mngrNm',
+	'update:phone',
+	'update:tel',
+	'update:authPersn',
+	'update:authRsltView',
+	'update:authAdmin',
+	'update:authLogView',
+	'update:authStati',
+	'update:authBbs',
+	'update:authOrg',
+]);
 </script>
 
 <style lang="scss" scoped></style>
