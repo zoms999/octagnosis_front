@@ -1,6 +1,6 @@
 <template>
   <div class="mt-3">
-    <div v-for="(item, index) in MenuList" :key="item.MenuId" class="Menu">
+    <div v-for="item in MenuList" :key="item.MenuId" class="Menu">
       <div
         :class="{
           Lvl1: item.Lvl == 1,
