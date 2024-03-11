@@ -1,6 +1,8 @@
 <template>
 	<hr class="my-4" />
-
+	<button class="btn btn-outline-dark" type="button" @click="goCreate">
+		등록
+	</button>
 	<AppLoading v-if="loading" />
 
 	<AppError v-else-if="error" :message="error.message" />
@@ -40,6 +42,12 @@ import { useRouter } from 'vue-router';
 import { computed } from 'vue';
 import { useAxios } from '@/hooks/useAxios';
 import ManagerItem from '@/components/manager/ManagerItem.vue';
+
+const goCreate = () => {
+	router.push({
+		name: 'ManagerCreate',
+	});
+};
 
 const router = useRouter();
 const params = ref({

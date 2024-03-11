@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import ManagerListView from '../views/Manager/ManagerListView.vue';
 import ManagerEditView from '../views/Manager/ManagerEditView.vue';
+import ManagerCreateView from '../views/Manager/ManagerCreateView.vue';
 import NotFoundView from '../views/Error/NotFoundView.vue';
 
 const router = createRouter({
@@ -24,6 +25,11 @@ const router = createRouter({
 			path: '/manager',
 			name: 'ManagerList',
 			component: ManagerListView,
+		},
+		{
+			path: '/manager/create',
+			name: 'ManagerCreate',
+			component: ManagerCreateView,
 		},
 		// {
 		// 	path: '/manager/:mngrId',
