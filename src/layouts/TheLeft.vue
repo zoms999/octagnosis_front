@@ -36,13 +36,16 @@ const MenuList = ref({});
 
 MenuList.value = [
 	{ MenuId: '1', MenuNm: 'HOME', Lvl: 1, Src: 'home' },
-	{ MenuId: '2', MenuNm: '기업정보', Lvl: 1, Src: 'about' },
+	{ MenuId: '2', MenuNm: '기업정보', Lvl: 1, Src: 'CompyMain' },
 	{ MenuId: '3', MenuNm: '매니저관리', Lvl: 1, Src: 'ManagerList' },
-	{ MenuId: '4', MenuNm: '문의글', Lvl: 1, Src: '' },
-	{ MenuId: '5', MenuNm: '검사결과', Lvl: 1, Src: '' },
-	{ MenuId: '6', MenuNm: '기관용', Lvl: 2, Src: '' },
-	{ MenuId: '7', MenuNm: '개인용', Lvl: 2, Src: '' },
-	{ MenuId: '8', MenuNm: '문항관리', Lvl: 1, Src: '' },
+	{ MenuId: '4', MenuNm: '계정관리', Lvl: 1, Src: '' },
+	{ MenuId: '5', MenuNm: '기관', Lvl: 2, Src: 'OrgMain' },
+	{ MenuId: '6', MenuNm: '개인', Lvl: 2, Src: '' },
+	{ MenuId: '7', MenuNm: '문의글', Lvl: 1, Src: '' },
+	{ MenuId: '8', MenuNm: '검사결과', Lvl: 1, Src: '' },
+	{ MenuId: '9', MenuNm: '기관용', Lvl: 2, Src: '' },
+	{ MenuId: '10', MenuNm: '개인용', Lvl: 2, Src: '' },
+	{ MenuId: '11', MenuNm: '문항관리', Lvl: 1, Src: '' },
 ];
 
 /********************************/

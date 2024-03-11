@@ -992,3 +992,29 @@ body {
 .lh250 {
   line-height: 2.5rem !important;
 }
+
+
+
+.TitPage {
+  display: flex; justify-content: space-between; align-items: center;
+  box-sizing: border-box;
+  border:0px solid red;
+  height:50px;
+}
+.TitPage > div:nth-child(1) {
+    text-align: left;
+    font-size:1.6rem;
+    margin:0 0 0 10px;
+  }
+  .TitPage > div:nth-child(2) {
+    text-align: right;
+    font-size:1.0rem;
+    margin:0 10px 0 0;
+  }
+
+.SrchBox{
+  border-radius: 5px;
+  background-color: #f1f1f1;
+  padding:10px;
+  
+}
