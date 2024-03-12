@@ -39,6 +39,7 @@
 }
 
 body {
+  width:100%;
   min-height: 100vh;
   line-height: 1.6;
   font-family:
@@ -54,7 +55,7 @@ body {
     'Droid Sans',
     'Helvetica Neue',
     sans-serif;
-  font-size: 18px;
+  font-size: 16px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1000,10 +1001,11 @@ body {
   box-sizing: border-box;
   border:0px solid red;
   height:50px;
+  margin: 0 0 0 0;
 }
 .TitPage > div:nth-child(1) {
     text-align: left;
-    font-size:1.6rem;
+    font-size:1.8rem;
     margin:0 0 0 10px;
   }
   .TitPage > div:nth-child(2) {
@@ -1016,5 +1018,77 @@ body {
   border-radius: 5px;
   background-color: #f1f1f1;
   padding:10px;
-  
+  width:100%;
 }
+
+.FunBox {
+  margin:5px 0 0 0;
+  display: flex; justify-content: space-between; align-items: center;
+  box-sizing: border-box;
+  border:0px solid red;
+}
+.FunBox > div:nth-child(1) {
+    text-align: left;
+    font-size:1rem;
+    margin:0 0 0 10px;
+  }
+  .FunBox > div:nth-child(2) {
+    text-align: right;
+    font-size:1.0rem;
+    margin:0 10px 0 0;
+  }
+
+
+.Tbl1 {
+	border-top: 1px solid #ffffff;
+	border-left: 1px solid #ffffff;
+	border-right: 1px solid #ffffff;
+	border-bottom: 1px solid #ffffff;
+	border-collapse: collapse !important;
+	margin: 10px 0px 10px 0px !important;
+}
+
+
+	.Tbl1 thead tr {
+		padding: 1rem 1rem;
+		text-align: center;
+	}
+
+  .Tbl1 thead th {
+    padding: 0.8rem 0.8rem;
+    border: none;
+    background-color: #418b89;
+    color:#ffffff;
+    font-size:1.1rem;
+  }
+  
+	.Tbl1 thead td {
+    padding: 0.8rem 0.8rem;
+    border: none;
+    background-color: #418b89;
+    color:#ffffff;
+    font-size:1.1rem;
+	}
+
+
+
+  .Tbl1 tbody tr{
+    border:1px solid #cacaca;
+	}
+
+	.Tbl1 tbody tr:hover {
+		background-color: #f1f1f1;
+	}
+
+	.Tbl1 tbody td {
+    padding: 0.8rem 0.8rem;
+		font-size: 1rem;
+		text-align: center;
+		line-height: 1.85rem;
+		border: 0px solid #cacaca;
+		color: rgb(50,50,50);
+		background-color: transparent;
+		vertical-align: middle;
+	}
+
+.Poit{cursor: pointer;}

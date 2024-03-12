@@ -1,31 +1,33 @@
 <template>
 	<div class="TitPage">
 		<div>기관</div>
-		<div>---</div>
+		<div></div>
 	</div>
-	<div class="SrchBox">
-		<div class="container">
-			<div class="row">
-				<div class="col-6"></div>
-				<div class="col-6 text-end">
-					<div class="input-group">
-						<div class="form-floating">
-							<input
-								type="text"
-								class="form-control"
-								id="floatingInputGroup1"
-								placeholder="Username"
-							/>
-							<label for="floatingInputGroup1">Username</label>
-						</div>
-						<button class="btn btn-primary">검색</button>
-					</div>
-				</div>
-			</div>
-		</div>
+	<div v-show="ViewNm === 'List'">
+		<OrgListView @ShowView="ShowView"></OrgListView>
+	</div>
+	<div v-if="ViewNm === 'Cret'">
+		<OrgCretView @ShowView="ShowView"></OrgCretView>
+	</div>
+	<div v-else-if="ViewNm === 'Edit'">
+		<OrgEditView :id="Id" @ShowView="ShowView"></OrgEditView>
 	</div>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from 'vue';
+import OrgListView from './OrgListView.vue';
+import OrgCretView from './OrgCretView.vue';
+import OrgEditView from './OrgEditView.vue';
+
+const ViewNm = ref('List');
+const Id = ref('0');
+
+const ShowView = obj => {
+	console.log('obj.Id', obj.Id);
+	ViewNm.value = obj.ViewNm;
+	Id.value = obj.Id;
+};
+</script>
 
 <style lang="scss" scoped></style>

@@ -40,12 +40,13 @@ import { RouterView } from 'vue-router';
 }
 .LayoutMain {
 	position: absolute;
-	left: 260px;
+	left: 270px;
 	top: 90px;
-	width: calc(100vw - 270px);
+	width: calc(100vw - 320px);
 	height: calc(100vh - 90px);
 	background-color: white;
 	box-sizing: border-box;
 	border: 0px solid red;
+	min-width: 1000px;
 }
 </style>
