@@ -4,7 +4,9 @@ import ManagerListView from '../views/Manager/ManagerListView.vue';
 import ManagerEditView from '../views/Manager/ManagerEditView.vue';
 import ManagerCreateView from '../views/Manager/ManagerCreateView.vue';
 import NotFoundView from '../views/Error/NotFoundView.vue';
-import OrgMainView from '@/views/Org/OrgMainView.vue';
+import OrgListView from '@/views/Org/OrgListView.vue';
+import OrgCretView from '@/views/Org/OrgCretView.vue';
+import OrgEditView from '@/views/Org/OrgEditView.vue';
 import CompyMainView from '@/views/Compy/CompyMainView.vue';
 
 const router = createRouter({
@@ -53,11 +55,24 @@ const router = createRouter({
 			// props: route => ({ id: parseInt(route.params.id) }),
 		},
 		{
-			path: '/Org/OrgMain',
-			name: 'OrgMain',
-			component: OrgMainView,
+			path: '/Org/OrgList',
+			name: 'OrgList',
+			component: OrgListView,
 			// props: route => ({ id: parseInt(route.params.id) }),
 		},
+		{
+			path: '/Org/OrgCret',
+			name: 'OrgCret',
+			component: OrgCretView,
+			// props: route => ({ id: parseInt(route.params.id) }),
+		},
+		{
+			path: '/Org/OrgEdit',
+			name: 'OrgEdit',
+			component: OrgEditView,
+			// props: route => ({ id: parseInt(route.params.id) }),
+		},
+
 		{
 			path: '/Compy/CompyMain',
 			name: 'CompyMain',

@@ -1,4 +1,9 @@
 <template>
+	<div class="TitPage">
+		<div>기관</div>
+		<div></div>
+	</div>
+
 	<div>수정</div>
 	<p>
 		{{ props.id }}

@@ -1,4 +1,8 @@
 <template>
+	<div class="TitPage">
+		<div>기관</div>
+		<div></div>
+	</div>
 	<div class="SrchBox">
 		<div class="row">
 			<div class="col-8"></div>
@@ -17,7 +21,7 @@
 	</div>
 	<div class="FunBox">
 		<div>Total : 23,223</div>
-		<button class="btn btn-primary" @click="ShowView('Cret')">추가</button>
+		<button class="btn btn-primary" @click="ShowView('Cret', {})">추가</button>
 	</div>
 	<table
 		class="table table-bordered Tbl1"
@@ -40,7 +44,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr @click="ShowView('Edit', '1')" class="Poit">
+			<tr @click="ShowView('OrgEdit', {})" class="Poit">
 				<td>1</td>
 				<td>개인_Romain choi</td>
 				<td>010-2929-3838</td>
@@ -52,7 +56,7 @@
 				<td>2</td>
 				<td>1</td>
 			</tr>
-			<tr @click="ShowView('Edit', '2')" class="Poit">
+			<tr @click="ShowView('OrgEdit', {})" class="Poit">
 				<td>2</td>
 				<td>개인_Romain choi</td>
 				<td>010-2929-3838</td>
@@ -64,7 +68,7 @@
 				<td>2</td>
 				<td>1</td>
 			</tr>
-			<tr @click="ShowView('Edit', '3')" class="Poit">
+			<tr @click="ShowView('OrgEdit', {})" class="Poit">
 				<td>3</td>
 				<td>개인_Romain choi</td>
 				<td>010-2929-3838</td>
@@ -82,11 +86,14 @@
 </template>
 
 <script setup>
-//const props = defineProps();
-const emit = defineEmits(['ShowView']);
+import { useRouter } from 'vue-router';
 
-const ShowView = (vieNm, id) => {
-	emit('ShowView', { ViewNm: vieNm, Id: id });
+//const props = defineProps();
+//const emit = defineEmits(['ShowView']);
+const router = useRouter();
+
+const ShowView = (vieNm, p) => {
+	router.push({ name: vieNm, params: p });
 };
 </script>
 

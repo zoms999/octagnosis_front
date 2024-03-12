@@ -42,7 +42,7 @@ import { RouterView } from 'vue-router';
 	position: absolute;
 	left: 270px;
 	top: 90px;
-	width: calc(100vw - 320px);
+	width: calc(100vw - 290px);
 	height: calc(100vh - 90px);
 	background-color: white;
 	box-sizing: border-box;

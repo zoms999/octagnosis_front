@@ -39,7 +39,7 @@ MenuList.value = [
 	{ MenuId: '2', MenuNm: '기업정보', Lvl: 1, Src: 'CompyMain' },
 	{ MenuId: '3', MenuNm: '매니저관리', Lvl: 1, Src: 'ManagerList' },
 	{ MenuId: '4', MenuNm: '계정관리', Lvl: 1, Src: '' },
-	{ MenuId: '5', MenuNm: '기관', Lvl: 2, Src: 'OrgMain' },
+	{ MenuId: '5', MenuNm: '기관', Lvl: 2, Src: 'OrgList' },
 	{ MenuId: '6', MenuNm: '개인', Lvl: 2, Src: '' },
 	{ MenuId: '7', MenuNm: '문의글', Lvl: 1, Src: '' },
 	{ MenuId: '8', MenuNm: '검사결과', Lvl: 1, Src: '' },
@@ -67,11 +67,11 @@ const GoPage = name => {
 }
 
 .Menu > div.Lvl1 {
-	font-size: 1.3rem;
+	font-size: 1.2rem;
 	margin: 2px 0 10px 20px;
 }
 .Menu > div.Lvl2 {
-	font-size: 1.2rem;
+	font-size: 1.05rem;
 	margin: 2px 0 8px 40px;
 }
 .Menu > div.Lvl3 {

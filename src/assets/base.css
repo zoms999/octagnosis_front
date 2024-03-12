@@ -55,7 +55,7 @@ body {
     'Droid Sans',
     'Helvetica Neue',
     sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1005,7 +1005,7 @@ body {
 }
 .TitPage > div:nth-child(1) {
     text-align: left;
-    font-size:1.8rem;
+    font-size:1.9rem;
     margin:0 0 0 10px;
   }
   .TitPage > div:nth-child(2) {
@@ -1055,7 +1055,7 @@ body {
 	}
 
   .Tbl1 thead th {
-    padding: 0.8rem 0.8rem;
+    padding: 0.6rem 0.3rem;
     border: none;
     background-color: #418b89;
     color:#ffffff;
@@ -1063,7 +1063,7 @@ body {
   }
   
 	.Tbl1 thead td {
-    padding: 0.8rem 0.8rem;
+    padding: 0.6rem 0.3rem;
     border: none;
     background-color: #418b89;
     color:#ffffff;
@@ -1081,7 +1081,7 @@ body {
 	}
 
 	.Tbl1 tbody td {
-    padding: 0.8rem 0.8rem;
+    padding: 0.6rem 0.5rem;
 		font-size: 1rem;
 		text-align: center;
 		line-height: 1.85rem;
