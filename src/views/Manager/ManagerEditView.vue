@@ -29,7 +29,11 @@
 				>
 					취소
 				</button>
-				<button class="btn btn-primary" :disabled="editLoading">
+				<button
+					class="btn btn-primary"
+					@click="submitForm"
+					:disabled="editLoading"
+				>
 					<template v-if="editLoading">
 						<span
 							class="spinner-grow spinner-grow-sm"
@@ -74,16 +78,23 @@ const {
 			//vSuccess('수정이 완료되었습니다!');
 			console.log('mngrId-->' + mngrId);
 			console.log('수정이 완료되었습니다! ');
+			alert('saveed');
 			//router.push({ name: 'ManagerList', params: { mngrId } });
 		},
 		onError: err => {
+			alert(err);
 			console.log('err ' + err.message);
 			//vAlert(err.message);
 		},
 	},
 );
 
+const submitForm = () => {
+	edit(); // save 함수 호출
+};
+
 const edit = () => {
+	alert('save');
 	execute({
 		...form.value,
 	});

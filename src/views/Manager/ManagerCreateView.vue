@@ -21,7 +21,7 @@
 			<button type="button" class="btn btn-outline-dark" @click="goListPage">
 				목록
 			</button>
-			<button class="btn btn-primary" :disabled="loading">
+			<button class="btn btn-primary" @click="submitForm" :disabled="loading">
 				<template v-if="loading">
 					<span
 						class="spinner-grow spinner-grow-sm"
@@ -43,6 +43,7 @@ import { useRouter } from 'vue-router';
 import ManagerForm from '@/components/manager/ManagerForm.vue';
 //import { useAlert } from '@/composables/alert';
 import { useAxios } from '@/hooks/useAxios';
+import axios from 'axios';
 
 const router = useRouter();
 const form = ref({
@@ -64,24 +65,44 @@ const { error, loading, execute } = useAxios(
 	'/api/managers',
 	{
 		method: 'post',
-		headers: {
-			'Content-Type': 'application/json',
-		},
 	},
 	{
 		immediate: false,
 		onSuccess: () => {
 			router.push({ name: 'ManagerList' });
+			alert('saveed');
 			//vSuccess('등록이 완료되었습니다!');
 		},
 		onError: err => {
+			alert(err);
 			//vAlert(err.message);
 		},
 	},
 );
 
+const submitForm = () => {
+	save(); // save 함수 호출
+};
+
+// const save = async () => {
+// 	alert('save');
+// 	try {
+// 		const response = await axios.post('http://localhost:8080/api/managers', {
+// 			...form.value,
+// 		});
+// 		if (response.status === 200) {
+// 			// 성공적으로 저장되었을 때의 처리
+// 			console.log('등록되었습니다.');
+// 			//goListPage();
+// 		}
+// 	} catch (error) {
+// 		console.error('Error saving manager:', error);
+// 		// 저장 실패 시, 에러 처리
+// 	}
+// };
 const save = async () => {
-	execute({ ...form.value, InsDt: Date.now() });
+	alert('save');
+	execute({ ...form.value });
 };
 
 const goListPage = () => router.push({ name: 'ManagerList' });
