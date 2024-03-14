@@ -8,20 +8,23 @@
 	<p>
 		{{ props.id }}
 	</p>
-	<button class="btn btn-primary" @click="ShowView">목록으로</button>
+	<button class="btn btn-primary" @click="Go('OrgList', {})">목록으로</button>
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router';
+
 const props = defineProps({
 	id: {
 		type: String,
 		required: true,
 	},
 });
-const emit = defineEmits(['ShowView']);
 
-const ShowView = () => {
-	emit('ShowView', { ViewNm: 'List' });
+const router = useRouter();
+
+const Go = (nm, p) => {
+	router.push({ name: nm, params: p });
 };
 </script>
 

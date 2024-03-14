@@ -6,8 +6,9 @@
 					Lvl1: item.Lvl == 1,
 					Lvl2: item.Lvl == 2,
 					Lvl3: item.Lvl == 3,
+					Active: item.ActiveYn,
 				}"
-				@click="GoPage(item.Src)"
+				@click="Go(item)"
 			>
 				<img src="@/assets/img/PointWhite_8.png" class="Dot" />{{ item.MenuNm }}
 			</div>
@@ -35,26 +36,42 @@ const router = useRouter();
 const MenuList = ref({});
 
 MenuList.value = [
-	{ MenuId: '1', MenuNm: 'HOME', Lvl: 1, Src: 'home' },
-	{ MenuId: '2', MenuNm: '기업정보', Lvl: 1, Src: 'CompyMain' },
-	{ MenuId: '3', MenuNm: '매니저관리', Lvl: 1, Src: 'ManagerList' },
-	{ MenuId: '4', MenuNm: '계정관리', Lvl: 1, Src: '' },
-	{ MenuId: '5', MenuNm: '기관', Lvl: 2, Src: 'OrgList' },
-	{ MenuId: '6', MenuNm: '개인', Lvl: 2, Src: '' },
-	{ MenuId: '7', MenuNm: '문의글', Lvl: 1, Src: '' },
-	{ MenuId: '8', MenuNm: '검사결과', Lvl: 1, Src: '' },
-	{ MenuId: '9', MenuNm: '기관용', Lvl: 2, Src: '' },
-	{ MenuId: '10', MenuNm: '개인용', Lvl: 2, Src: '' },
-	{ MenuId: '11', MenuNm: '문항관리', Lvl: 1, Src: '' },
+	{ MenuId: '1', MenuNm: 'HOME', Lvl: 1, Src: 'home', ActiveYn: true },
+	{
+		MenuId: '2',
+		MenuNm: '기업정보',
+		Lvl: 1,
+		Src: 'CompyMain',
+		ActiveYn: false,
+	},
+	{
+		MenuId: '3',
+		MenuNm: '매니저관리',
+		Lvl: 1,
+		Src: 'ManagerList',
+		ActiveYn: false,
+	},
+	{ MenuId: '4', MenuNm: '계정관리', Lvl: 1, Src: '', ActiveYn: false },
+	{ MenuId: '5', MenuNm: '기관', Lvl: 2, Src: 'OrgList', ActiveYn: false },
+	{ MenuId: '6', MenuNm: '개인', Lvl: 2, Src: '', ActiveYn: false },
+	{ MenuId: '7', MenuNm: '문의글', Lvl: 1, Src: '', ActiveYn: false },
+	{ MenuId: '8', MenuNm: '검사결과', Lvl: 1, Src: '', ActiveYn: false },
+	{ MenuId: '9', MenuNm: '기관용', Lvl: 2, Src: '', ActiveYn: false },
+	{ MenuId: '10', MenuNm: '개인용', Lvl: 2, Src: '', ActiveYn: false },
+	{ MenuId: '11', MenuNm: '문항관리', Lvl: 1, Src: '', ActiveYn: false },
 ];
 
 /********************************/
-
-const GoPage = name => {
+const BefMenu = ref(null);
+const Go = item => {
+	if (BefMenu.value != null) BefMenu.value.ActiveYn = false;
+	BefMenu.value = item;
+	BefMenu.value.ActiveYn = true;
 	router.push({
-		name: name,
+		name: item.Src,
 	});
 };
+Go(MenuList.value[0]);
 </script>
 
 <style scoped>
@@ -81,5 +98,9 @@ const GoPage = name => {
 	font-size: 0.9rem;
 	padding: 10px;
 	color: rgb(220, 220, 220);
+}
+
+.Active {
+	color: yellow;
 }
 </style>

@@ -21,7 +21,7 @@
 	</div>
 	<div class="FunBox">
 		<div>Total : 23,223</div>
-		<button class="btn btn-primary" @click="ShowView('Cret', {})">추가</button>
+		<button class="btn btn-primary" @click="GoView('OrgCret', {})">추가</button>
 	</div>
 	<table
 		class="table table-bordered Tbl1"
@@ -44,7 +44,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr @click="ShowView('OrgEdit', {})" class="Poit">
+			<tr @click="GoView('OrgEdit', {})" class="Poit">
 				<td>1</td>
 				<td>개인_Romain choi</td>
 				<td>010-2929-3838</td>
@@ -56,7 +56,7 @@
 				<td>2</td>
 				<td>1</td>
 			</tr>
-			<tr @click="ShowView('OrgEdit', {})" class="Poit">
+			<tr @click="GoView('OrgEdit', {})" class="Poit">
 				<td>2</td>
 				<td>개인_Romain choi</td>
 				<td>010-2929-3838</td>
@@ -68,7 +68,7 @@
 				<td>2</td>
 				<td>1</td>
 			</tr>
-			<tr @click="ShowView('OrgEdit', {})" class="Poit">
+			<tr @click="GoView('OrgEdit', {})" class="Poit">
 				<td>3</td>
 				<td>개인_Romain choi</td>
 				<td>010-2929-3838</td>
@@ -92,8 +92,8 @@ import { useRouter } from 'vue-router';
 //const emit = defineEmits(['ShowView']);
 const router = useRouter();
 
-const ShowView = (vieNm, p) => {
-	router.push({ name: vieNm, params: p });
+const GoView = (nm, p) => {
+	router.push({ name: nm, params: p });
 };
 </script>
 
