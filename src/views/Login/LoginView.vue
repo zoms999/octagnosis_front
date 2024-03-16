@@ -61,10 +61,11 @@ const submit = () => {
 		.then(res => {
 			console.log('res -->', res); // 응답 데이터 확인
 			if (res.data) {
-				login(state.form.email); // 로그인 성공 시 스토어의 login 액션 호출
+				login(res.data); // 로그인 성공 시 스토어의 login 액션 호출
 				router.push({ name: 'home' });
 				window.alert('로그인하였습니다.');
 				console.log('LoginView isAuthenticated --' + isAuthenticated.value);
+				console.log('LoginView authPersn --' + res.data.authPersn);
 			} else {
 				window.alert('로그인 정보가 존재하지 않습니다.');
 			}

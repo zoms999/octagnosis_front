@@ -4,12 +4,26 @@ export const useAuthStore = defineStore('auth', {
 	state: () => ({
 		isAuthenticated: false,
 		userEmail: null,
+		authPersn: 0,
+		authRsltView: 0,
+		authAdmin: 0,
+		authLogView: 0,
+		authStati: 0,
+		authBbs: 0,
+		authOrg: 0,
 	}),
 	actions: {
-		login(userEmail) {
+		login(userData) {
 			this.isAuthenticated = true;
-			this.userEmail = userEmail;
-			sessionStorage.setItem('email', userEmail);
+			this.userEmail = userData.email;
+			this.authPersn = userData.authPersn;
+			this.authRsltView = userData.authRsltView;
+			this.authAdmin = userData.authAdmin;
+			this.authLogView = userData.authLogView;
+			this.authStati = userData.authStati;
+			this.authBbs = userData.authBbs;
+			this.authOrg = userData.authOrg;
+			sessionStorage.setItem('email', userData.email);
 		},
 		logout() {
 			this.isAuthenticated = false;
