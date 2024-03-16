@@ -71,7 +71,8 @@ const Go = item => {
 		name: item.Src,
 	});
 };
-Go(MenuList.value[0]);
+
+//Go(MenuList.value[0]);
 </script>
 
 <style scoped>

@@ -6,15 +6,48 @@
 			</div>
 			<div class="TopRight">
 				<div class="d-flex mt-1">
-					<div class="me-3">홍길동님 안녕하세요</div>
-					<div><span class="material-icons fs170"> logout </span></div>
+					<div class="me-3" v-if="isAuthenticated">
+						{{ userEmail }}님 안녕하세요
+					</div>
+					<div v-if="!isAuthenticated">
+						<router-link to="/login" class="text-white">로그인</router-link>
+					</div>
+					<div v-if="isAuthenticated">
+						<button @click="handleLogout" class="text-white btn btn-link">
+							로그아웃
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </template>
 
-<script setup></script>
+<script setup>
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
+import { storeToRefs } from 'pinia';
+
+const store = useAuthStore();
+const { userEmail, isAuthenticated } = storeToRefs(store);
+const { logout } = store;
+const router = useRouter();
+
+// Check if email exists in sessionStorage and update authentication status accordingly
+const emailFromStorage = sessionStorage.getItem('email');
+if (emailFromStorage) {
+	isAuthenticated.value = true;
+	userEmail.value = emailFromStorage;
+} else {
+	isAuthenticated.value = false;
+	userEmail.value = null;
+}
+
+const handleLogout = () => {
+	logout();
+	router.push({ name: 'login' });
+};
+</script>
 
 <style scoped>
 .TopRight {
