@@ -1034,7 +1034,8 @@ body {
   .Tit1 > div:nth-child(1) {
       text-align: left;
       font-size:1.1rem;
-      margin:0 0 0 10px;
+      margin:0 0 0 20px;
+      
     }
     .Tit1 > div:nth-child(2) {
       text-align: right;

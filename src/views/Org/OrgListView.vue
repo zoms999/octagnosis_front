@@ -21,7 +21,7 @@
 	</div>
 	<div class="FunBox">
 		<div>Total : 23,223</div>
-		<button class="btn btn-primary" @click="GoView('OrgCret', {})">추가</button>
+		<button class="btn btn-primary" @click="Go('OrgCret', {})">추가</button>
 	</div>
 	<table
 		class="table table-bordered Tbl1"
@@ -44,7 +44,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr @click="GoView('OrgEdit', {})" class="Poit">
+			<tr @click="Go('OrgEdit', { id: '1' })" class="Poit">
 				<td>1</td>
 				<td>개인_Romain choi</td>
 				<td>010-2929-3838</td>
@@ -56,7 +56,7 @@
 				<td>2</td>
 				<td>1</td>
 			</tr>
-			<tr @click="GoView('OrgEdit', {})" class="Poit">
+			<tr @click="Go('OrgEdit', { id: '2' })" class="Poit">
 				<td>2</td>
 				<td>개인_Romain choi</td>
 				<td>010-2929-3838</td>
@@ -68,7 +68,7 @@
 				<td>2</td>
 				<td>1</td>
 			</tr>
-			<tr @click="GoView('OrgEdit', {})" class="Poit">
+			<tr @click="Go('OrgEdit', { id: '3' })" class="Poit">
 				<td>3</td>
 				<td>개인_Romain choi</td>
 				<td>010-2929-3838</td>
@@ -83,18 +83,40 @@
 		</tbody>
 		<tfoot></tfoot>
 	</table>
+	<AppPagination
+		:CurPage="CurPage"
+		:PageCnt="PageCnt"
+		@Page="GetList"
+	></AppPagination>
 </template>
 
 <script setup>
+import { computed, ref, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
+import AppPagination from '@/components/AppPagination.vue';
 
 //const props = defineProps();
 //const emit = defineEmits(['ShowView']);
 const router = useRouter();
 
-const GoView = (nm, p) => {
-	router.push({ name: nm, params: p });
+const Go = (nm, q) => {
+	//router.push({ name: nm, params: p });
+	router.push({ name: nm, query: q });
 };
+
+const TotCnt = ref(15);
+const PageCnt = computed(() => Math.ceil(TotCnt.value / 3));
+const CurPage = ref(3);
+
+const GetList = page => {
+	CurPage.value = page ?? 1;
+};
+
+watchEffect(GetList);
+
+console.log('TotCnt ; ', TotCnt);
+console.log('PageCnt ; ', PageCnt);
+console.log('CurPage ; ', CurPage);
 </script>
 
 <style lang="scss" scoped></style>

@@ -13,6 +13,7 @@ export default defineConfig({
 			dts: true,
 		}),
 	],
+	//mode: 'production',
 	resolve: {
 		alias: {
 			'@': fileURLToPath(new URL('./src', import.meta.url)),
