@@ -1,14 +1,19 @@
 <template>
 	<div class="TitPage">
-		<div>기관 <span> - 등록</span></div>
-		<div>
-			<button class="btn btn-primary">저장</button>
-			<button class="btn btn-primary" @click="Go('OrgList', {})">
-				목록으로
-			</button>
-		</div>
+		<div>기관 <span>></span><span>등록</span></div>
+		<div></div>
 	</div>
-	<OrgForm :Item="Item"></OrgForm>
+	<OrgForm :Item="Item">
+		<template #actions>
+			<div></div>
+			<div>
+				<button class="btn btn-primary me-2">등록</button>
+				<button class="btn btn-primary" @click="Go('OrgList', {})">
+					목록으로
+				</button>
+			</div>
+		</template>
+	</OrgForm>
 	<br /><br />
 </template>
 

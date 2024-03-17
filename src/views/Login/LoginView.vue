@@ -68,10 +68,12 @@ const submit = () => {
 				console.log('LoginView authPersn --' + res.data.authPersn);
 			} else {
 				window.alert('로그인 정보가 존재하지 않습니다.');
+				router.push({ name: 'home' });
 			}
 		})
 		.catch(() => {
 			window.alert('로그인 정보가 존재하지 않습니다.');
+			router.push({ name: 'home' });
 		});
 };
 </script>

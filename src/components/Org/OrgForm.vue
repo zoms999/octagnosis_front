@@ -1,4 +1,7 @@
 <template>
+	<div class="ActionBtn">
+		<slot name="actions"></slot>
+	</div>
 	<div class="Tit1">
 		<div>기관계정</div>
 		<div></div>

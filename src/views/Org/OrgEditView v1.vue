@@ -15,7 +15,7 @@
 			</div>
 		</template>
 	</OrgForm>
-	<AppAlert :items="alerts"></AppAlert>
+	<AppAlert :show="showAlert" :message="alertMsg" :type="alertType"></AppAlert>
 	<br /><br />
 </template>
 
@@ -40,14 +40,17 @@ const edit = () => {
 };
 
 // alert	************************
-
-const alerts = ref([]);
+const showAlert = ref(false);
+const alertMsg = ref('');
+const alertType = ref('');
 
 const vAlert = (msg, type = 'error') => {
-	alerts.value.push({ msg, type });
+	showAlert.value = true;
+	alertMsg.value = msg;
+	alertType.value = type;
 
 	setTimeout(() => {
-		alerts.value.shift();
+		showAlert.value = false;
 	}, 2000);
 };
 </script>

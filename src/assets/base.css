@@ -1011,7 +1011,7 @@ body {
 .TitPage > div:nth-child(1) > span {
   text-align: left;
   font-size:1.0rem;
-  margin:0 0 0 0px;
+  margin:0 0 0 10px;
 }
 .TitPage > div:nth-child(2) {
   text-align: right;
@@ -1155,3 +1155,23 @@ body {
 .IconBtn {
   height:38px !important;
 }
+
+
+.ActionBtn {
+  display: flex; justify-content: space-between; align-items: center;
+  box-sizing: border-box;
+  height:40px;
+  margin: 0px 0 5px 0;
+  background-color: #ffffff;
+}
+.ActionBtn > div:nth-child(1) {
+    text-align: left;
+    font-size:1.1rem;
+    margin:0 0 0 20px;
+    
+  }
+  .ActionBtn > div:nth-child(2) {
+    text-align: right;
+    font-size:1.0rem;
+    margin:0 10px 0 0;
+  }

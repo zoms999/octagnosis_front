@@ -8,8 +8,10 @@ import { createPinia } from 'pinia';
 import App from './App.vue';
 import router from './router';
 import dayjs from './plugins/dayjs';
+import globalComponents from './plugins/global-components';
 
 const app = createApp(App);
+app.use(globalComponents);
 app.use(router);
 app.use(dayjs);
 app.use(createPinia());

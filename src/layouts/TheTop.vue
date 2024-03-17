@@ -10,7 +10,7 @@
 						{{ userEmail }}님 안녕하세요
 					</div>
 					<div v-if="!isAuthenticated">
-						<router-link to="/login" class="text-white">로그인</router-link>
+						<router-link to="/login" class="text-white"></router-link>
 					</div>
 					<div v-if="isAuthenticated">
 						<button @click="handleLogout" class="text-white btn btn-link">

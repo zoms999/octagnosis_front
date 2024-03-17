@@ -86,14 +86,29 @@
 	<AppPagination
 		:CurPage="CurPage"
 		:PageCnt="PageCnt"
-		@Page="GetList"
+		@Page="GetOrgList"
 	></AppPagination>
+
+	<Teleport to="#modal">
+		<AppModal v-model="show" title="게시글">
+			<template #default>
+				<p>제목 :</p>
+				<p>내용 :</p>
+				<p>등록일 :</p>
+			</template>
+			<template #actions>
+				<button type="button" class="btn btn-secondary" @click="closeModal">
+					닫기
+				</button>
+			</template>
+		</AppModal>
+	</Teleport>
+	<button class="btn btn-primary" @click="openModal">모달오픈</button>
 </template>
 
 <script setup>
 import { computed, ref, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
-import AppPagination from '@/components/AppPagination.vue';
 
 //const props = defineProps();
 //const emit = defineEmits(['ShowView']);
@@ -108,15 +123,23 @@ const TotCnt = ref(15);
 const PageCnt = computed(() => Math.ceil(TotCnt.value / 3));
 const CurPage = ref(3);
 
-const GetList = page => {
+const GetOrgList = page => {
 	CurPage.value = page ?? 1;
 };
 
-watchEffect(GetList);
+watchEffect(GetOrgList);
 
 console.log('TotCnt ; ', TotCnt);
 console.log('PageCnt ; ', PageCnt);
 console.log('CurPage ; ', CurPage);
+
+const show = ref(false);
+const openModal = () => {
+	show.value = true;
+};
+const closeModal = () => {
+	show.value = false;
+};
 </script>
 
 <style lang="scss" scoped></style>
