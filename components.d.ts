@@ -8,7 +8,6 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppAlert: typeof import('./src/components/app/AppAlert.vue')['default']
-    'AppAlert v.1': typeof import('./src/components/app/AppAlert v.1.vue')['default']
     AppError: typeof import('./src/components/app/AppError.vue')['default']
     AppGrid: typeof import('./src/components/app/AppGrid.vue')['default']
     AppLoading: typeof import('./src/components/app/AppLoading.vue')['default']

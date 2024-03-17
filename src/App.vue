@@ -8,15 +8,19 @@
 	<div class="LayoutMain">
 		<RouterView></RouterView>
 	</div>
+	<AppAlert :items="alerts"></AppAlert>
 </template>
 
 <script setup>
 import TheLeft from './layouts/TheLeft.vue';
 import TheTop from './layouts/TheTop.vue';
+import { useAlert } from '@/composables/alert';
 
 import { RouterView, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
+
+const { alerts } = useAlert();
 
 const router = useRouter();
 const store = useAuthStore();

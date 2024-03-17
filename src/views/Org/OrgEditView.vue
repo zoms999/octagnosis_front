@@ -15,7 +15,6 @@
 			</div>
 		</template>
 	</OrgForm>
-	<AppAlert :items="alerts"></AppAlert>
 	<br /><br />
 </template>
 
@@ -23,6 +22,9 @@
 import { useRouter } from 'vue-router';
 import OrgForm from '@/components/Org/OrgForm.vue';
 import { ref } from 'vue';
+import { useAlert } from '@/composables/alert';
+
+const { vAlert, vSuccess } = useAlert();
 
 const Item = ref({
 	id: 11,
@@ -40,16 +42,6 @@ const edit = () => {
 };
 
 // alert	************************
-
-const alerts = ref([]);
-
-const vAlert = (msg, type = 'error') => {
-	alerts.value.push({ msg, type });
-
-	setTimeout(() => {
-		alerts.value.shift();
-	}, 2000);
-};
 </script>
 
 <style lang="scss" scoped></style>

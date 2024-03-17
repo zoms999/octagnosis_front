@@ -11,7 +11,7 @@
 			<div class="col-1 lbl">기관인증코드</div>
 			<div class="col-3">
 				<div class="input-group">
-					<input type="text" class="form-control" :value="Item.id" />
+					<input v-focus type="text" class="form-control" :value="Item.id" />
 					<button class="btn btn-primary">변경</button>
 				</div>
 			</div>

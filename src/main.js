@@ -9,9 +9,11 @@ import App from './App.vue';
 import router from './router';
 import dayjs from './plugins/dayjs';
 import globalComponents from './plugins/global-components';
+import globalDirective from './plugins/global-directive';
 
 const app = createApp(App);
 app.use(globalComponents);
+app.use(globalDirective);
 app.use(router);
 app.use(dayjs);
 app.use(createPinia());
