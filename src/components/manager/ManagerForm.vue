@@ -57,14 +57,18 @@
 							<form>
 								<div class="mb-3">
 									<label class="small mb-1" for="email">이메일</label>
-									<input
-										class="form-control"
-										id="email"
-										type="text"
-										placeholder="Enter your email"
-										:value="email"
-										@input="$emit('update:email', $event.target.value)"
-									/>
+									<div class="input-group">
+										<input
+											class="form-control"
+											id="email"
+											type="text"
+											placeholder="Enter your email"
+											:value="email"
+											@input="$emit('update:email', $event.target.value)"
+										/>
+
+										<slot name="actionsDupl"> </slot>
+									</div>
 								</div>
 								<div class="row gx-3 mb-3">
 									<div class="col-md-6">

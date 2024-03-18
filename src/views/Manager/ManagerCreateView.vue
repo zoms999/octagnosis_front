@@ -33,6 +33,11 @@
 				<template v-else> 저장 </template>
 			</button>
 		</template>
+		<template #actionsDupl>
+			<button class="btn btn-primary" @click.prevent="checkDuplicate">
+				중복확인
+			</button>
+		</template>
 	</ManagerForm>
 </template>
 
@@ -103,6 +108,25 @@ const submitForm = () => {
 const save = async () => {
 	alert('save');
 	execute({ ...form.value });
+};
+
+const checkDuplicate = async () => {
+	try {
+		const response = await axios.post('/api/check-duplicate-email', {
+			email: form.value.email,
+		});
+
+		console.log('Response:', response); // Log the response
+		if (response.data.exists) {
+			alert('이미 등록된 이메일주소입니다.');
+			form.value.email = null;
+		} else {
+			alert('사용가능한 이메일주소입니다.');
+		}
+	} catch (error) {
+		console.error('Error checking email duplication:', error);
+		alert('An error occurred while checking email duplication.');
+	}
 };
 
 const goListPage = () => router.push({ name: 'ManagerList' });

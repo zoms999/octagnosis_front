@@ -15,6 +15,5 @@ declare module 'vue' {
     AppPagination: typeof import('./src/components/app/AppPagination.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    'v.1': typeof import('./src/components/app/AppAlert v.1.vue')['default']
   }
 }
