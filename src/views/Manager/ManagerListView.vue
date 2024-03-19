@@ -1,9 +1,30 @@
 <template>
+	<div class="TitPage">
+		<div>매니저관리</div>
+		<div></div>
+	</div>
 	<div>
-		<hr class="my-4" />
-		<button class="btn btn-outline-dark" type="button" @click="goCreate">
-			등록
-		</button>
+		<div class="SrchBox">
+			<div class="row">
+				<div class="col-8"></div>
+				<div class="col-4 text-end">
+					<div class="input-group w100p">
+						<input
+							type="text"
+							class="form-control"
+							id="SrchStr"
+							placeholder="이름/이메일/연락처"
+						/>
+						<button class="btn btn-primary w80">검색</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="FunBox">
+			<div>Total : 23,223</div>
+			<button class="btn btn-primary" @click="goCreate">추가</button>
+		</div>
+
 		<AppLoading v-if="loading" />
 		<AppError v-else-if="error" :message="error.message" />
 		<template v-else-if="!isExist">
@@ -11,8 +32,6 @@
 		</template>
 		<template v-else>
 			<div class="container-fluid">
-				<!-- Page Heading -->
-				<h1 class="h3 mb-2 text-gray-800">Tables</h1>
 				<!-- DataTales Example -->
 				<div class="card shadow mb-4">
 					<div class="card-header py-3">

@@ -55,6 +55,9 @@ import { ref, toRefs, computed } from 'vue';
 import ManagerForm from '@/components/manager/ManagerForm.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAxios } from '@/hooks/useAxios';
+import { useAlert } from '@/composables/alert';
+const { vAlert, vSuccess } = useAlert();
+
 const router = useRouter();
 const route = useRoute();
 const mngrId = route.params.mngrId;
@@ -75,15 +78,15 @@ const {
 	{
 		immediate: false,
 		onSuccess: () => {
-			//vSuccess('수정이 완료되었습니다!');
 			console.log('mngrId-->' + mngrId);
 			console.log('수정이 완료되었습니다! ');
-			alert('saveed');
-			//router.push({ name: 'ManagerList', params: { mngrId } });
+			vSuccess('수정 되었습니다.');
+			router.push({ name: 'ManagerList', params: { mngrId } });
 		},
 		onError: err => {
 			alert(err);
 			console.log('err ' + err.message);
+			vAlert('수정실패.' + err.message);
 			//vAlert(err.message);
 		},
 	},
@@ -94,7 +97,6 @@ const submitForm = () => {
 };
 
 const edit = () => {
-	alert('save');
 	execute({
 		...form.value,
 	});
