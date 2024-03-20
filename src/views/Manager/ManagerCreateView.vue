@@ -18,20 +18,27 @@
 		@submit.prevent="save"
 	>
 		<template #actions>
-			<button type="button" class="btn btn-outline-dark" @click="goListPage">
-				목록
-			</button>
-			<button class="btn btn-primary" @click="submitForm" :disabled="loading">
-				<template v-if="loading">
-					<span
-						class="spinner-grow spinner-grow-sm"
-						role="status"
-						aria-hidden="true"
-					></span>
-					<span class="visually-hidden">Loading...</span>
-				</template>
-				<template v-else> 저장 </template>
-			</button>
+			<div></div>
+			<div>
+				<button
+					type="button"
+					class="btn btn-outline-dark me-2"
+					@click="goListPage"
+				>
+					목록
+				</button>
+				<button class="btn btn-primary" @click="submitForm" :disabled="loading">
+					<template v-if="loading">
+						<span
+							class="spinner-grow spinner-grow-sm"
+							role="status"
+							aria-hidden="true"
+						></span>
+						<span class="visually-hidden">Loading...</span>
+					</template>
+					<template v-else> 저장 </template>
+				</button>
+			</div>
 		</template>
 		<template #actionsDupl>
 			<button class="btn btn-primary" @click.prevent="checkDuplicate">

@@ -22,28 +22,31 @@
 			@submit.prevent="edit"
 		>
 			<template #actions>
-				<button
-					type="button"
-					class="btn btn-outline-danger"
-					@click="goDetailPage"
-				>
-					취소
-				</button>
-				<button
-					class="btn btn-primary"
-					@click="submitForm"
-					:disabled="editLoading"
-				>
-					<template v-if="editLoading">
-						<span
-							class="spinner-grow spinner-grow-sm"
-							role="status"
-							aria-hidden="true"
-						></span>
-						<span class="visually-hidden">Loading...</span>
-					</template>
-					<template v-else> 수정 </template>
-				</button>
+				<div></div>
+				<div>
+					<button
+						type="button"
+						class="btn btn-outline-danger me-2"
+						@click="goDetailPage"
+					>
+						취소
+					</button>
+					<button
+						class="btn btn-primary"
+						@click="submitForm"
+						:disabled="editLoading"
+					>
+						<template v-if="editLoading">
+							<span
+								class="spinner-grow spinner-grow-sm"
+								role="status"
+								aria-hidden="true"
+							></span>
+							<span class="visually-hidden">Loading...</span>
+						</template>
+						<template v-else> 수정 </template>
+					</button>
+				</div>
 			</template>
 		</ManagerForm>
 	</div>
