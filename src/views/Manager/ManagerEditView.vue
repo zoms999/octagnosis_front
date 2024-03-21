@@ -21,6 +21,9 @@
 			v-model:authOrg="form.authOrg"
 			@submit.prevent="edit"
 		>
+			<template #actionsPw>
+				<button class="btn btn-primary" @click.prevent="changPw">변경</button>
+			</template>
 			<template #actions>
 				<div></div>
 				<div>
@@ -50,6 +53,21 @@
 			</template>
 		</ManagerForm>
 	</div>
+
+	<Teleport to="#modal">
+		<AppModal v-model="show" title="비밀번호변경">
+			<template #default>
+				<p>제목 :</p>
+				<p>내용 :</p>
+				<p>등록일 :</p>
+			</template>
+			<template #actions>
+				<button type="button" class="btn btn-secondary" @click="closeModal">
+					닫기
+				</button>
+			</template>
+		</AppModal>
+	</Teleport>
 </template>
 
 <script setup>
@@ -105,6 +123,14 @@ const edit = () => {
 	});
 };
 
+const show = ref(false);
+
+const changPw = () => {
+	show.value = true;
+};
+const closeModal = () => {
+	show.value = false;
+};
 const goDetailPage = () =>
 	router.push({ name: 'ManagerEdit', params: { mngrId } });
 </script>

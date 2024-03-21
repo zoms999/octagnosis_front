@@ -18,6 +18,7 @@
 						placeholder="Enter your email"
 						:value="email"
 						@input="$emit('update:email', $event.target.value)"
+						:readonly="!!email"
 					/>
 					<slot name="actionsDupl"> </slot>
 				</div>
@@ -32,11 +33,18 @@
 						placeholder="Enter your name"
 						:value="mngrNm"
 						@input="$emit('update:mngrNm', $event.target.value)"
+						:readonly="!!mngrNm"
 					/>
 				</div>
 			</div>
 			<div class="col-1 lbl">비밀번호</div>
-			<div class="col-3"><input type="text" class="form-control" /></div>
+			<div class="col-3">
+				<div class="input-group">
+					<input id="pw" type="password" class="form-control" :value="pw" />
+
+					<slot name="actionsPw"> </slot>
+				</div>
+			</div>
 			<div class="col-1 lbl">휴대폰</div>
 			<div class="col-3">
 				<input
@@ -358,6 +366,7 @@
 defineProps({
 	useYn: String,
 	email: String,
+	pw: String,
 	mngrNm: String,
 	phone: String,
 	tel: String,
