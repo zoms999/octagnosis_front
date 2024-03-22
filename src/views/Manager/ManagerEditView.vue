@@ -9,6 +9,7 @@
 		<ManagerForm
 			v-model:useYn="form.useYn"
 			v-model:email="form.email"
+			v-model:pw="form.pw"
 			v-model:mngrNm="form.mngrNm"
 			v-model:phone="form.phone"
 			v-model:tel="form.tel"

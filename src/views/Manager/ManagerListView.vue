@@ -47,18 +47,18 @@
 							>
 								<thead>
 									<tr>
-										<th>mngrId</th>
-										<th>useYn (Toggle)</th>
-										<th>email</th>
-										<th>mngrNm</th>
-										<th>phone</th>
-										<th>tel</th>
-										<th>authPersn</th>
-										<th>authRsltView</th>
-										<th>authAdmin</th>
-										<th>authLogView</th>
-										<th>authStati</th>
-										<th>authBbs</th>
+										<th>No.</th>
+										<th>활동</th>
+										<th>이름</th>
+										<th>이메일</th>
+										<th>휴대폰</th>
+										<th>연락처</th>
+										<th>매니저</th>
+										<th>기관</th>
+										<th>개인</th>
+										<th>문의</th>
+										<th>결과</th>
+										<th>로그</th>
 										<th>authOrg</th>
 										<th>insDt</th>
 									</tr>
@@ -69,6 +69,7 @@
 										v-for="(item, index) in posts"
 										:key="index"
 										@click="goPage(item.mngrId)"
+										class="Poit"
 									>
 										<td>{{ item.mngrId }}</td>
 										<td>
@@ -79,8 +80,8 @@
 												{{ item.useYn }}
 											</button>
 										</td>
-										<td>{{ item.email }}</td>
 										<td>{{ item.mngrNm }}</td>
+										<td>{{ item.email }}</td>
 										<td>{{ item.phone }}</td>
 										<td>{{ item.tel }}</td>
 										<td v-html="getIcon(item.authPersn)"></td>

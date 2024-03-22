@@ -40,8 +40,24 @@
 			<div class="col-1 lbl">비밀번호</div>
 			<div class="col-3">
 				<div class="input-group">
-					<input id="pw" type="password" class="form-control" :value="pw" />
-
+					<input
+						id="pw"
+						:type="passwordFieldType"
+						class="form-control"
+						:value="pw"
+						@input="$emit('update:pw', $event.target.value)"
+					/>
+					<button class="button" @click="togglePasswordVisibility">
+						<span class="icon">
+							<i
+								class="bi"
+								:class="{
+									'bi-eye-slash': showPassword,
+									'bi-eye-fill': !showPassword,
+								}"
+							></i>
+						</span>
+					</button>
 					<slot name="actionsPw"> </slot>
 				</div>
 			</div>
@@ -363,6 +379,7 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
 defineProps({
 	useYn: String,
 	email: String,
@@ -381,6 +398,7 @@ defineProps({
 defineEmits([
 	'update:useYn',
 	'update:email',
+	'update:pw',
 	'update:mngrNm',
 	'update:phone',
 	'update:tel',
@@ -392,6 +410,14 @@ defineEmits([
 	'update:authBbs',
 	'update:authOrg',
 ]);
+
+const showPassword = ref(false);
+const passwordFieldType = ref('password');
+const togglePasswordVisibility = () => {
+	console.log(showPassword.value);
+	showPassword.value = !showPassword.value;
+	passwordFieldType.value = showPassword.value ? 'text' : 'password';
+};
 </script>
 
 <style lang="scss" scoped></style>
