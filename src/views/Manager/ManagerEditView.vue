@@ -6,7 +6,7 @@
 		<h2>게시글 수정</h2>
 		<hr class="my-4" />
 		<AppError v-if="editError" :message="editError.message" />
-		<ManagerForm
+		<ManagerEditForm
 			v-model:useYn="form.useYn"
 			v-model:email="form.email"
 			v-model:pw="form.pw"
@@ -54,7 +54,7 @@
 					</button>
 				</div>
 			</template>
-		</ManagerForm>
+		</ManagerEditForm>
 	</div>
 
 	<Teleport to="#modal">
@@ -118,7 +118,7 @@
 <script setup>
 import { ref, watchEffect, computed } from 'vue';
 //import { getPostById, updatePost } from '@/api/managers';
-import ManagerForm from '@/components/manager/ManagerForm.vue';
+import ManagerEditForm from '@/components/manager/ManagerEditForm.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAxios } from '@/hooks/useAxios';
 import { useAlert } from '@/composables/alert';

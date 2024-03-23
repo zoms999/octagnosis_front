@@ -2,7 +2,7 @@
 	<AppError v-if="error" :message="error.message" />
 	<h2 @click="visibleForm = !visibleForm">게시글 등록</h2>
 	<hr class="my-4" />
-	<ManagerForm
+	<ManagerCreateForm
 		v-model:useYn="form.useYn"
 		v-model:email="form.email"
 		v-model:mngrNm="form.mngrNm"
@@ -45,14 +45,14 @@
 				중복확인
 			</button>
 		</template>
-	</ManagerForm>
+	</ManagerCreateForm>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 //import { createPost } from '@/api/posts';
-import ManagerForm from '@/components/manager/ManagerForm.vue';
+import ManagerCreateForm from '@/components/manager/ManagerCreateForm.vue';
 //import { useAlert } from '@/composables/alert';
 import { useAxios } from '@/hooks/useAxios';
 import axios from 'axios';

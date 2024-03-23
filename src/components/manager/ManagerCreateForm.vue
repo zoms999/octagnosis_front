@@ -12,13 +12,12 @@
 			<div class="col-3">
 				<div class="input-group">
 					<input
-						v-focus
-						type="text"
+						id="email"
 						class="form-control"
+						type="text"
 						placeholder="Enter your email"
 						:value="email"
 						@input="$emit('update:email', $event.target.value)"
-						:readonly="!!email"
 					/>
 					<slot name="actionsDupl"> </slot>
 				</div>
@@ -27,13 +26,12 @@
 			<div class="col-3">
 				<div class="input-group">
 					<input
-						class="form-control"
 						id="mngrNm"
+						class="form-control"
 						type="text"
 						placeholder="Enter your name"
 						:value="mngrNm"
 						@input="$emit('update:mngrNm', $event.target.value)"
-						:readonly="!!mngrNm"
 					/>
 				</div>
 			</div>
@@ -42,22 +40,11 @@
 				<div class="input-group">
 					<input
 						id="pw"
-						:type="passwordFieldType"
+						type="password"
 						class="form-control"
 						:value="pw"
 						@input="$emit('update:pw', $event.target.value)"
 					/>
-					<button class="button" @click="togglePasswordVisibility">
-						<span class="icon">
-							<i
-								class="bi"
-								:class="{
-									'bi-eye-slash': showPassword,
-									'bi-eye-fill': !showPassword,
-								}"
-							></i>
-						</span>
-					</button>
 					<slot name="actionsPw"> </slot>
 				</div>
 			</div>
@@ -137,7 +124,7 @@
 						name="AuthAdmin"
 						id="AuthAdmin0"
 						autocomplete="off"
-						:checked="authAdmin === 0"
+						checked
 						@change="$emit('update:authAdmin', 0)"
 					/>
 					<label class="btn btn-outline-primary" for="AuthAdmin0">없음</label>
@@ -148,7 +135,6 @@
 						name="AuthAdmin"
 						id="AuthAdmin1"
 						autocomplete="off"
-						:checked="authAdmin === 1"
 						@change="$emit('update:authAdmin', 1)"
 					/>
 					<label class="btn btn-outline-primary" for="AuthAdmin1">보기</label>
@@ -158,7 +144,6 @@
 						name="AuthAdmin"
 						id="AuthAdmin2"
 						autocomplete="off"
-						:checked="authAdmin === 2"
 						@change="$emit('update:authAdmin', 2)"
 					/>
 					<label class="btn btn-outline-primary" for="AuthAdmin2">쓰기</label>
@@ -178,8 +163,8 @@
 						name="AuthOrg"
 						id="AuthOrg0"
 						autocomplete="off"
-						:checked="authOrg === 0"
-						@change="$emit('update:authOrg', 0)"
+						checked
+						@change="$emit('update:AuthOrg', 0)"
 					/>
 					<label class="btn btn-outline-primary" for="AuthOrg0">없음</label>
 
@@ -189,8 +174,7 @@
 						name="AuthOrg"
 						id="AuthOrg1"
 						autocomplete="off"
-						:checked="authOrg === 1"
-						@change="$emit('update:authOrg', 1)"
+						@change="$emit('update:AuthOrg', 1)"
 					/>
 					<label class="btn btn-outline-primary" for="AuthOrg1">보기</label>
 
@@ -200,8 +184,7 @@
 						name="AuthOrg"
 						id="AuthOrg2"
 						autocomplete="off"
-						:checked="authOrg === 2"
-						@change="$emit('update:authOrg', 2)"
+						@change="$emit('update:AuthOrg', 2)"
 					/>
 					<label class="btn btn-outline-primary" for="AuthOrg2">쓰기</label>
 				</div>
@@ -220,7 +203,7 @@
 						name="AuthPersn"
 						id="AuthPersn0"
 						autocomplete="off"
-						:checked="authPersn === 0"
+						checked
 						@change="$emit('update:authPersn', 0)"
 					/>
 					<label class="btn btn-outline-primary" for="AuthPersn0">없음</label>
@@ -231,7 +214,6 @@
 						name="AuthPersn"
 						id="AuthPersn1"
 						autocomplete="off"
-						:checked="authPersn === 1"
 						@change="$emit('update:authPersn', 1)"
 					/>
 					<label class="btn btn-outline-primary" for="AuthPersn1">보기</label>
@@ -242,7 +224,6 @@
 						name="AuthPersn"
 						id="AuthPersn2"
 						autocomplete="off"
-						:checked="authPersn === 2"
 						@change="$emit('update:authPersn', 2)"
 					/>
 					<label class="btn btn-outline-primary" for="AuthPersn2">쓰기</label>
@@ -264,7 +245,7 @@
 						name="AuthBbs"
 						id="AuthBbs0"
 						autocomplete="off"
-						:checked="authBbs === 0"
+						checked
 						@change="$emit('update:authBbs', 0)"
 					/>
 					<label class="btn btn-outline-primary" for="AuthBbs0">없음</label>
@@ -275,7 +256,6 @@
 						name="AuthBbs"
 						id="AuthBbs1"
 						autocomplete="off"
-						:checked="authBbs === 1"
 						@change="$emit('update:authBbs', 1)"
 					/>
 					<label class="btn btn-outline-primary" for="AuthBbs1">조회</label>
@@ -286,7 +266,6 @@
 						name="AuthBbs"
 						id="AuthBbs2"
 						autocomplete="off"
-						:checked="authBbs === 2"
 						@change="$emit('update:authBbs', 2)"
 					/>
 					<label class="btn btn-outline-primary" for="AuthBbs2">쓰기</label>
@@ -306,7 +285,7 @@
 						name="AuthRsltView"
 						id="AuthRsltView0"
 						autocomplete="off"
-						:checked="authRsltView === 0"
+						checked
 						@change="$emit('update:authRsltView', 0)"
 					/>
 					<label class="btn btn-outline-primary" for="AuthRsltView0"
@@ -319,7 +298,6 @@
 						name="AuthRsltView"
 						id="AuthRsltView1"
 						autocomplete="off"
-						:checked="authRsltView === 1"
 						@change="$emit('update:authRsltView', 1)"
 					/>
 					<label class="btn btn-outline-primary" for="AuthRsltView1"
@@ -341,7 +319,7 @@
 						name="AuthLogView"
 						id="AuthLogView1"
 						autocomplete="off"
-						:checked="authLogView === 0"
+						checked
 						@change="$emit('update:authLogView', 0)"
 					/>
 					<label class="btn btn-outline-primary" for="AuthLogView1">없음</label>
@@ -352,7 +330,6 @@
 						name="AuthLogView"
 						id="AuthLogView2"
 						autocomplete="off"
-						:checked="authLogView === 1"
 						@change="$emit('update:authLogView', 1)"
 					/>
 					<label class="btn btn-outline-primary" for="AuthLogView2">보기</label>
@@ -374,7 +351,7 @@
 						name="AuthStati"
 						id="AuthStati0"
 						autocomplete="off"
-						:checked="authStati === 0"
+						checked
 						@change="$emit('update:authStati', 0)"
 					/>
 					<label class="btn btn-outline-primary" for="AuthStati0">없음</label>
@@ -385,7 +362,6 @@
 						name="AuthStati"
 						id="AuthStati1"
 						autocomplete="off"
-						:checked="authStati === 1"
 						@change="$emit('update:authStati', 1)"
 					/>
 					<label class="btn btn-outline-primary" for="AuthStati1">보기</label>
@@ -441,14 +417,11 @@
 </template>
 
 <script setup>
-import { ref, watchEffect } from 'vue';
-import axios from 'axios';
-
 defineProps({
 	useYn: String,
 	email: String,
-	pw: String,
 	mngrNm: String,
+	pw: String,
 	phone: String,
 	tel: String,
 	authAdmin: Number,
@@ -462,8 +435,8 @@ defineProps({
 defineEmits([
 	'update:useYn',
 	'update:email',
-	'update:pw',
 	'update:mngrNm',
+	'update:pw',
 	'update:phone',
 	'update:tel',
 	'update:authAdmin',
@@ -474,14 +447,6 @@ defineEmits([
 	'update:authLogView',
 	'update:authStati',
 ]);
-
-const showPassword = ref(false);
-const passwordFieldType = ref('password');
-const togglePasswordVisibility = () => {
-	console.log(showPassword.value);
-	showPassword.value = !showPassword.value;
-	passwordFieldType.value = showPassword.value ? 'text' : 'password';
-};
 </script>
 
 <style lang="scss" scoped></style>
