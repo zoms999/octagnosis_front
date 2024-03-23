@@ -13,13 +13,13 @@
 			v-model:mngrNm="form.mngrNm"
 			v-model:phone="form.phone"
 			v-model:tel="form.tel"
-			v-model:authPersn="form.authPersn"
-			v-model:authRsltView="form.authRsltView"
 			v-model:authAdmin="form.authAdmin"
+			v-model:authOrg="form.authOrg"
+			v-model:authPersn="form.authPersn"
+			v-model:authBbs="form.authBbs"
+			v-model:authRsltView="form.authRsltView"
 			v-model:authLogView="form.authLogView"
 			v-model:authStati="form.authStati"
-			v-model:authBbs="form.authBbs"
-			v-model:authOrg="form.authOrg"
 			@submit.prevent="edit"
 		>
 			<template #actionsPw>
@@ -116,7 +116,7 @@
 </template>
 
 <script setup>
-import { ref, toRefs, computed } from 'vue';
+import { ref, watchEffect, computed } from 'vue';
 //import { getPostById, updatePost } from '@/api/managers';
 import ManagerForm from '@/components/manager/ManagerForm.vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -181,7 +181,9 @@ const changPwModal = () => {
 	userpw2.value = ''; // 비밀번호 확인 초기화
 };
 const savePw = () => {
-	if (userpw1.value !== userpw2.value) {
+	if (!userpw1.value) {
+		vAlert('변경할 비밀번호를 입력하세요.');
+	} else if (userpw1.value !== userpw2.value) {
 		vAlert('비밀번호가 일치하지 않습니다.');
 	} else {
 		axios

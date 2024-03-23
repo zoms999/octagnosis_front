@@ -134,30 +134,34 @@
 					<input
 						type="radio"
 						class="btn-check"
-						name="btnradio"
-						id="btnradio1"
+						name="AuthAdmin"
+						id="AuthAdmin0"
 						autocomplete="off"
-						checked
+						:checked="authAdmin === 0"
+						@change="$emit('update:authAdmin', 0)"
 					/>
-					<label class="btn btn-outline-primary" for="btnradio1">없음</label>
+					<label class="btn btn-outline-primary" for="AuthAdmin0">없음</label>
 
 					<input
 						type="radio"
 						class="btn-check"
-						name="btnradio"
-						id="btnradio2"
+						name="AuthAdmin"
+						id="AuthAdmin1"
 						autocomplete="off"
+						:checked="authAdmin === 1"
+						@change="$emit('update:authAdmin', 1)"
 					/>
-					<label class="btn btn-outline-primary" for="btnradio2">보기</label>
-
+					<label class="btn btn-outline-primary" for="AuthAdmin1">보기</label>
 					<input
 						type="radio"
 						class="btn-check"
-						name="btnradio"
-						id="btnradio3"
+						name="AuthAdmin"
+						id="AuthAdmin2"
 						autocomplete="off"
+						:checked="authAdmin === 2"
+						@change="$emit('update:authAdmin', 2)"
 					/>
-					<label class="btn btn-outline-primary" for="btnradio3">쓰기</label>
+					<label class="btn btn-outline-primary" for="AuthAdmin2">쓰기</label>
 				</div>
 			</div>
 
@@ -171,30 +175,35 @@
 					<input
 						type="radio"
 						class="btn-check"
-						name="btnradio"
-						id="btnradio1"
+						name="AuthOrg"
+						id="AuthOrg0"
 						autocomplete="off"
-						checked
+						:checked="authOrg === 0"
+						@change="$emit('update:authOrg', 0)"
 					/>
-					<label class="btn btn-outline-primary" for="btnradio1">없음</label>
+					<label class="btn btn-outline-primary" for="AuthOrg0">없음</label>
 
 					<input
 						type="radio"
 						class="btn-check"
-						name="btnradio"
-						id="btnradio2"
+						name="AuthOrg"
+						id="AuthOrg1"
 						autocomplete="off"
+						:checked="authOrg === 1"
+						@change="$emit('update:authOrg', 1)"
 					/>
-					<label class="btn btn-outline-primary" for="btnradio2">보기</label>
+					<label class="btn btn-outline-primary" for="AuthOrg1">보기</label>
 
 					<input
 						type="radio"
 						class="btn-check"
-						name="btnradio"
-						id="btnradio3"
+						name="AuthOrg"
+						id="AuthOrg2"
 						autocomplete="off"
+						:checked="authOrg === 2"
+						@change="$emit('update:authOrg', 2)"
 					/>
-					<label class="btn btn-outline-primary" for="btnradio3">쓰기</label>
+					<label class="btn btn-outline-primary" for="AuthOrg2">쓰기</label>
 				</div>
 			</div>
 
@@ -208,30 +217,35 @@
 					<input
 						type="radio"
 						class="btn-check"
-						name="btnradio"
-						id="btnradio1"
+						name="AuthPersn"
+						id="AuthPersn0"
 						autocomplete="off"
-						checked
+						:checked="authPersn === 0"
+						@change="$emit('update:authPersn', 0)"
 					/>
-					<label class="btn btn-outline-primary" for="btnradio1">없음</label>
+					<label class="btn btn-outline-primary" for="AuthPersn0">없음</label>
 
 					<input
 						type="radio"
 						class="btn-check"
-						name="btnradio"
-						id="btnradio2"
+						name="AuthPersn"
+						id="AuthPersn1"
 						autocomplete="off"
+						:checked="authPersn === 1"
+						@change="$emit('update:authPersn', 1)"
 					/>
-					<label class="btn btn-outline-primary" for="btnradio2">보기</label>
+					<label class="btn btn-outline-primary" for="AuthPersn1">보기</label>
 
 					<input
 						type="radio"
 						class="btn-check"
-						name="btnradio"
-						id="btnradio3"
+						name="AuthPersn"
+						id="AuthPersn2"
 						autocomplete="off"
+						:checked="authPersn === 2"
+						@change="$emit('update:authPersn', 2)"
 					/>
-					<label class="btn btn-outline-primary" for="btnradio3">쓰기</label>
+					<label class="btn btn-outline-primary" for="AuthPersn2">쓰기</label>
 				</div>
 			</div>
 		</div>
@@ -247,30 +261,35 @@
 					<input
 						type="radio"
 						class="btn-check"
-						name="btnradio"
-						id="btnradio1"
+						name="AuthBbs"
+						id="AuthBbs0"
 						autocomplete="off"
-						checked
+						:checked="authBbs === 0"
+						@change="$emit('update:authBbs', 0)"
 					/>
-					<label class="btn btn-outline-primary" for="btnradio1">없음</label>
+					<label class="btn btn-outline-primary" for="AuthBbs0">없음</label>
 
 					<input
 						type="radio"
 						class="btn-check"
-						name="btnradio"
-						id="btnradio2"
+						name="AuthBbs"
+						id="AuthBbs1"
 						autocomplete="off"
+						:checked="authBbs === 1"
+						@change="$emit('update:authBbs', 1)"
 					/>
-					<label class="btn btn-outline-primary" for="btnradio2">조회</label>
+					<label class="btn btn-outline-primary" for="AuthBbs1">조회</label>
 
 					<input
 						type="radio"
 						class="btn-check"
-						name="btnradio"
-						id="btnradio3"
+						name="AuthBbs"
+						id="AuthBbs2"
 						autocomplete="off"
+						:checked="authBbs === 2"
+						@change="$emit('update:authBbs', 2)"
 					/>
-					<label class="btn btn-outline-primary" for="btnradio3">쓰기</label>
+					<label class="btn btn-outline-primary" for="AuthBbs2">쓰기</label>
 				</div>
 			</div>
 
@@ -284,21 +303,28 @@
 					<input
 						type="radio"
 						class="btn-check"
-						name="btnradio"
-						id="btnradio1"
+						name="AuthRsltView"
+						id="AuthRsltView0"
 						autocomplete="off"
-						checked
+						:checked="authRsltView === 0"
+						@change="$emit('update:authRsltView', 0)"
 					/>
-					<label class="btn btn-outline-primary" for="btnradio1">없음</label>
+					<label class="btn btn-outline-primary" for="AuthRsltView0"
+						>없음</label
+					>
 
 					<input
 						type="radio"
 						class="btn-check"
-						name="btnradio"
-						id="btnradio2"
+						name="AuthRsltView"
+						id="AuthRsltView1"
 						autocomplete="off"
+						:checked="authRsltView === 1"
+						@change="$emit('update:authRsltView', 1)"
 					/>
-					<label class="btn btn-outline-primary" for="btnradio2">보기</label>
+					<label class="btn btn-outline-primary" for="AuthRsltView1"
+						>보기</label
+					>
 				</div>
 			</div>
 
@@ -312,21 +338,57 @@
 					<input
 						type="radio"
 						class="btn-check"
-						name="btnradio"
-						id="btnradio1"
+						name="AuthLogView"
+						id="AuthLogView1"
 						autocomplete="off"
-						checked
+						:checked="authLogView === 0"
+						@change="$emit('update:authLogView', 0)"
 					/>
-					<label class="btn btn-outline-primary" for="btnradio1">없음</label>
+					<label class="btn btn-outline-primary" for="AuthLogView1">없음</label>
 
 					<input
 						type="radio"
 						class="btn-check"
-						name="btnradio"
-						id="btnradio2"
+						name="AuthLogView"
+						id="AuthLogView2"
 						autocomplete="off"
+						:checked="authLogView === 1"
+						@change="$emit('update:authLogView', 1)"
 					/>
-					<label class="btn btn-outline-primary" for="btnradio2">보기</label>
+					<label class="btn btn-outline-primary" for="AuthLogView2">보기</label>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-1 lbl">통계조회</div>
+			<div class="col-3 d-flex">
+				<div
+					class="btn-group"
+					role="group"
+					aria-label="Basic radio toggle button group"
+				>
+					<input
+						type="radio"
+						class="btn-check"
+						name="AuthStati"
+						id="AuthStati0"
+						autocomplete="off"
+						:checked="authStati === 0"
+						@change="$emit('update:authStati', 0)"
+					/>
+					<label class="btn btn-outline-primary" for="AuthStati0">없음</label>
+
+					<input
+						type="radio"
+						class="btn-check"
+						name="AuthStati"
+						id="AuthStati1"
+						autocomplete="off"
+						:checked="authStati === 1"
+						@change="$emit('update:authStati', 1)"
+					/>
+					<label class="btn btn-outline-primary" for="AuthStati1">보기</label>
 				</div>
 			</div>
 		</div>
@@ -379,7 +441,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
+import axios from 'axios';
+
 defineProps({
 	useYn: String,
 	email: String,
@@ -387,13 +451,13 @@ defineProps({
 	mngrNm: String,
 	phone: String,
 	tel: String,
-	authPersn: String,
-	authRsltView: String,
-	authAdmin: String,
-	authLogView: String,
-	authStati: String,
-	authBbs: String,
-	authOrg: String,
+	authAdmin: Number,
+	authOrg: Number,
+	authPersn: Number,
+	authBbs: Number,
+	authRsltView: Number,
+	authLogView: Number,
+	authStati: Number,
 });
 defineEmits([
 	'update:useYn',
@@ -402,13 +466,13 @@ defineEmits([
 	'update:mngrNm',
 	'update:phone',
 	'update:tel',
-	'update:authPersn',
-	'update:authRsltView',
 	'update:authAdmin',
+	'update:authOrg',
+	'update:authPersn',
+	'update:authBbs',
+	'update:authRsltView',
 	'update:authLogView',
 	'update:authStati',
-	'update:authBbs',
-	'update:authOrg',
 ]);
 
 const showPassword = ref(false);
