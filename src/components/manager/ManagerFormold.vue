@@ -81,6 +81,13 @@
 											:value="mngrNm"
 											@input="$emit('update:mngrNm', $event.target.value)"
 										/>
+										<input
+											id="pw"
+											type="password"
+											class="form-control"
+											:value="pw"
+											@input="$emit('update:pw', $event.target.value)"
+										/>
 									</div>
 									<div class="col-md-6">
 										<label class="small mb-1" for="phone">핸드폰</label>

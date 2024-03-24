@@ -8,13 +8,13 @@
 		v-model:mngrNm="form.mngrNm"
 		v-model:phone="form.phone"
 		v-model:tel="form.tel"
-		v-model:authPersn="form.authPersn"
-		v-model:authRsltView="form.authRsltView"
 		v-model:authAdmin="form.authAdmin"
+		v-model:authOrg="form.authOrg"
+		v-model:authPersn="form.authPersn"
+		v-model:authBbs="form.authBbs"
+		v-model:authRsltView="form.authRsltView"
 		v-model:authLogView="form.authLogView"
 		v-model:authStati="form.authStati"
-		v-model:authBbs="form.authBbs"
-		v-model:authOrg="form.authOrg"
 		@submit.prevent="save"
 	>
 		<template #actions>
@@ -53,9 +53,13 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 //import { createPost } from '@/api/posts';
 import ManagerCreateForm from '@/components/manager/ManagerCreateForm.vue';
-//import { useAlert } from '@/composables/alert';
+import { useAlert } from '@/composables/alert';
 import { useAxios } from '@/hooks/useAxios';
 import axios from 'axios';
+import { useAuthStore } from '@/stores/auth';
+import { storeToRefs } from 'pinia';
+const store = useAuthStore();
+const { userMngrId } = storeToRefs(store);
 
 const router = useRouter();
 const form = ref({
@@ -64,15 +68,17 @@ const form = ref({
 	mngrNm: null,
 	phone: null,
 	tel: null,
-	authPersn: null,
-	authRsltView: null,
 	authAdmin: null,
+	authOrg: null,
+	authPersn: null,
+	authBbs: null,
+	authRsltView: null,
 	authLogView: null,
 	authStati: null,
-	authBbs: null,
-	authOrg: null,
+	insId: userMngrId.value,
 });
-
+console.log('ManagerCreateForm userMngrId.value --> ' + userMngrId.value);
+const { vAlert, vSuccess } = useAlert();
 const { error, loading, execute } = useAxios(
 	'/api/managers',
 	{
@@ -82,12 +88,10 @@ const { error, loading, execute } = useAxios(
 		immediate: false,
 		onSuccess: () => {
 			router.push({ name: 'ManagerList' });
-			alert('saveed');
-			//vSuccess('등록이 완료되었습니다!');
+			vSuccess('등록이 완료되었습니다!');
 		},
 		onError: err => {
-			alert(err);
-			//vAlert(err.message);
+			vAlert(err.message);
 		},
 	},
 );
@@ -96,24 +100,8 @@ const submitForm = () => {
 	save(); // save 함수 호출
 };
 
-// const save = async () => {
-// 	alert('save');
-// 	try {
-// 		const response = await axios.post('http://localhost:8080/api/managers', {
-// 			...form.value,
-// 		});
-// 		if (response.status === 200) {
-// 			// 성공적으로 저장되었을 때의 처리
-// 			console.log('등록되었습니다.');
-// 			//goListPage();
-// 		}
-// 	} catch (error) {
-// 		console.error('Error saving manager:', error);
-// 		// 저장 실패 시, 에러 처리
-// 	}
-// };
 const save = async () => {
-	alert('save');
+	//alert('save');
 	execute({ ...form.value });
 };
 
