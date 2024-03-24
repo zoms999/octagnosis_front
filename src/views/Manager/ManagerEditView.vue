@@ -127,18 +127,11 @@ import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 const store = useAuthStore();
 const { userMngrId } = storeToRefs(store);
-
 const { vAlert, vSuccess } = useAlert();
 const router = useRouter();
 const route = useRoute();
 const mngrId = route.params.mngrId;
-// const props = defineProps({
-// 	mngrId: [String, Number],
-// });
-//const { mngrId: mngrIdRef } = toRefs(props);
-
 const { data: form, error, loading } = useAxios(`/api/managers/${mngrId}`);
-
 const {
 	error: editError,
 	loading: editLoading,

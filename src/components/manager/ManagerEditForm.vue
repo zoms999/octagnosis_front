@@ -407,19 +407,28 @@
 			<div class="row">
 				<div class="col-1 lbl">로그확인</div>
 				<div class="col-3 d-flex">
-					<button class="btn btn-primary IconBtn me-2">
+					<button
+						class="btn btn-primary IconBtn me-2"
+						@click.prevent="connectionLogModal"
+					>
 						<div class="d-flex">
 							<span class="me-2">접속로그</span>
 							<span class="material-icons"> poll </span>
 						</div>
 					</button>
-					<button class="btn btn-primary IconBtn me-2">
+					<button
+						class="btn btn-primary IconBtn me-2"
+						@click.prevent="authChangeLogModal"
+					>
 						<div class="d-flex">
 							<span class="me-2">변경로그</span>
 							<span class="material-icons"> poll </span>
 						</div>
 					</button>
-					<button class="btn btn-primary IconBtn">
+					<button
+						class="btn btn-primary IconBtn"
+						@click.prevent="resultHisLogModal"
+					>
 						<div class="d-flex">
 							<span class="me-2">결과지로그</span>
 							<span class="material-icons"> poll </span>
@@ -444,6 +453,48 @@
 			</div>
 		</div>
 	</form>
+	<Teleport to="#modal">
+		<AppModal v-model="connectionLogShow" title="접속로그">
+			<template #default>
+				<p>제목 :</p>
+				<p>내용 :</p>
+				<p>등록일 :</p>
+			</template>
+			<template #actions>
+				<button type="button" class="btn btn-secondary" @click="closeModal">
+					닫기
+				</button>
+			</template>
+		</AppModal>
+	</Teleport>
+	<Teleport to="#modal">
+		<AppModal v-model="authChangeLogShow" title="변경로그">
+			<template #default>
+				<p>제목 :</p>
+				<p>내용 :</p>
+				<p>등록일 :</p>
+			</template>
+			<template #actions>
+				<button type="button" class="btn btn-secondary" @click="closeModal">
+					닫기
+				</button>
+			</template>
+		</AppModal>
+	</Teleport>
+	<Teleport to="#modal">
+		<AppModal v-model="resultHisLogShow" title="결과지로그">
+			<template #default>
+				<p>제목 :</p>
+				<p>내용 :</p>
+				<p>등록일 :</p>
+			</template>
+			<template #actions>
+				<button type="button" class="btn btn-secondary" @click="closeModal">
+					닫기
+				</button>
+			</template>
+		</AppModal>
+	</Teleport>
 </template>
 
 <script setup>
@@ -514,6 +565,25 @@ const updateAuth = async (key, value) => {
 		vAlert(err.message);
 		console.error('API 업데이트 중 오류 발생:', err);
 	}
+};
+
+const connectionLogShow = ref(false);
+const authChangeLogShow = ref(false);
+const resultHisLogShow = ref(false);
+const connectionLogModal = () => {
+	connectionLogShow.value = true;
+};
+const authChangeLogModal = () => {
+	authChangeLogShow.value = true;
+};
+const resultHisLogModal = () => {
+	resultHisLogShow.value = true;
+};
+
+const closeModal = () => {
+	connectionLogShow.value = false;
+	authChangeLogShow.value = false;
+	resultHisLogShow.value = false;
 };
 </script>
 
