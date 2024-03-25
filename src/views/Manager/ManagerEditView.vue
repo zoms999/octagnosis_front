@@ -148,7 +148,7 @@ const {
 			router.push({ name: 'ManagerList' });
 		},
 		onError: err => {
-			alert(err);
+			//alert(err);
 			console.log('err ' + err.message);
 			vAlert('수정실패.' + err.message);
 			//vAlert(err.message);

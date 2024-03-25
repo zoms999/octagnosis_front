@@ -218,19 +218,51 @@
 // 		el.focus();
 // 	},
 // };
-defineProps({
-	useYn: String,
-	email: String,
-	mngrNm: String,
-	phone: String,
-	tel: String,
-	authPersn: String,
-	authRsltView: String,
-	authAdmin: String,
-	authLogView: String,
-	authStati: String,
-	authBbs: String,
-	authOrg: String,
+const props = defineProps({
+	mngrId: {
+		type: Number,
+		required: true,
+	},
+	useYn: {
+		type: String,
+		default: 'Y',
+	},
+	email: {
+		type: String,
+	},
+	mngrNm: {
+		type: String,
+	},
+	phone: {
+		type: String,
+	},
+	tel: {
+		type: String,
+	},
+	authAdmin: {
+		type: String,
+	},
+	authOrg: {
+		type: String,
+	},
+	authPersn: {
+		type: String,
+	},
+	authBbs: {
+		type: String,
+	},
+	authRsltView: {
+		type: String,
+	},
+	authLogView: {
+		type: String,
+	},
+	authStati: {
+		type: String,
+	},
+	insDt: {
+		type: [String, Date, Number],
+	},
 });
 defineEmits([
 	'update:useYn',

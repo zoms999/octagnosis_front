@@ -63,7 +63,7 @@ const { userMngrId } = storeToRefs(store);
 
 const router = useRouter();
 const form = ref({
-	useYn: null,
+	useYn: 'Y',
 	email: null,
 	mngrNm: null,
 	phone: null,
@@ -107,7 +107,7 @@ const save = async () => {
 
 const checkDuplicate = async () => {
 	try {
-		const response = await axios.post('/api/check-duplicate-email', {
+		const response = await axios.post('/api/managers/check-duplicate-email', {
 			email: form.value.email,
 		});
 

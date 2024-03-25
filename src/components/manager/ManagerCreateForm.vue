@@ -378,20 +378,58 @@
 </template>
 
 <script setup>
-defineProps({
-	useYn: String,
-	email: String,
-	mngrNm: String,
-	pw: String,
-	phone: String,
-	tel: String,
-	authAdmin: Number,
-	authOrg: Number,
-	authPersn: Number,
-	authBbs: Number,
-	authRsltView: Number,
-	authLogView: Number,
-	authStati: Number,
+const props = defineProps({
+	mngrId: {
+		type: Number,
+		required: true,
+	},
+	useYn: {
+		type: String,
+		default: 'Y',
+	},
+	email: {
+		type: String,
+		required: true,
+	},
+	mngrNm: {
+		type: String,
+		required: true,
+	},
+	pw: {
+		type: String,
+		required: true,
+	},
+	phone: {
+		type: String,
+		required: true,
+	},
+	tel: {
+		type: String,
+	},
+	authAdmin: {
+		type: String,
+	},
+	authOrg: {
+		type: String,
+	},
+	authPersn: {
+		type: String,
+	},
+	authBbs: {
+		type: String,
+	},
+	authRsltView: {
+		type: String,
+	},
+	authLogView: {
+		type: String,
+	},
+	authStati: {
+		type: String,
+	},
+	insDt: {
+		type: [String, Date, Number],
+	},
 });
 defineEmits([
 	'update:useYn',

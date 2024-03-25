@@ -100,6 +100,12 @@
 				</div>
 			</div>
 		</template>
+
+		<AppPagination
+			:CurPage="CurPage"
+			:PageCnt="PageCnt"
+			@Page="GetOrgList"
+		></AppPagination>
 	</div>
 </template>
 
@@ -142,6 +148,14 @@ const goPage = mngrId => {
 	});
 };
 
+const TotCnt = ref(10);
+const PageCnt = computed(() => Math.ceil(TotCnt.value / 3));
+const CurPage = ref(3);
+
+const GetOrgList = page => {
+	CurPage.value = page ?? 1;
+};
+
 const { vAlert, vSuccess } = useAlert();
 const toggleUseYn = item => {
 	// Toggle the useYn field
@@ -150,7 +164,7 @@ const toggleUseYn = item => {
 	// Call API to update useYn in the backend
 	axios
 		.patch(`/api/managers/toggle-useyn/${item.mngrId}`, { useYn: item.useYn })
-		.then(response => {
+		.then(res => {
 			vSuccess('수정 되었습니다.');
 			//console.log('useYn updated successfully');
 		})
