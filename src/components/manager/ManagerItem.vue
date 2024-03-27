@@ -94,6 +94,7 @@ const props = defineProps({
 	},
 	useYn: {
 		type: String,
+		default: 'Y',
 	},
 	email: {
 		type: String,

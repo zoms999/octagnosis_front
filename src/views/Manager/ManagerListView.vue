@@ -59,8 +59,8 @@
 										<th>문의</th>
 										<th>결과</th>
 										<th>로그</th>
-										<th>authOrg</th>
-										<th>insDt</th>
+										<th>통계</th>
+										<th>등록일</th>
 									</tr>
 								</thead>
 								<tfoot></tfoot>
@@ -84,14 +84,14 @@
 										<td>{{ item.email }}</td>
 										<td>{{ item.phone }}</td>
 										<td>{{ item.tel }}</td>
-										<td v-html="getIcon(item.authPersn)"></td>
-										<td v-html="getIcon(item.authRsltView)"></td>
 										<td v-html="getIcon(item.authAdmin)"></td>
+										<td v-html="getIcon(item.authOrg)"></td>
+										<td v-html="getIcon(item.authPersn)"></td>
+										<td v-html="getIcon(item.authBbs)"></td>
+										<td v-html="getIcon(item.authRsltView)"></td>
 										<td v-html="getIcon(item.authLogView)"></td>
 										<td v-html="getIcon(item.authStati)"></td>
-										<td v-html="getIcon(item.authBbs)"></td>
-										<td v-html="getIcon(item.authOrg)"></td>
-										<td>{{ item.insDt }}</td>
+										<td>{{ formatInsDt(item.insDt) }}</td>
 									</tr>
 								</tbody>
 							</table>
@@ -100,6 +100,12 @@
 				</div>
 			</div>
 		</template>
+
+		<AppPagination
+			:CurPage="CurPage"
+			:PageCnt="PageCnt"
+			@Page="GetOrgList"
+		></AppPagination>
 	</div>
 </template>
 
@@ -107,8 +113,9 @@
 import { ref } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
-import { computed } from 'vue';
+import { computed, inject } from 'vue';
 import { useAxios } from '@/hooks/useAxios';
+import { useAlert } from '@/composables/alert';
 
 const goCreate = () => {
 	router.push({
@@ -141,9 +148,30 @@ const goPage = mngrId => {
 	});
 };
 
+const TotCnt = ref(10);
+const PageCnt = computed(() => Math.ceil(TotCnt.value / 3));
+const CurPage = ref(3);
+
+const GetOrgList = page => {
+	CurPage.value = page ?? 1;
+};
+
+const { vAlert, vSuccess } = useAlert();
 const toggleUseYn = item => {
+	// Toggle the useYn field
 	item.useYn = item.useYn === 'Y' ? 'N' : 'Y';
-	// Call API to update `useYn` in the backend if needed
+	console.log(item.useYn);
+	// Call API to update useYn in the backend
+	axios
+		.patch(`/api/managers/toggle-useyn/${item.mngrId}`, { useYn: item.useYn })
+		.then(res => {
+			vSuccess('수정 되었습니다.');
+			//console.log('useYn updated successfully');
+		})
+		.catch(error => {
+			console.error('Error updating useYn:', error);
+			vAlert('수정실패.' + error.message);
+		});
 };
 
 const getIcon = authValue => {
@@ -151,6 +179,11 @@ const getIcon = authValue => {
 	else if (authValue === 1) return '<i class="bi bi-eye-fill"></i>';
 	else if (authValue === 2) return '<i class="bi bi-pencil-square"></i>';
 	else return '';
+};
+
+const dayjs = inject('dayjs');
+const formatInsDt = insDt => {
+	return dayjs(insDt).format('YYYY. MM. DD HH:mm:ss');
 };
 </script>
 

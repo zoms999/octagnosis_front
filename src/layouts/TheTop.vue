@@ -29,20 +29,21 @@ import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 
 const store = useAuthStore();
-const { userEmail, isAuthenticated } = storeToRefs(store);
+const { userEmail, userMngrId, isAuthenticated } = storeToRefs(store);
 const { logout } = store;
 const router = useRouter();
 
-// Check if email exists in sessionStorage and update authentication status accordingly
 const emailFromStorage = sessionStorage.getItem('email');
 if (emailFromStorage) {
 	isAuthenticated.value = true;
 	userEmail.value = emailFromStorage;
+	userMngrId.value = sessionStorage.getItem('mngrId');
 } else {
 	isAuthenticated.value = false;
 	userEmail.value = null;
+	userMngrId.value = null;
 }
-
+console.log('userMngrId ->' + userMngrId.value);
 const handleLogout = () => {
 	logout();
 	router.push({ name: 'login' });

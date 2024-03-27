@@ -33,7 +33,7 @@
 					<button
 						type="button"
 						class="btn btn-outline-danger me-2"
-						@click="goDetailPage"
+						@click="goListPage"
 					>
 						취소
 					</button>
@@ -123,18 +123,15 @@ import { useRoute, useRouter } from 'vue-router';
 import { useAxios } from '@/hooks/useAxios';
 import { useAlert } from '@/hooks/useAlert';
 import axios from 'axios';
-
+import { useAuthStore } from '@/stores/auth';
+import { storeToRefs } from 'pinia';
+const store = useAuthStore();
+const { userMngrId } = storeToRefs(store);
 const { vAlert, vSuccess } = useAlert();
 const router = useRouter();
 const route = useRoute();
 const mngrId = route.params.mngrId;
-// const props = defineProps({
-// 	mngrId: [String, Number],
-// });
-//const { mngrId: mngrIdRef } = toRefs(props);
-
 const { data: form, error, loading } = useAxios(`/api/managers/${mngrId}`);
-
 const {
 	error: editError,
 	loading: editLoading,
@@ -148,10 +145,10 @@ const {
 			console.log('mngrId-->' + mngrId);
 			console.log('수정이 완료되었습니다! ');
 			vSuccess('수정 되었습니다.');
-			router.push({ name: 'ManagerList', params: { mngrId } });
+			router.push({ name: 'ManagerList' });
 		},
 		onError: err => {
-			alert(err);
+			//alert(err);
 			console.log('err ' + err.message);
 			vAlert('수정실패.' + err.message);
 			//vAlert(err.message);
@@ -166,6 +163,7 @@ const submitForm = () => {
 const edit = () => {
 	execute({
 		...form.value,
+		uptId: userMngrId.value, // store에서 가져온 userMngrId 사용
 	});
 };
 
@@ -213,8 +211,7 @@ const closeModal = () => {
 
 const passwordsMatch = computed(() => userpw1.value === userpw2.value);
 
-const goDetailPage = () =>
-	router.push({ name: 'ManagerEdit', params: { mngrId } });
+const goListPage = () => router.push({ name: 'ManagerList' });
 </script>
 
 <style lang="scss" scoped>

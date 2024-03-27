@@ -66,6 +66,7 @@ const submit = () => {
 				window.alert('로그인하였습니다.');
 				console.log('LoginView isAuthenticated --' + isAuthenticated.value);
 				console.log('LoginView authPersn --' + res.data.authPersn);
+				console.log('LoginView mngrId --' + res.data.mngrId);
 			} else {
 				window.alert('로그인 정보가 존재하지 않습니다.');
 				router.push({ name: 'home' });
