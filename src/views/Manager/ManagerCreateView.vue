@@ -53,7 +53,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 //import { createPost } from '@/api/posts';
 import ManagerCreateForm from '@/components/manager/ManagerCreateForm.vue';
-//import { useAlert } from '@/composables/alert';
+//import { useAlert } from '@/hooks/useAlert';
 import { useAxios } from '@/hooks/useAxios';
 import axios from 'axios';
 

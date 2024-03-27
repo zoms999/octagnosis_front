@@ -22,7 +22,7 @@
 import { useRouter } from 'vue-router';
 import OrgForm from '@/components/Org/OrgForm.vue';
 import { ref } from 'vue';
-import { useAlert } from '@/composables/alert';
+import { useAlert } from '@/hooks/useAlert';
 
 const { vAlert, vSuccess } = useAlert();
 
@@ -45,3 +45,4 @@ const edit = () => {
 </script>
 
 <style lang="scss" scoped></style>
+@/hooks/alert

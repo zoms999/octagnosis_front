@@ -444,7 +444,7 @@
 import { ref, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
-import { useAlert } from '@/composables/alert';
+import { useAlert } from '@/hooks/useAlert';
 
 defineProps({
 	useYn: String,
@@ -511,3 +511,4 @@ const updateAuth = async (key, value) => {
 </script>
 
 <style lang="scss" scoped></style>
+@/hooks/alert

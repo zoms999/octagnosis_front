@@ -121,7 +121,7 @@ import { ref, watchEffect, computed } from 'vue';
 import ManagerEditForm from '@/components/manager/ManagerEditForm.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAxios } from '@/hooks/useAxios';
-import { useAlert } from '@/composables/alert';
+import { useAlert } from '@/hooks/useAlert';
 import axios from 'axios';
 
 const { vAlert, vSuccess } = useAlert();
@@ -282,3 +282,4 @@ body {
 	margin-right: 1rem;
 }
 </style>
+@/hooks/alert

@@ -11,7 +11,10 @@
 				aria-labelledby="exampleModalLabel"
 				aria-hidden="true"
 			>
-				<div class="modal-dialog">
+				<div
+					class="modal-dialog"
+					:style="{ maxWidth: width + 'px !important' }"
+				>
 					<div class="modal-content">
 						<div class="modal-header">
 							<slot name="header">
@@ -46,6 +49,9 @@ defineProps({
 	title: {
 		type: String,
 	},
+	width: {
+		type: String,
+	},
 });
 defineEmits(['close', 'update:modelValue']);
 </script>
@@ -57,7 +63,7 @@ defineEmits(['close', 'update:modelValue']);
 }
 .v-enter-active,
 .v-leave-active {
-	transition: all 0.5s ease;
+	transition: all 0.3s ease;
 }
 .v-enter-to,
 .v-leave-from {

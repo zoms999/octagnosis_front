@@ -28,6 +28,7 @@ export const useAxios = (url, config = {}, options = {}) => {
 		data.value = null;
 		error.value = null;
 		loading.value = true;
+
 		axios(unref(url), {
 			...defaultConfig,
 			...config,
@@ -37,8 +38,10 @@ export const useAxios = (url, config = {}, options = {}) => {
 			.then(res => {
 				response.value = res;
 				data.value = res.data;
+
 				console.log('execute  then- >' + data.value);
 				console.log('execute  onSuccess- >' + onSuccess);
+
 				if (onSuccess) {
 					onSuccess(res);
 				}
@@ -53,6 +56,7 @@ export const useAxios = (url, config = {}, options = {}) => {
 				loading.value = false;
 			});
 	};
+
 	if (isRef(params) || isRef(url)) {
 		watchEffect(execute);
 	} else {
