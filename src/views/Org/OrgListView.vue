@@ -129,6 +129,36 @@ const PageCnt = computed(() => Math.ceil(TotCnt.value / 3));
 const CurPage = ref(3);
 const OrgList = ref([]);
 
+// Axios	**********************************************
+
+const { data, error, loading, execute, execUrl, reqUrl } = useAxios(
+	'',
+	{
+		method: 'post',
+	},
+	{
+		immediate: false,
+		onSuccess: () => {
+			switch (reqUrl.value) {
+				case '/api/Org/GetOrgList':
+					TotCnt.value = data.value.OrgTotCnt;
+					OrgList.value = data.value.OrgList;
+
+					if (TotCnt.value == 0) vAlert('조회된 데이터가 없습니다.');
+
+					break;
+				default:
+					break;
+			}
+		},
+		onError: err => {
+			vAlert(err.message);
+		},
+	},
+);
+
+// List	************************************************
+
 const params = ref({
 	orgId: 1,
 	srchStr: 'Str',
@@ -141,35 +171,13 @@ const params = ref({
 	},
 });
 
-const {
-	data,
-	error,
-	loading,
-	execute: exeGetOrgList,
-} = useAxios(
-	'api/Org/GetOrgList',
-	{
-		method: 'post',
-	},
-	{
-		immediate: false,
-		onSuccess: () => {
-			TotCnt.value = data.value.OrgTotCnt;
-			OrgList.value = data.value.OrgList;
-
-			if (TotCnt.value == 0) vAlert('조회된 데이터가 없습니다.');
-		},
-		onError: err => {
-			vAlert(err.message);
-		},
-	},
-);
-
 const GetOrgList = async () => {
-	exeGetOrgList(params.value);
+	execUrl('/api/Org/GetOrgList', params.value);
 };
 
 GetOrgList();
+
+// List	************************************************
 
 console.log('TotCnt ; ', TotCnt);
 console.log('PageCnt ; ', PageCnt);
@@ -180,7 +188,7 @@ console.log('CurPage ; ', CurPage);
 const GetOrgListTest = () =>
 	axios({
 		method: 'POST',
-		url: 'api/Org/GetOrgList',
+		url: '/api/Org/GetOrgList',
 		data: {
 			page: 1,
 			limit: 6,

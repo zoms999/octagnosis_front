@@ -115,7 +115,7 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 import { computed, inject } from 'vue';
 import { useAxios } from '@/hooks/useAxios';
-import { useAlert } from '@/composables/alert';
+import { useAlert } from '@/hooks/useAlert';
 
 const goCreate = () => {
 	router.push({

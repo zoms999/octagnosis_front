@@ -25,7 +25,9 @@
 			<div class="col-3">
 				<div class="input-group">
 					<input type="text" class="form-control" />
-					<button class="btn btn-primary" @click="OpenOrgCdModal">변경</button>
+					<button class="btn btn-primary" @click="ShowModal.OrgCd = true">
+						변경
+					</button>
 				</div>
 			</div>
 			<div class="col-1 lbl">등록날짜</div>
@@ -40,7 +42,9 @@
 			<div class="col-3">
 				<div class="input-group">
 					<input type="password" class="form-control" />
-					<button class="btn btn-primary" @click="OpenOrgPwModal">변경</button>
+					<button class="btn btn-primary" @click="ShowModal.OrgPw = true">
+						변경
+					</button>
 				</div>
 			</div>
 			<div class="col-1 lbl">로그확인</div>
@@ -325,7 +329,7 @@
 
 	<!--	기관인증 코드	------------------------------->
 	<Teleport to="#modal">
-		<AppModal v-model="ShowOrgCd" title="변경 이력 기록" width="500">
+		<AppModal v-model="ShowModal.OrgCd" title="변경 이력 기록" width="500">
 			<template #default>
 				<div class="container ItemBox">
 					<div class="row">
@@ -372,7 +376,7 @@
 
 	<!--	비밀번호 변경 코드	------------------------------->
 	<Teleport to="#modal">
-		<AppModal v-model="ShowOrgPw" title="비밀번호 변경" width="500">
+		<AppModal v-model="ShowModal.OrgPw" title="비밀번호 변경" width="500">
 			<template #default>
 				<div class="container ItemBox">
 					<div class="row">
@@ -461,6 +465,36 @@ defineEmits(['update:Item']);
 
 const { vAlert, vSuccess } = useAlert();
 
+// Axios	**********************************************
+
+const { data, error, loading, execute, execUrl, reqUrl } = useAxios(
+	'',
+	{
+		method: 'post',
+	},
+	{
+		immediate: false,
+		onSuccess: () => {
+			switch (reqUrl.value) {
+				case '/api/Org/GetOrgList':
+					break;
+				default:
+					break;
+			}
+		},
+		onError: err => {
+			vAlert(err.message);
+		},
+	},
+);
+
+// Show/Hide	******************************************
+
+const ShowModal = ref({
+	OrgCd: false,
+	OrgPw: false,
+});
+
 // 사용기한 변경	****************************************
 
 // 기관인증코드 변경	************************************
@@ -482,7 +516,7 @@ const CloseOrgCdModal = () => {
 
 // Method
 const { execute: exeChangeOrgCd } = useAxios(
-	'api/Org/ChangeOrgCd',
+	'/api/Org/ChangeOrgCd',
 	{
 		method: 'post',
 	},
@@ -490,7 +524,7 @@ const { execute: exeChangeOrgCd } = useAxios(
 		immediate: false,
 		onSuccess: () => {
 			vSuccess('비밀번호가 변경되었습니다.');
-			CloseOrgCdModal();
+			ShowModal.value.OrdPw = false;
 		},
 		onError: err => {
 			vAlert(err.message);
@@ -526,7 +560,7 @@ const CloseOrgPwModal = () => {
 
 // Method
 const { execute: exeChangePw } = useAxios(
-	'api/Org/ChangePw',
+	'/api/Org/ChangePw',
 	{
 		method: 'post',
 	},

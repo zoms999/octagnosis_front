@@ -16,6 +16,7 @@ export const useAxios = (url, config = {}, options = {}) => {
 	const data = ref(null);
 	const error = ref(null);
 	const loading = ref(false);
+	const reqUrl = ref('');
 
 	const { onSuccess, onError, immediate } = {
 		...defaultOptions,
@@ -23,6 +24,7 @@ export const useAxios = (url, config = {}, options = {}) => {
 	};
 
 	const { params } = config;
+
 	const execute = body => {
 		console.log('execute  body- >' + body);
 		data.value = null;
@@ -38,6 +40,10 @@ export const useAxios = (url, config = {}, options = {}) => {
 			.then(res => {
 				response.value = res;
 				data.value = res.data;
+				reqUrl.value = res.request.responseURL.replace(
+					axios.defaults.baseURL,
+					'',
+				);
 
 				console.log('execute  then- >' + data.value);
 				console.log('execute  onSuccess- >' + onSuccess);
@@ -57,6 +63,11 @@ export const useAxios = (url, config = {}, options = {}) => {
 			});
 	};
 
+	const execUrl = (path, body) => {
+		url = path;
+		execute(body);
+	};
+
 	if (isRef(params) || isRef(url)) {
 		watchEffect(execute);
 	} else {
@@ -64,11 +75,14 @@ export const useAxios = (url, config = {}, options = {}) => {
 			execute();
 		}
 	}
+
 	return {
 		response,
 		data,
 		error,
 		loading,
 		execute,
+		reqUrl,
+		execUrl,
 	};
 };

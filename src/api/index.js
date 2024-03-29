@@ -5,6 +5,6 @@ function create(baseURL, options) {
 	return instance;
 }
 
-export const octag = create(`${import.meta.env.VITE_APP_API_URL}api/`);
+export const octag = create(`${import.meta.env.VITE_APP_API_URL}/api/`);
 // development : http://localhost:5000/api/
 // production : http://localhost:5001/api/
