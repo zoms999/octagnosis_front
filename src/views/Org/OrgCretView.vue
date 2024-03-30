@@ -4,6 +4,7 @@
 		<div></div>
 	</div>
 	<OrgForm
+		procType="C"
 		v-model:orgId="Org.orgId"
 		v-model:bizNum="Org.bizNum"
 		v-model:corpNum="Org.corpNum"
@@ -64,7 +65,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import OrgForm from '@/components/Org/OrgForm.vue';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useAxios } from '@/hooks/useAxios';
 import { useAlert } from '@/hooks/useAlert';
 const router = useRouter();
@@ -127,6 +128,19 @@ const {
 const CretOrg = () => {
 	exeCretOrg(Org.value);
 };
+
+// Watch	****************************************
+/**
+watch(
+	() => Org.value.urlCd,
+	(newValue, oldValue) => {
+		console.log('urlCd 값이 변경되었습니다.');
+		console.log('newValue : ', newValue);
+		console.log('oldValue : ', oldValue);
+		Org.value.urlCd = newValue.replace(/[^a-zA-Z0-9]/g, '');
+	},
+);
+ */
 </script>
 
 <style lang="scss" scoped></style>

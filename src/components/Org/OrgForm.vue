@@ -7,7 +7,84 @@
 		<div></div>
 	</div>
 	<div class="container ItemBox">
-		<div class="row">
+		<!-- 등록	----------------------------->
+		<div class="row" v-if="procType == 'C'">
+			<div class="col-1 lbl">기관인증코드</div>
+			<div class="col-5">
+				<div class="input-group">
+					<input
+						v-focus
+						type="text"
+						ref="txtUrlCd"
+						class="form-control"
+						v-model="ObjUrlCd.urlCd"
+					/>
+					<span class="input-group-text"
+						><span class="material-icons text-body-tertiary"
+							>{{ ObjUrlCd.valid ? 'check' : 'noise_control_off' }}
+						</span></span
+					>
+					<button class="btn btn-primary w100" @click="ChkUrlCd">
+						유효성검사
+					</button>
+				</div>
+			</div>
+			<div class="col-6">
+				[ 최대 20자 , 영문(대소문자 구분), 숫자 ] &nbsp; 예) Yuop7890WeRk0909
+			</div>
+			<div class="col-1 lbl">아이디</div>
+			<div class="col-5">
+				<div class="input-group">
+					<input type="text" class="form-control" v-model="ObjAcunt.acuntId" />
+					<span class="input-group-text"
+						><span class="material-icons text-body-tertiary">{{
+							ObjAcunt.valid ? 'check' : 'noise_control_off'
+						}}</span></span
+					>
+					<button class="btn btn-primary w100" @click="ChkAcuntId">
+						중복확인
+					</button>
+				</div>
+			</div>
+			<div class="col-6">[ 6~20 자, 영문(대소문자 구분안함), 숫자 ]</div>
+			<div class="col-1 lbl">비밀번호</div>
+			<div class="col-3">
+				<input type="password" class="form-control" />
+			</div>
+			<div class="col-1 lbl">비밀번호 확인</div>
+			<div class="col-3">
+				<input type="password" class="form-control" />
+			</div>
+			<div class="col-4">[ 6~20 자, 영문(대소문자 구분안함), 숫자 ]</div>
+			<div class="col-1 lbl">1회차 요청수</div>
+			<div class="col-1">
+				<input type="text" class="form-control" />
+			</div>
+			<div class="col-1 lbl">1회차 코드</div>
+			<div class="col-5">
+				<div class="input-group">
+					<input
+						type="text"
+						class="form-control"
+						v-model="ObjOrgTurn.turnConnCd"
+					/>
+					<span class="input-group-text"
+						><span class="material-icons text-body-tertiary">{{
+							ObjOrgTurn.valid ? 'check' : 'noise_control_off'
+						}}</span></span
+					>
+
+					<button class="btn btn-primary w100" @click="ChkTurnConnCd">
+						유효성검사
+					</button>
+				</div>
+			</div>
+			<div class="col-4">
+				[ 10~20 자, 영문(대소문자 구분), 숫자 ] <br />예) abCD1234EFGH5678
+			</div>
+		</div>
+		<!-- 수정	----------------------------->
+		<div class="row" v-else-if="procType == 'E'">
 			<div class="col-1 lbl">기관인증코드</div>
 			<div class="col-3">
 				<div class="input-group">
@@ -25,7 +102,7 @@
 			<div class="col-3">
 				<div class="input-group">
 					<input type="text" class="form-control" />
-					<button class="btn btn-primary" @click="ShowModal.OrgCd = true">
+					<button class="btn btn-primary" @click="ShowModal.OrgUrlCd = true">
 						변경
 					</button>
 				</div>
@@ -329,7 +406,7 @@
 
 	<!--	기관인증 코드	------------------------------->
 	<Teleport to="#modal">
-		<AppModal v-model="ShowModal.OrgCd" title="변경 이력 기록" width="500">
+		<AppModal v-model="ShowModal.OrgUrlCd" title="변경 이력 기록" width="500">
 			<template #default>
 				<div class="container ItemBox">
 					<div class="row">
@@ -342,7 +419,7 @@
 									v-focus
 									type="text"
 									class="form-control"
-									v-model="OrgCd.newOrgCd"
+									v-model="ObjUrlCd.urlCd"
 									@input="$emit('update:orgId', $event.target.value)"
 								/>
 								<button class="btn btn-primary">유효성검사</button>
@@ -353,14 +430,14 @@
 							<input
 								type="text"
 								class="form-control"
-								v-model="OrgCd.newOrgCd"
+								v-model="ObjUrlCd.actionReasn"
 							/>
 						</div>
 					</div>
 				</div>
 			</template>
 			<template #actions>
-				<button type="button" class="btn btn-primary" @click="ChangeOrgCd">
+				<button type="button" class="btn btn-primary" @click="ChangeOrgUrlCd">
 					저장
 				</button>
 				<button
@@ -385,7 +462,7 @@
 							<input
 								type="password"
 								class="form-control"
-								v-model="OrgPw.oldPw"
+								v-model="ObjPw.oldPw"
 							/>
 						</div>
 						<div class="col-4 lbl"><i></i>신규비밀번호</div>
@@ -393,7 +470,7 @@
 							<input
 								type="password"
 								class="form-control"
-								v-model="OrgPw.newPw"
+								v-model="ObjPw.newPw"
 							/>
 						</div>
 						<div class="col-4 lbl"><i></i>신규비밀번호 확인</div>
@@ -401,7 +478,7 @@
 							<input
 								type="password"
 								class="form-control"
-								v-model="OrgPw.newPwConfirm"
+								v-model="ObjPw.newPwConfirm"
 							/>
 						</div>
 					</div>
@@ -414,7 +491,7 @@
 				<button
 					type="button"
 					class="btn btn-secondary"
-					@click="CloseOrgPwModal"
+					@click="ShowModal.value.OrdPw = false"
 				>
 					닫기
 				</button>
@@ -424,13 +501,14 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
 import { useAlert } from '@/hooks/useAlert';
 import { useAxios } from '@/hooks/useAxios';
+import { defineProps, watch, ref } from 'vue';
 
-// Props / Emit  *************************************
+// Props / Emit  ****************************
 
 const Props = defineProps({
+	procType: { type: String },
 	orgId: { type: String },
 	bizNum: { type: String },
 	corpNum: { type: String },
@@ -459,13 +537,15 @@ const Props = defineProps({
 	mngerPosit2: { type: String },
 	urlCd: { type: String },
 });
-defineEmits(['update:Item']);
+const Emit = defineEmits(['update:urlCd', 'update:orgId']);
 
-//******************************************************
+//*******************************************
 
 const { vAlert, vSuccess } = useAlert();
 
-// Axios	**********************************************
+// Data *************************************
+
+// Axios	***********************************
 
 const { data, error, loading, execute, execUrl, reqUrl } = useAxios(
 	'',
@@ -476,8 +556,49 @@ const { data, error, loading, execute, execUrl, reqUrl } = useAxios(
 		immediate: false,
 		onSuccess: () => {
 			switch (reqUrl.value) {
-				case '/api/Org/GetOrgList':
+				case '/api/Org/ChangeOrgUrlCd':
+					vSuccess('기관코드가 변경되었습니다.');
+					ShowModal.value.OrdCd = false;
 					break;
+				case '/api/Org/ChangePw':
+					vSuccess('비밀번호가 변경되었습니다.');
+					ShowModal.value.OrdPw = false;
+					break;
+				case '/api/Org/ChkUrlCd':
+					if (data.value.ExistYn == 'Y') {
+						vSuccess('이미 사용중입니다. ');
+						ObjUrlCd.value.urlCd = '';
+						ObjUrlCd.value.valid = false;
+					} else {
+						vSuccess('사용 가능합니다. ');
+						ObjUrlCd.value.urlCdSet = ObjUrlCd.value.urlCd;
+						ObjUrlCd.value.valid = true;
+					}
+					break;
+
+				case '/api/Acunt/ChkAcuntId':
+					if (data.value.ExistYn == 'Y') {
+						vSuccess('이미 사용중인 아이디 입니다.');
+						ObjAcunt.value.acuntId = '';
+						ObjAcunt.value.valid = false;
+					} else {
+						vSuccess('사용 가능합니다. ');
+						ObjAcunt.value.acuntIdSet = ObjAcunt.value.acuntId;
+						ObjAcunt.value.valid = true;
+					}
+					break;
+				case '/api/OrgTurn/ChkTurnConnCd':
+					if (data.value.ExistYn == 'Y') {
+						vSuccess('이미 사용중인 코드 입니다.');
+						ObjOrgTurn.value.turnConnCd = '';
+						ObjOrgTurn.value.valid = false;
+					} else {
+						vSuccess('사용 가능합니다. ');
+						ObjOrgTurn.value.turnConnCdSet = ObjOrgTurn.value.turnConnCd;
+						ObjOrgTurn.value.valid = true;
+					}
+					break;
+
 				default:
 					break;
 			}
@@ -495,94 +616,123 @@ const ShowModal = ref({
 	OrgPw: false,
 });
 
-// 사용기한 변경	****************************************
-
 // 기관인증코드 변경	************************************
 
-const OrgCd = ref({
-	orgId: Props.orgId,
-	oldOrgCd: '',
-	newOrgCd: '',
+const ObjUrlCd = ref({
+	urlCd: '',
+	actionReasn: '',
+	urlCdSet: '',
+	valid: false,
 });
 
-// Modal
-const ShowOrgCd = ref(false);
-const OpenOrgCdModal = () => {
-	ShowOrgCd.value = true;
-};
-const CloseOrgCdModal = () => {
-	ShowOrgCd.value = false;
+// 기관인증코드 유효성
+const ChkUrlCd = () => {
+	let Val = ObjUrlCd.value.urlCd;
+
+	if (!ValidNotBlank(Val, '기관인증코드')) {
+		return;
+	}
+	if (!ValidMaxLen(Val, 10, 20)) return;
+
+	execUrl('/api/Org/ChkUrlCd', ObjUrlCd.value);
 };
 
-// Method
-const { execute: exeChangeOrgCd } = useAxios(
-	'/api/Org/ChangeOrgCd',
-	{
-		method: 'post',
-	},
-	{
-		immediate: false,
-		onSuccess: () => {
-			vSuccess('비밀번호가 변경되었습니다.');
-			ShowModal.value.OrdPw = false;
-		},
-		onError: err => {
-			vAlert(err.message);
-		},
+// 기관인증코드 변경
+const ChangeOrgUrlCd = () => {
+	if (!ValidMaxLen(ObjUrlCd.value.urlCd, 10, 20)) return;
+
+	execUrl('/api/Org/ChangeOrgUrlCd', ObjUrlCd.value);
+};
+
+watch(
+	() => ObjUrlCd.value.urlCd,
+	newValue => {
+		const val = newValue.replace(/[^a-zA-Z0-9]/g, '');
+		ObjUrlCd.value.urlCd = val;
+		ObjUrlCd.value.valid = ObjUrlCd.value.urlCd == ObjUrlCd.value.urlCdSet;
+
+		Emit('update:urlCd', ObjUrlCd.value.urlCd);
 	},
 );
 
-const ChangeOrgCd = () => {
-	if (OrgCd.value.newOrgCd != OrgCd.value.newOrgCdConfirm) {
-		vAlert('비밀번호가 일치하지 않습니다.');
+// 사용기한 변경	****************************************
+
+// 아이디 	********************************************
+
+const ObjAcunt = ref({
+	acuntId: '',
+	acuntIdSet: '',
+	valid: false,
+});
+
+// 아이디 중복확인
+const ChkAcuntId = () => {
+	let Val = ObjAcunt.value.acuntId;
+
+	if (!ValidNotBlank(Val, '아이디')) {
 		return;
 	}
-	exeChangeOrgCd(OrgCd.value);
+	if (!ValidMaxLen(Val, 10, 20)) return;
+
+	execUrl('/api/Acunt/ChkAcuntId', ObjAcunt.value);
 };
+
+watch(
+	() => ObjAcunt.value.acuntId,
+	newValue => {
+		const val = newValue.replace(/[^a-zA-Z0-9]/g, '');
+		ObjAcunt.value.acuntId = val;
+		ObjAcunt.value.valid = ObjAcunt.value.acuntId == ObjAcunt.value.acuntIdSet;
+	},
+);
 
 // 비밀번호 변경	****************************************
 
-const OrgPw = ref({
+const ObjPw = ref({
 	orgId: Props.orgId,
 	oldPw: '',
 	newPw: '',
 	newPwConfirm: '',
+	valid: false,
 });
 
-// Modal
-const ShowOrgPw = ref(false);
-const OpenOrgPwModal = () => {
-	ShowOrgPw.value = true;
-};
-const CloseOrgPwModal = () => {
-	ShowOrgPw.value = false;
-};
-
-// Method
-const { execute: exeChangePw } = useAxios(
-	'/api/Org/ChangePw',
-	{
-		method: 'post',
-	},
-	{
-		immediate: false,
-		onSuccess: () => {
-			vSuccess('비밀번호가 변경되었습니다.');
-			CloseOrgPwModal();
-		},
-		onError: err => {
-			vAlert(err.message);
-		},
-	},
-);
-
 const ChangePw = () => {
-	if (OrgPw.value.newPw != OrgPw.value.newPwConfirm) {
+	if (ObjPw.value.newPw != ObjPw.value.newPwConfirm) {
 		vAlert('비밀번호가 일치하지 않습니다.');
 		return;
 	}
-	exeChangePw(OrgPw.value);
+	execUrl('/api/Org/ChangePw', ObjPw.value);
 };
+
+// 아이디 	********************************************
+
+const ObjOrgTurn = ref({
+	turnConnCd: '',
+	turnConnCdSet: '',
+	valid: false,
+});
+
+// 아이디 중복확인
+const ChkTurnConnCd = () => {
+	let Val = ObjOrgTurn.value.turnConnCd;
+
+	if (!ValidNotBlank(Val, '1회차 코드')) {
+		return;
+	}
+	if (!ValidMaxLen(Val, 10, 20)) return;
+
+	execUrl('/api/OrgTurn/ChkTurnConnCd', ObjOrgTurn.value);
+};
+
+watch(
+	() => ObjOrgTurn.value.turnConnCd,
+	newValue => {
+		const val = newValue.replace(/[^a-zA-Z0-9]/g, '');
+		ObjOrgTurn.value.turnConnCd = val;
+		ObjOrgTurn.value.valid =
+			ObjOrgTurn.value.turnConnCd == ObjOrgTurn.value.turnConnCdSet;
+	},
+);
 
 // 접속로그	****************************************
 
@@ -590,7 +740,32 @@ const ChangePw = () => {
 
 // 우편번호	****************************************
 
-// 등록	********************************************
+// 등록	*******************************************
+
+// Method	****************************************
+
+// Watch *****************************************
+
+// Methods *****************************************
+
+//console.log('txtUrlCd : ', txtUrlCd.value);
+
+const ValidMaxLen = (val, minLen, maxLen) => {
+	if (val.length < minLen && val.length > maxLen) {
+		vAlert(`${minLen}~${maxLen}자 사이로 입력해주세요.`);
+		return false;
+	}
+	return true;
+};
+
+const ValidNotBlank = (val, tit) => {
+	var Val = val.replace(/\s/g, '');
+	if (Val.length == 0) {
+		vAlert(tit == null ? `입력해 주세요.` : `${tit}를(을) 입력해 주세요.`);
+		return false;
+	}
+	return true;
+};
 </script>
 
 <style lang="scss" scoped></style>

@@ -26,7 +26,7 @@ export const useAxios = (url, config = {}, options = {}) => {
 	const { params } = config;
 
 	const execute = body => {
-		console.log('execute  body- >' + body);
+		//console.log('execute  body- >' + body);
 		data.value = null;
 		error.value = null;
 		loading.value = true;
@@ -45,8 +45,8 @@ export const useAxios = (url, config = {}, options = {}) => {
 					'',
 				);
 
-				console.log('execute  then- >' + data.value);
-				console.log('execute  onSuccess- >' + onSuccess);
+				//console.log('execute  then- >' + data.value);
+				//console.log('execute  onSuccess- >' + onSuccess);
 
 				if (onSuccess) {
 					onSuccess(res);
