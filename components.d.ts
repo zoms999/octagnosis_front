@@ -13,6 +13,7 @@ declare module 'vue' {
     AppLoading: typeof import('./src/components/app/AppLoading.vue')['default']
     AppModal: typeof import('./src/components/app/AppModal.vue')['default']
     AppPagination: typeof import('./src/components/app/AppPagination.vue')['default']
+    AppPaginationTest: typeof import('./src/components/app/AppPaginationTest.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }
