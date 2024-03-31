@@ -11,10 +11,20 @@
 					<input
 						type="text"
 						class="form-control"
-						id="SrchStr"
-						placeholder="기관명/대표/담당자"
+						v-model="Parm.srchStr"
+						placeholder="기관명/대표/담당자(정)"
 					/>
-					<button class="btn btn-primary w80">검색</button>
+					<button class="btn btn-primary w80" @click="GetOrgList">
+						<template v-if="loading">
+							<span
+								class="spinner-grow spinner-grow-sm"
+								role="status"
+								aria-hidden="true"
+							></span>
+							<span class="visually-hidden">Loading...</span>
+						</template>
+						<template v-else> 검색 </template>
+					</button>
 				</div>
 			</div>
 		</div>
@@ -24,10 +34,7 @@
 		<button class="btn btn-primary" @click="Go('OrgCret', {})">추가</button>
 	</div>
 
-	<AppLoading v-if="loading"></AppLoading>
-
-	<AppError v-else-if="error" :message="error.message"></AppError>
-
+	<AppError v-if="error" :message="error.message"></AppError>
 	<template v-else>
 		<table
 			class="table table-bordered Tbl1"
@@ -49,35 +56,24 @@
 					<th>사용</th>
 				</tr>
 			</thead>
+
 			<tbody>
 				<tr
 					v-for="item in OrgList"
-					:key="item.OrgId"
-					@click="Go('OrgEdit', { id: '1' })"
+					:key="item.orgId"
+					@click="Go('OrgEdit', { id: item.orgId })"
 					class="Poit"
 				>
-					<td>1</td>
-					<td>개인_Romain choi</td>
-					<td>010-2929-3838</td>
-					<td>홍길동</td>
-					<td>김길동 이사</td>
-					<td>2022-12-09</td>
-					<td>2025-12-31</td>
-					<td>1</td>
-					<td>2</td>
-					<td>1</td>
-				</tr>
-				<tr @click="Go('OrgEdit', { id: '2' })" class="Poit">
-					<td>2</td>
-					<td>하드코딩</td>
-					<td>010-2929-3838</td>
-					<td>홍길동</td>
-					<td>김길동 이사</td>
-					<td>{{ $dayjs('2024-12-09').format('YYYY. MM. DD') }}</td>
-					<td>2025-12-31</td>
-					<td>1</td>
-					<td>2</td>
-					<td>1</td>
+					<td>{{ item.OrgId }}</td>
+					<td>{{ item.CompyNm }}</td>
+					<td>{{ item.Tel1 }}</td>
+					<td>{{ item.CeoNm }}</td>
+					<td>{{ item.MngerNm1 }}</td>
+					<td>{{ dayjs(item.InsDt).format('YYYY-MM-DD') }}</td>
+					<td>{{ dayjs(item.InsDt).format('YYYY-MM-DD') }}</td>
+					<td>{{ item.TurnNum }}</td>
+					<td>{{ item.TurnReqCnt }}</td>
+					<td>{{ item.TurnUseCnt }}</td>
 				</tr>
 			</tbody>
 			<tfoot></tfoot>
@@ -109,27 +105,18 @@
 
 <script setup>
 import { useAxios } from '@/hooks/useAxios';
-import { computed, ref } from 'vue';
+import { computed, ref, inject } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAlert } from '@/hooks/useAlert';
 
 const { vAlert, vSuccess } = useAlert();
+const dayjs = inject('dayjs');
 
-//const props = defineProps();
-//const emit = defineEmits(['ShowView']);
-const router = useRouter();
+// Props / Emit  ****************************
 
-const Go = (nm, q) => {
-	//router.push({ name: nm, params: p });
-	router.push({ name: nm, query: q });
-};
+// Data *************************************
 
-const TotCnt = ref(15);
-const PageCnt = computed(() => Math.ceil(TotCnt.value / 3));
-const CurPage = ref(3);
-const OrgList = ref([]);
-
-// Axios	**********************************************
+// Axios	***********************************
 
 const { data, error, loading, execute, execUrl, reqUrl } = useAxios(
 	'',
@@ -157,11 +144,28 @@ const { data, error, loading, execute, execUrl, reqUrl } = useAxios(
 	},
 );
 
-// List	************************************************
+// Show/Hide	*******************************
 
-const params = ref({
-	orgId: 1,
-	srchStr: 'Str',
+// Route	***********************************
+
+const router = useRouter();
+const Go = (nm, q) => {
+	//router.push({ name: nm, params: p });
+	router.push({ name: nm, query: q });
+};
+
+// Method	************************************
+
+// List	************************
+
+const TotCnt = ref(0);
+const PageCnt = computed(() => Math.ceil(TotCnt.value / 3));
+const CurPage = ref(3);
+const OrgList = ref([]);
+
+const Parm = ref({
+	//orgId: 1,
+	srchStr: '',
 	paging: {
 		page: 1,
 		pageBlock: 1,
@@ -172,7 +176,7 @@ const params = ref({
 });
 
 const GetOrgList = async () => {
-	execUrl('/api/Org/GetOrgList', params.value);
+	execUrl('/api/Org/GetOrgList', Parm.value);
 };
 
 GetOrgList();

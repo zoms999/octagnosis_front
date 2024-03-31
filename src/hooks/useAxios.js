@@ -11,12 +11,12 @@ const defaultOptions = {
 	immediate: true,
 };
 
-export const useAxios = (url, config = {}, options = {}) => {
+export const useAxios = (url, config = {}, options = { immediate: false }) => {
 	const response = ref(null);
 	const data = ref(null);
 	const error = ref(null);
 	const loading = ref(false);
-	const reqUrl = ref('');
+	let reqUrl = ref(url);
 
 	const { onSuccess, onError, immediate } = {
 		...defaultOptions,
@@ -31,7 +31,7 @@ export const useAxios = (url, config = {}, options = {}) => {
 		error.value = null;
 		loading.value = true;
 
-		axios(unref(url), {
+		axios(unref(reqUrl), {
 			...defaultConfig,
 			...config,
 			params: unref(params),
@@ -65,6 +65,7 @@ export const useAxios = (url, config = {}, options = {}) => {
 
 	const execUrl = (path, body) => {
 		url = path;
+		reqUrl.value = path;
 		execute(body);
 	};
 

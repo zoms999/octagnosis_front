@@ -1,6 +1,30 @@
 <template>
 	<div class="ActionBtn">
-		<slot name="actions"></slot>
+		<div></div>
+		<div>
+			<button
+				v-if="ProcType == 'C'"
+				class="btn btn-primary me-2"
+				@click="CretOrg()"
+				:disabled="Procs.CretOrg.loading"
+			>
+				<template v-if="Procs.CretOrg.loading">
+					<span
+						class="spinner-grow spinner-grow-sm"
+						role="status"
+						aria-hidden="true"
+					></span>
+					<span class="visually-hidden">Loading...</span>
+				</template>
+				<template v-else> 등록 </template>
+			</button>
+			<button v-if="ProcType == 'E'" class="btn btn-primary me-2" @click="edit">
+				수정
+			</button>
+			<button class="btn btn-secondary" @click="$emit('GoBack')">
+				목록으로
+			</button>
+		</div>
 	</div>
 	<div class="Tit1">
 		<div>기관계정</div>
@@ -8,74 +32,120 @@
 	</div>
 	<div class="container ItemBox">
 		<!-- 등록	----------------------------->
-		<div class="row" v-if="procType == 'C'">
-			<div class="col-1 lbl">기관인증코드</div>
-			<div class="col-5">
+		<div class="row" v-if="ProcType == 'C'">
+			<div class="col-1 lbl"><i></i>기관인증코드</div>
+			<div class="col-4">
 				<div class="input-group">
 					<input
 						v-focus
 						type="text"
 						ref="txtUrlCd"
 						class="form-control"
-						v-model="ObjUrlCd.urlCd"
+						v-model="Org.urlCd"
 					/>
 					<span class="input-group-text"
 						><span class="material-icons text-body-tertiary"
-							>{{ ObjUrlCd.valid ? 'check' : 'noise_control_off' }}
+							>{{ Org.valid ? 'check' : 'noise_control_off' }}
 						</span></span
 					>
+
 					<button class="btn btn-primary w100" @click="ChkUrlCd">
-						유효성검사
+						<template v-if="Procs.ChkUrlCd.loading">
+							<span
+								class="spinner-grow spinner-grow-sm"
+								role="status"
+								aria-hidden="true"
+							></span>
+							<span class="visually-hidden">Loading...</span>
+						</template>
+						<template v-else> 유효성검사 </template>
 					</button>
 				</div>
 			</div>
-			<div class="col-6">
+			<div class="col-7">
 				[ 최대 20자 , 영문(대소문자 구분), 숫자 ] &nbsp; 예) Yuop7890WeRk0909
 			</div>
-			<div class="col-1 lbl">아이디</div>
-			<div class="col-5">
-				<div class="input-group">
-					<input type="text" class="form-control" v-model="ObjAcunt.acuntId" />
-					<span class="input-group-text"
-						><span class="material-icons text-body-tertiary">{{
-							ObjAcunt.valid ? 'check' : 'noise_control_off'
-						}}</span></span
-					>
-					<button class="btn btn-primary w100" @click="ChkAcuntId">
-						중복확인
-					</button>
-				</div>
-			</div>
-			<div class="col-6">[ 6~20 자, 영문(대소문자 구분안함), 숫자 ]</div>
-			<div class="col-1 lbl">비밀번호</div>
-			<div class="col-3">
-				<input type="password" class="form-control" />
-			</div>
-			<div class="col-1 lbl">비밀번호 확인</div>
-			<div class="col-3">
-				<input type="password" class="form-control" />
-			</div>
-			<div class="col-4">[ 6~20 자, 영문(대소문자 구분안함), 숫자 ]</div>
-			<div class="col-1 lbl">1회차 요청수</div>
-			<div class="col-1">
-				<input type="text" class="form-control" />
-			</div>
-			<div class="col-1 lbl">1회차 코드</div>
-			<div class="col-5">
+			<div class="col-1 lbl"><i></i>아이디</div>
+			<div class="col-4">
 				<div class="input-group">
 					<input
 						type="text"
+						ref="txtAcuntId"
 						class="form-control"
-						v-model="ObjOrgTurn.turnConnCd"
+						v-model="Acunt.acuntId"
 					/>
 					<span class="input-group-text"
 						><span class="material-icons text-body-tertiary">{{
-							ObjOrgTurn.valid ? 'check' : 'noise_control_off'
+							Acunt.valid ? 'check' : 'noise_control_off'
+						}}</span></span
+					>
+					<button class="btn btn-primary w100" @click="ChkAcuntId">
+						<template v-if="Procs.ChkAcuntId.loading">
+							<span
+								class="spinner-grow spinner-grow-sm"
+								role="status"
+								aria-hidden="true"
+							></span>
+							<span class="visually-hidden">Loading...</span>
+						</template>
+						<template v-else> 중복확인 </template>
+					</button>
+				</div>
+			</div>
+			<div class="col-7">[ 6~20 자, 영문(대소문자 구분안함), 숫자 ]</div>
+			<div class="col-1 lbl"><i></i>비밀번호</div>
+			<div class="col-3">
+				<input
+					type="password"
+					ref="txtPw"
+					class="form-control"
+					v-model="Acunt.pw"
+				/>
+			</div>
+			<div class="col-1 lbl"><i></i>비밀번호 확인</div>
+			<div class="col-3">
+				<input
+					type="password"
+					ref="txtPwConfirm"
+					class="form-control"
+					v-model="Acunt.pwConfirm"
+				/>
+			</div>
+			<div class="col-4">[ 6~20 자, 영문(대소문자 구분안함), 숫자 ]</div>
+			<div class="col-1 lbl"><i></i>1회차 요청수</div>
+			<div class="col-2">
+				<input
+					type="text"
+					ref="txtTurnNum"
+					class="form-control"
+					v-model="OrgTurn.turnNum"
+				/>
+			</div>
+			<div class="col-1 lbl"><i></i>1회차 코드</div>
+			<div class="col-4">
+				<div class="input-group">
+					<input
+						type="text"
+						ref="txtTurnConnCd"
+						class="form-control"
+						v-model="OrgTurn.turnConnCd"
+					/>
+					<span class="input-group-text"
+						><span class="material-icons text-body-tertiary">{{
+							OrgTurn.valid ? 'check' : 'noise_control_off'
 						}}</span></span
 					>
 
 					<button class="btn btn-primary w100" @click="ChkTurnConnCd">
-						유효성검사
+						<template v-if="Procs.ChkTurnConnCd.loading">
+							<span
+								class="spinner-grow spinner-grow-sm"
+								role="status"
+								aria-hidden="true"
+							></span>
+							<span class="visually-hidden">Loading...</span>
+						</template>
+						<template v-else> 유효성검사 </template>
 					</button>
 				</div>
 			</div>
@@ -84,16 +154,16 @@
 			</div>
 		</div>
 		<!-- 수정	----------------------------->
-		<div class="row" v-else-if="procType == 'E'">
+		<div class="row" v-else-if="ProcType == 'E'">
 			<div class="col-1 lbl">기관인증코드</div>
 			<div class="col-3">
 				<div class="input-group">
 					<input
 						v-focus
 						type="text"
+						ref="txtUrlCd"
 						class="form-control"
 						:value="orgId"
-						@input="$emit('update:orgId', $event.target.value)"
 					/>
 					<button class="btn btn-primary">변경</button>
 				</div>
@@ -154,19 +224,19 @@
 				<div class="input-group">
 					<input
 						type="text"
+						ref="txtCompyNm"
 						class="form-control"
-						:value="compyNm"
-						@input="$emit('update:compyNm', $event.target.value)"
+						v-model="Org.compyNm"
 					/>
 				</div>
 			</div>
-			<div class="col-1 lbl"><i></i>대표이름</div>
+			<div class="col-1 lbl"><i></i>대표자</div>
 			<div class="col-3">
 				<input
 					type="text"
+					ref="txtCeoNm"
 					class="form-control"
-					:value="ceoNm"
-					@input="$emit('update:ceoNm', $event.target.value)"
+					v-model="Org.ceoNm"
 				/>
 			</div>
 		</div>
@@ -175,45 +245,45 @@
 			<div class="col-3">
 				<input
 					type="text"
+					ref="txtBillEmail"
 					class="form-control"
-					:value="billEmail"
-					@input="$emit('update:billEmail', $event.target.value)"
+					v-model="Org.billEmail"
 				/>
 			</div>
 			<div class="col-1 lbl"><i></i>사업자번호</div>
 			<div class="col-3">
 				<input
 					type="text"
+					ref="txtBizNum"
 					class="form-control"
-					:value="bizNum"
-					@input="$emit('update:bizNum', $event.target.value)"
+					v-model="Org.bizNum"
 				/>
 			</div>
 			<div class="col-1 lbl">법인번호</div>
 			<div class="col-3">
 				<input
 					type="text"
+					ref="txtCorpNum"
 					class="form-control"
-					:value="corpNum"
-					@input="$emit('update:corpNum', $event.target.value)"
+					v-model="Org.corpNum"
 				/>
 			</div>
 			<div class="col-1 lbl">업태</div>
 			<div class="col-3">
 				<input
 					type="text"
+					ref="txtBizType"
 					class="form-control"
-					:value="bizType"
-					@input="$emit('update:bizType', $event.target.value)"
+					v-model="Org.bizType"
 				/>
 			</div>
 			<div class="col-1 lbl">종목</div>
 			<div class="col-3">
 				<input
 					type="text"
+					ref="txtBizSectr"
 					class="form-control"
-					:value="bizSectr"
-					@input="$emit('update:bizSectr', $event.target.value)"
+					v-model="Org.bizSectr"
 				/>
 			</div>
 		</div>
@@ -222,27 +292,27 @@
 			<div class="col-3">
 				<input
 					type="text"
+					ref="txtTel1"
 					class="form-control"
-					:value="tel1"
-					@input="$emit('update:tel1', $event.target.value)"
+					v-model="Org.tel1"
 				/>
 			</div>
 			<div class="col-1 lbl">연락처 2</div>
 			<div class="col-3">
 				<input
 					type="text"
+					ref="txtTel2"
 					class="form-control"
-					:value="tel2"
-					@input="$emit('update:tel2', $event.target.value)"
+					v-model="Org.tel2"
 				/>
 			</div>
 			<div class="col-1 lbl">팩스</div>
 			<div class="col-3">
 				<input
 					type="text"
+					ref="txtFax"
 					class="form-control"
-					:value="fax"
-					@input="$emit('update:fax', $event.target.value)"
+					v-model="Org.fax"
 				/>
 			</div>
 		</div>
@@ -252,9 +322,9 @@
 				<div class="input-group">
 					<input
 						type="text"
+						ref="txtZip"
 						class="form-control"
-						:value="zip"
-						@input="$emit('update:zip', $event.target.value)"
+						v-model="Org.zip"
 					/>
 					<button class="btn btn-primary IconBtn">
 						<span class="material-icons"> search </span>
@@ -267,36 +337,36 @@
 			<div class="col-5">
 				<input
 					type="text"
+					ref="txtAddr1"
 					class="form-control"
-					:value="addr1"
-					@input="$emit('update:addr1', $event.target.value)"
+					v-model="Org.addr1"
 				/>
 			</div>
 			<div class="col-1 lbl">지번 주소</div>
 			<div class="col-5">
 				<input
 					type="text"
+					ref="txtAddr2"
 					class="form-control"
-					:value="addr2"
-					@input="$emit('update:addr2', $event.target.value)"
+					v-model="Org.addr2"
 				/>
 			</div>
 			<div class="col-1 lbl">상세 주소</div>
 			<div class="col-5">
 				<input
 					type="text"
+					ref="txtAddr3"
 					class="form-control"
-					:value="addr3"
-					@input="$emit('update:addr3', $event.target.value)"
+					v-model="Org.addr3"
 				/>
 			</div>
 			<div class="col-1 lbl">추가 주소</div>
 			<div class="col-5">
 				<input
 					type="text"
+					ref="txtAddr4"
 					class="form-control"
-					:value="addr4"
-					@input="$emit('update:addr4', $event.target.value)"
+					v-model="Org.addr4"
 				/>
 			</div>
 		</div>
@@ -310,95 +380,95 @@
 	<div class="container ItemBox">
 		<div class="row">
 			<div class="col-1 lbl"><i></i>(정)이름</div>
-			<div class="col-2">
+			<div class="col-1">
 				<input
 					type="text"
+					ref="txtMngerNm1"
 					class="form-control"
-					:value="mngerNm1"
-					@input="$emit('update:mngerNm1', $event.target.value)"
+					v-model="Org.mngerNm1"
 				/>
 			</div>
 			<div class="col-1 lbl"><i></i>부서</div>
-			<div class="col-2">
+			<div class="col-1">
 				<input
 					type="text"
+					ref="txtMngerTeam1"
 					class="form-control"
-					:value="mngerTeam1"
-					@input="$emit('update:mngerTeam1', $event.target.value)"
+					v-model="Org.mngerTeam1"
 				/>
 			</div>
 			<div class="col-1 lbl"><i></i>직급</div>
-			<div class="col-2">
+			<div class="col-1">
 				<input
 					type="text"
+					ref="txtMngerPosit1"
 					class="form-control"
-					:value="mngerPosit1"
-					@input="$emit('update:mngerPosit1', $event.target.value)"
+					v-model="Org.mngerPosit1"
 				/>
 			</div>
 			<div class="col-1 lbl"><i></i>휴대번호</div>
 			<div class="col-2">
 				<input
 					type="text"
+					ref="txtMngerPhone1"
 					class="form-control"
-					:value="mngerPhone1"
-					@input="$emit('update:mngerPhone1', $event.target.value)"
+					v-model="Org.mngerPhone1"
 				/>
 			</div>
 			<div class="col-1 lbl"><i></i>이메일</div>
 			<div class="col-2">
 				<input
 					type="text"
+					ref="txtMngerEmail1"
 					class="form-control"
-					:value="mngerEmail1"
-					@input="$emit('update:mngerEmail1', $event.target.value)"
+					v-model="Org.mngerEmail1"
 				/>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-1 lbl">(부)이름</div>
-			<div class="col-2">
+			<div class="col-1">
 				<input
 					type="text"
+					ref="txtMngerNm2"
 					class="form-control"
-					:value="mngerNm2"
-					@input="$emit('update:mngerNm2', $event.target.value)"
+					v-model="Org.mngerNm2"
 				/>
 			</div>
-			<div class="col-1 lbl"><i></i>부서</div>
-			<div class="col-2">
+			<div class="col-1 lbl">부서</div>
+			<div class="col-1">
 				<input
 					type="text"
+					ref="txtMngerTeam2"
 					class="form-control"
-					:value="mngerTeam2"
-					@input="$emit('update:mngerTeam2', $event.target.value)"
+					v-model="Org.mngerTeam2"
 				/>
 			</div>
-			<div class="col-1 lbl"><i></i>직급</div>
-			<div class="col-2">
+			<div class="col-1 lbl">직급</div>
+			<div class="col-1">
 				<input
 					type="text"
+					ref="txtMngerPosit2"
 					class="form-control"
-					:value="mngerPosit2"
-					@input="$emit('update:mngerPosit2', $event.target.value)"
+					v-model="Org.mngerPosit2"
 				/>
 			</div>
-			<div class="col-1 lbl"><i></i>휴대번호</div>
+			<div class="col-1 lbl">휴대번호</div>
 			<div class="col-2">
 				<input
 					type="text"
+					ref="txtMngerPhone2"
 					class="form-control"
-					:value="mngerPhone2"
-					@input="$emit('update:mngerPhone2', $event.target.value)"
+					v-model="Org.mngerPhone2"
 				/>
 			</div>
-			<div class="col-1 lbl"><i></i>이메일</div>
+			<div class="col-1 lbl">이메일</div>
 			<div class="col-2">
 				<input
 					type="text"
+					ref="txtMngerEmail2"
 					class="form-control"
-					:value="mngerEmail2"
-					@input="$emit('update:mngerEmail2', $event.target.value)"
+					v-model="Org.mngerEmail2"
 				/>
 			</div>
 		</div>
@@ -419,8 +489,7 @@
 									v-focus
 									type="text"
 									class="form-control"
-									v-model="ObjUrlCd.urlCd"
-									@input="$emit('update:orgId', $event.target.value)"
+									v-model="Org.urlCd"
 								/>
 								<button class="btn btn-primary">유효성검사</button>
 							</div>
@@ -430,7 +499,7 @@
 							<input
 								type="text"
 								class="form-control"
-								v-model="ObjUrlCd.actionReasn"
+								v-model="Org.actionReasn"
 							/>
 						</div>
 					</div>
@@ -501,6 +570,7 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router';
 import { useAlert } from '@/hooks/useAlert';
 import { useAxios } from '@/hooks/useAxios';
 import { defineProps, watch, ref } from 'vue';
@@ -508,95 +578,121 @@ import { defineProps, watch, ref } from 'vue';
 // Props / Emit  ****************************
 
 const Props = defineProps({
-	procType: { type: String },
-	orgId: { type: String },
-	bizNum: { type: String },
-	corpNum: { type: String },
-	ceoNm: { type: String },
-	zip: { type: String },
-	addr1: { type: String },
-	addr2: { type: String },
-	addr3: { type: String },
-	addr4: { type: String },
-	compyNm: { type: String },
-	tel1: { type: String },
-	tel2: { type: String },
-	fax: { type: String },
-	bizType: { type: String },
-	bizSectr: { type: String },
-	mngerNm1: { type: String },
-	mngerPhone1: { type: String },
-	mngerEmail1: { type: String },
-	mngerNm2: { type: String },
-	mngerPhone2: { type: String },
-	mngerEmail2: { type: String },
-	billEmail: { type: String },
-	mngerTeam1: { type: String },
-	mngerPosit1: { type: String },
-	mngerTeam2: { type: String },
-	mngerPosit2: { type: String },
-	urlCd: { type: String },
+	ProcType: { type: String },
+	ObjOrg: { type: Object },
+	ObjAcunt: { type: Object },
+	ObjOrgTurn: { type: Object },
 });
-const Emit = defineEmits(['update:urlCd', 'update:orgId']);
 
-//*******************************************
-
-const { vAlert, vSuccess } = useAlert();
+//const Emit = defineEmits(['CretOrg']);
 
 // Data *************************************
 
+const Org = ref({ actionReasn: '', urlCdSet: '', valid: false });
+const Acunt = ref({ acuntIdSet: '', valid: false });
+const OrgTurn = ref({
+	turnConnCdSet: '',
+	valid: false,
+});
+
+const { vAlert, vSuccess } = useAlert();
+
+Org.value = { ...Props.ObjOrg };
+Acunt.value = { ...Props.ObjAcunt };
+OrgTurn.value = { ...Props.ObjOrgTurn };
+
+const txtUrlCd = ref(null);
+const txtAcuntId = ref(null);
+const txtPw = ref(null);
+const txtPwConfirm = ref(null);
+const txtTurnNum = ref(null);
+const txtTurnConnCd = ref(null);
+const txtCompyNm = ref(null);
+const txtCeoNm = ref(null);
+const txtBizNum = ref(null);
+const txtTel1 = ref(null);
+const txtZip = ref(null);
+const txtMngerNm1 = ref(null);
+const txtMngerTeam1 = ref(null);
+const txtMngerPosit1 = ref(null);
+const txtMngerPhone1 = ref(null);
+const txtMngerEmail1 = ref(null);
+
 // Axios	***********************************
 
-const { data, error, loading, execute, execUrl, reqUrl } = useAxios(
+const Procs = ref({
+	ChangeOrgUrlCd: { path: '/api/Org/ChangeOrgUrlCd', loading: false },
+	ChangePw: { path: '/api/Org/ChangePw', loading: false },
+
+	ChkUrlCd: { path: '/api/Org/ChkUrlCd', loading: false },
+	ChkAcuntId: { path: '/api/Acunt/ChkAcuntId', loading: false },
+	ChkTurnConnCd: { path: '/api/OrgTurn/ChkTurnConnCd', loading: false },
+	CretOrg: { path: '/api/Org/CretOrg', loading: false },
+});
+
+const { data, loading, execUrl, reqUrl } = useAxios(
 	'',
-	{
-		method: 'post',
-	},
+	{ method: 'post' },
 	{
 		immediate: false,
 		onSuccess: () => {
 			switch (reqUrl.value) {
-				case '/api/Org/ChangeOrgUrlCd':
+				case Procs.value.ChangeOrgUrlCd.path:
 					vSuccess('기관코드가 변경되었습니다.');
 					ShowModal.value.OrdCd = false;
 					break;
-				case '/api/Org/ChangePw':
+
+				case Procs.value.ChangePw.path:
 					vSuccess('비밀번호가 변경되었습니다.');
 					ShowModal.value.OrdPw = false;
 					break;
-				case '/api/Org/ChkUrlCd':
+
+				case Procs.value.ChkUrlCd.path:
 					if (data.value.ExistYn == 'Y') {
 						vSuccess('이미 사용중입니다. ');
-						ObjUrlCd.value.urlCd = '';
-						ObjUrlCd.value.valid = false;
+						Org.value.urlCd = '';
+						Org.value.valid = false;
+						txtUrlCd.value.focus();
 					} else {
 						vSuccess('사용 가능합니다. ');
-						ObjUrlCd.value.urlCdSet = ObjUrlCd.value.urlCd;
-						ObjUrlCd.value.valid = true;
+						Org.value.urlCdSet = Org.value.urlCd;
+						Org.value.valid = true;
 					}
+					Procs.value.ChkUrlCd.loading = false;
 					break;
 
-				case '/api/Acunt/ChkAcuntId':
+				case Procs.value.ChkAcuntId.path:
 					if (data.value.ExistYn == 'Y') {
 						vSuccess('이미 사용중인 아이디 입니다.');
-						ObjAcunt.value.acuntId = '';
-						ObjAcunt.value.valid = false;
+						Acunt.value.acuntId = '';
+						Acunt.value.valid = false;
+						txtAcuntId.value.focus();
 					} else {
 						vSuccess('사용 가능합니다. ');
-						ObjAcunt.value.acuntIdSet = ObjAcunt.value.acuntId;
-						ObjAcunt.value.valid = true;
+						Acunt.value.acuntIdSet = Acunt.value.acuntId;
+						Acunt.value.valid = true;
 					}
+					Procs.value.ChkAcuntId.loading = false;
 					break;
-				case '/api/OrgTurn/ChkTurnConnCd':
+
+				case Procs.value.ChkTurnConnCd.path:
 					if (data.value.ExistYn == 'Y') {
 						vSuccess('이미 사용중인 코드 입니다.');
-						ObjOrgTurn.value.turnConnCd = '';
-						ObjOrgTurn.value.valid = false;
+						OrgTurn.value.turnConnCd = '';
+						OrgTurn.value.valid = false;
+						txtTurnConnCd.value.focus();
 					} else {
 						vSuccess('사용 가능합니다. ');
-						ObjOrgTurn.value.turnConnCdSet = ObjOrgTurn.value.turnConnCd;
-						ObjOrgTurn.value.valid = true;
+						OrgTurn.value.turnConnCdSet = OrgTurn.value.turnConnCd;
+						OrgTurn.value.valid = true;
 					}
+					Procs.value.ChkTurnConnCd.loading = false;
+					break;
+
+				case Procs.value.CretOrg.path:
+					vSuccess('기관이 등록되었습니다. ');
+					Procs.value.CretOrg.loading = false;
+					Go('OrgList', {});
 					break;
 
 				default:
@@ -605,88 +701,91 @@ const { data, error, loading, execute, execUrl, reqUrl } = useAxios(
 		},
 		onError: err => {
 			vAlert(err.message);
+			// Procs의 모든 속성에 대해 반복문을 실행하여 loading 값을 true로 변경
+			for (const key in Procs.value) {
+				if (Object.hasOwnProperty.call(Procs.value, key)) {
+					Procs.value[key].loading = false;
+				}
+			}
 		},
 	},
 );
 
-// Show/Hide	******************************************
+// Show / Hide	*****************************
 
 const ShowModal = ref({
 	OrgCd: false,
 	OrgPw: false,
 });
 
-// 기관인증코드 변경	************************************
+// Route	***********************************
 
-const ObjUrlCd = ref({
-	urlCd: '',
-	actionReasn: '',
-	urlCdSet: '',
-	valid: false,
-});
+const router = useRouter();
+const Go = (nm, q) => {
+	router.push({ name: nm, query: q });
+};
+
+// 기관인증코드 변경	**************************
 
 // 기관인증코드 유효성
 const ChkUrlCd = () => {
-	let Val = ObjUrlCd.value.urlCd;
+	let Val = Org.value.urlCd;
 
-	if (!ValidNotBlank(Val, '기관인증코드')) {
+	if (!ValidNotBlank(Val, '기관인증코드', txtUrlCd.value)) {
 		return;
 	}
-	if (!ValidMaxLen(Val, 10, 20)) return;
+	if (!ValidMaxLen(Val, 0, 20, txtUrlCd.value)) return;
 
-	execUrl('/api/Org/ChkUrlCd', ObjUrlCd.value);
+	Procs.value.ChkUrlCd.loading = true;
+	execUrl(Procs.value.ChkUrlCd.path, Org.value);
 };
 
 // 기관인증코드 변경
 const ChangeOrgUrlCd = () => {
-	if (!ValidMaxLen(ObjUrlCd.value.urlCd, 10, 20)) return;
+	if (!ValidMaxLen(Org.value.urlCd, 0, 20, txtUrlCd.value)) return;
 
-	execUrl('/api/Org/ChangeOrgUrlCd', ObjUrlCd.value);
+	Procs.value.ChangeOrgUrlCd.loading = true;
+	execUrl(Procs.value.ChangeOrgUrlCd.path, Org.value);
 };
 
 watch(
-	() => ObjUrlCd.value.urlCd,
+	() => Org.value.urlCd,
 	newValue => {
 		const val = newValue.replace(/[^a-zA-Z0-9]/g, '');
-		ObjUrlCd.value.urlCd = val;
-		ObjUrlCd.value.valid = ObjUrlCd.value.urlCd == ObjUrlCd.value.urlCdSet;
+		Org.value.urlCd = val;
+		Org.value.valid = Org.value.urlCd == Org.value.urlCdSet;
 
-		Emit('update:urlCd', ObjUrlCd.value.urlCd);
+		//Emit('update:urlCd', Org.value.urlCd);
 	},
 );
 
-// 사용기한 변경	****************************************
+// 사용기한 변경	*****************************
 
-// 아이디 	********************************************
-
-const ObjAcunt = ref({
-	acuntId: '',
-	acuntIdSet: '',
-	valid: false,
-});
+// 아이디 	**********************************
 
 // 아이디 중복확인
 const ChkAcuntId = () => {
-	let Val = ObjAcunt.value.acuntId;
+	let Val = Acunt.value.acuntId;
 
-	if (!ValidNotBlank(Val, '아이디')) {
+	if (!ValidNotBlank(Val, '아이디', txtAcuntId.value)) {
 		return;
 	}
-	if (!ValidMaxLen(Val, 10, 20)) return;
+	if (!ValidMaxLen(Val, 6, 20, txtAcuntId.value)) return;
 
-	execUrl('/api/Acunt/ChkAcuntId', ObjAcunt.value);
+	Procs.value.ChkAcuntId.loading = true;
+	execUrl(Procs.value.ChkAcuntId.path, Acunt.value);
 };
 
 watch(
-	() => ObjAcunt.value.acuntId,
+	() => Acunt.value.acuntId,
 	newValue => {
 		const val = newValue.replace(/[^a-zA-Z0-9]/g, '');
-		ObjAcunt.value.acuntId = val;
-		ObjAcunt.value.valid = ObjAcunt.value.acuntId == ObjAcunt.value.acuntIdSet;
+		Acunt.value.acuntId = val;
+		Acunt.value.valid = Acunt.value.acuntId == Acunt.value.acuntIdSet;
 	},
 );
 
-// 비밀번호 변경	****************************************
+// 비밀번호 변경	*****************************
 
 const ObjPw = ref({
 	orgId: Props.orgId,
@@ -701,67 +800,157 @@ const ChangePw = () => {
 		vAlert('비밀번호가 일치하지 않습니다.');
 		return;
 	}
-	execUrl('/api/Org/ChangePw', ObjPw.value);
+
+	Procs.value.ChangePw.loading = true;
+	execUrl(Procs.value.ChangePw.path, ObjPw.value);
 };
 
-// 아이디 	********************************************
+// 1회차 코드	********************************
 
-const ObjOrgTurn = ref({
-	turnConnCd: '',
-	turnConnCdSet: '',
-	valid: false,
-});
-
-// 아이디 중복확인
 const ChkTurnConnCd = () => {
-	let Val = ObjOrgTurn.value.turnConnCd;
+	let Val = OrgTurn.value.turnConnCd;
 
-	if (!ValidNotBlank(Val, '1회차 코드')) {
+	if (!ValidNotBlank(Val, '1회차 코드', txtTurnConnCd.value)) {
 		return;
 	}
-	if (!ValidMaxLen(Val, 10, 20)) return;
+	if (!ValidMaxLen(Val, 10, 20, txtTurnConnCd.value)) return;
 
-	execUrl('/api/OrgTurn/ChkTurnConnCd', ObjOrgTurn.value);
+	Procs.value.ChkTurnConnCd.loading = true;
+	execUrl(Procs.value.ChkTurnConnCd.path, OrgTurn.value);
 };
 
 watch(
-	() => ObjOrgTurn.value.turnConnCd,
+	() => OrgTurn.value.turnNum,
 	newValue => {
-		const val = newValue.replace(/[^a-zA-Z0-9]/g, '');
-		ObjOrgTurn.value.turnConnCd = val;
-		ObjOrgTurn.value.valid =
-			ObjOrgTurn.value.turnConnCd == ObjOrgTurn.value.turnConnCdSet;
+		const val = newValue.replace(/[^0-9]/g, '');
+		OrgTurn.value.turnNum = val;
 	},
 );
 
-// 접속로그	****************************************
+watch(
+	() => OrgTurn.value.turnConnCd,
+	newValue => {
+		const val = newValue.replace(/[^a-zA-Z0-9]/g, '');
+		OrgTurn.value.turnConnCd = val;
+		OrgTurn.value.valid =
+			OrgTurn.value.turnConnCd == OrgTurn.value.turnConnCdSet;
+	},
+);
 
-// 변경로그	****************************************
+// 접속로그	**********************************
 
-// 우편번호	****************************************
+// 변경로그	**********************************
 
-// 등록	*******************************************
+// 우편번호	**********************************
 
-// Method	****************************************
+// 등록	**************************************
 
-// Watch *****************************************
+// Method	************************************
 
-// Methods *****************************************
+const CretOrg = () => {
+	if (!Org.value.valid) {
+		vAlert('기관인증코드 유효성검사를 진행하세요.');
+		return;
+	}
+	if (!Acunt.value.valid) {
+		vAlert('아이디 중복확인을 진행하세요.');
+		return;
+	}
+
+	if (!ValidNotBlank(Org.value.urlCd, '기관인증코드', txtUrlCd.value)) {
+		return;
+	}
+	if (!ValidNotBlank(Acunt.value.acuntId, '아이디', txtAcuntId.value)) {
+		return;
+	}
+	if (!ValidNotBlank(Acunt.value.pw, '비밀번호', txtPw.value)) {
+		return;
+	}
+	if (
+		!ValidNotBlank(Acunt.value.pwConfirm, '비밀번호 확인', txtPwConfirm.value)
+	) {
+		return;
+	}
+	if (Acunt.value.pw != Acunt.value.pwConfirm) {
+		vAlert('비밀번호 확인이 일치하지 않습니다.');
+		txtPwConfirm.value.focus();
+		return;
+	}
+
+	if (!ValidNotBlank(OrgTurn.value.turnNum, '1회차 요청수', txtTurnNum.value)) {
+		return;
+	}
+	if (
+		!ValidNotBlank(OrgTurn.value.turnConnCd, '1회차 코드', txtTurnConnCd.value)
+	) {
+		return;
+	}
+	if (!OrgTurn.value.valid) {
+		vAlert('1회차코드 유효성검사를 진행하세요.');
+		return;
+	}
+
+	if (!ValidNotBlank(Org.value.compyNm, '기관명', txtCompyNm.value)) {
+		return;
+	}
+	if (!ValidNotBlank(Org.value.ceoNm, '대표자', txtCeoNm.value)) {
+		return;
+	}
+	if (!ValidNotBlank(Org.value.bizNum, '사업자번호', txtBizNum.value)) {
+		return;
+	}
+	if (!ValidNotBlank(Org.value.tel1, '연락처1', txtTel1.value)) {
+		return;
+	}
+	if (!ValidNotBlank(Org.value.zip, '우편번호', txtZip.value)) {
+		return;
+	}
+	if (!ValidNotBlank(Org.value.mngerNm1, '정(이름)', txtMngerNm1.value)) {
+		return;
+	}
+	if (!ValidNotBlank(Org.value.mngerTeam1, '부서', txtMngerTeam1.value)) {
+		return;
+	}
+	if (!ValidNotBlank(Org.value.mngerPosit1, '직급', txtMngerPosit1.value)) {
+		return;
+	}
+	if (!ValidNotBlank(Org.value.mngerPhone1, '휴대번호', txtMngerPhone1.value)) {
+		return;
+	}
+	if (!ValidNotBlank(Org.value.mngerEmail1, '이메일', txtMngerEmail1.value)) {
+		return;
+	}
+
+	let Parm = {
+		Org: Org.value,
+		Acunt: Acunt.value,
+		OrgTurn: OrgTurn.value,
+	};
+
+	Procs.value.CretOrg.loading = true;
+	execUrl(Procs.value.CretOrg.path, Parm);
+};
 
 //console.log('txtUrlCd : ', txtUrlCd.value);
 
-const ValidMaxLen = (val, minLen, maxLen) => {
-	if (val.length < minLen && val.length > maxLen) {
+const ValidMaxLen = (val, minLen, maxLen, obj) => {
+	if (val.length < minLen || val.length > maxLen) {
 		vAlert(`${minLen}~${maxLen}자 사이로 입력해주세요.`);
+		if (obj != null) {
+			obj.focus();
+		}
 		return false;
 	}
 	return true;
 };
 
-const ValidNotBlank = (val, tit) => {
+const ValidNotBlank = (val, tit, obj) => {
 	var Val = val.replace(/\s/g, '');
 	if (Val.length == 0) {
 		vAlert(tit == null ? `입력해 주세요.` : `${tit}를(을) 입력해 주세요.`);
+		if (obj != null) {
+			obj.focus();
+		}
 		return false;
 	}
 	return true;

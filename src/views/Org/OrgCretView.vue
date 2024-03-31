@@ -4,60 +4,13 @@
 		<div></div>
 	</div>
 	<OrgForm
-		procType="C"
-		v-model:orgId="Org.orgId"
-		v-model:bizNum="Org.bizNum"
-		v-model:corpNum="Org.corpNum"
-		v-model:ceoNm="Org.ceoNm"
-		v-model:zip="Org.zip"
-		v-model:addr1="Org.addr1"
-		v-model:addr2="Org.addr2"
-		v-model:addr3="Org.addr3"
-		v-model:addr4="Org.addr4"
-		v-model:compyNm="Org.compyNm"
-		v-model:tel1="Org.tel1"
-		v-model:tel2="Org.tel2"
-		v-model:fax="Org.fax"
-		v-model:bizType="Org.bizType"
-		v-model:bizSectr="Org.bizSectr"
-		v-model:mngerNm1="Org.mngerNm1"
-		v-model:mngerPhone1="Org.mngerPhone1"
-		v-model:mngerEmail1="Org.mngerEmail1"
-		v-model:mngerNm2="Org.mngerNm2"
-		v-model:mngerPhone2="Org.mngerPhone2"
-		v-model:mngerEmail2="Org.mngerEmail2"
-		v-model:billEmail="Org.billEmail"
-		v-model:mngerTeam1="Org.mngerTeam1"
-		v-model:mngerPosit1="Org.mngerPosit1"
-		v-model:mngerTeam2="Org.mngerTeam2"
-		v-model:mngerPosit2="Org.mngerPosit2"
-		v-model:urlCd="Org.urlCd"
-		v-model:insDt="Org.insDt"
+		ProcType="C"
+		:ObjOrg="Org"
+		:ObjAcunt="Acunt"
+		:ObjOrgTurn="OrgTurn"
+		@Go="Go"
+		@GoBack="GoBack"
 	>
-		<template #actions>
-			<div></div>
-			<div>
-				<button
-					class="btn btn-primary me-2"
-					@click="CretOrg()"
-					:disabled="loading"
-				>
-					<template v-if="loading">
-						<span
-							class="spinner-grow spinner-grow-sm"
-							role="status"
-							aria-hidden="true"
-						></span>
-						<span class="visually-hidden">Loading...</span>
-					</template>
-					<template v-else> 등록 </template>
-				</button>
-
-				<button class="btn btn-secondary" @click="Go('OrgList', {})">
-					목록으로
-				</button>
-			</div>
-		</template>
 	</OrgForm>
 	<br /><br />
 </template>
@@ -65,14 +18,22 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import OrgForm from '@/components/Org/OrgForm.vue';
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import { useAxios } from '@/hooks/useAxios';
 import { useAlert } from '@/hooks/useAlert';
+import { useAuthStore } from '@/stores/auth';
+import { storeToRefs } from 'pinia';
+
+// Props / Emit  ****************************
+
+// Data *************************************
+
 const router = useRouter();
 const { vAlert, vSuccess } = useAlert();
+const { userMngrId } = storeToRefs(useAuthStore());
 
 const Org = ref({
-	orgId: '',
+	orgId: '0',
 	bizNum: '',
 	corpNum: '',
 	ceoNm: '',
@@ -99,25 +60,70 @@ const Org = ref({
 	mngerTeam2: '',
 	mngerPosit2: '',
 	urlCd: '',
+	insId: userMngrId,
 	insDt: '',
+	uptId: '',
+	uptDt: '',
 });
 
-const Go = (nm, q) => {
-	router.push({ name: nm, query: q });
-};
+const OrgTurn = ref({
+	orgId: '',
+	turnId: '',
+	useYn: 'Y',
+	turnNum: '',
+	turnReqCnt: '0',
+	turnUseCnt: '0',
+	turnConnCd: '',
+	insId: userMngrId,
+	insDt: '',
+	uptId: '',
+	uptDt: '',
+});
 
-const {
-	error,
-	loadinig,
-	execute: exeCretOrg,
-} = useAxios(
-	'/api/Org/CretOrg',
-	{ method: 'post' },
+const Acunt = ref({
+	acuntId: '',
+	userType: 'C00101',
+	userId: '',
+	pw: '',
+	useYn: 'Y',
+	regDt: '',
+	leaveDt: '',
+	expirDt: '',
+	termsUse: 'Y',
+	termsPersn: 'Y',
+	termsEvent: 'Y',
+	insId: userMngrId,
+	insDt: '',
+	uptId: '',
+	uptDt: '',
+
+	pwConfirm: '',
+	oldPw: '',
+	newPw: '',
+	newPwConfirm: '',
+});
+
+// Axios	***********************************
+
+const { data, error, loading, execute, execUrl, reqUrl } = useAxios(
+	'',
+	{
+		method: 'post',
+	},
 	{
 		immediate: false,
 		onSuccess: () => {
-			Go('OrgList', {});
-			vSuccess('기관이 등록되었습니다.');
+			switch (reqUrl.value) {
+				case '/api/Org/CretOrg':
+					vSuccess('기관이 등록되었습니다.');
+					//Go();
+					break;
+				case '/api/Org/ChangePw':
+					vSuccess('비밀번호가 변경되었습니다.');
+					break;
+				default:
+					break;
+			}
 		},
 		onError: err => {
 			vAlert(err.message);
@@ -125,9 +131,19 @@ const {
 	},
 );
 
-const CretOrg = () => {
-	exeCretOrg(Org.value);
+// Show/Hide	******************************************
+
+// Route	**********************************************
+
+const Go = (nm, q) => {
+	router.push({ name: nm, query: q });
 };
+
+const GoBack = () => {
+	window.history.back();
+};
+
+// Method	****************************************
 
 // Watch	****************************************
 /**
@@ -142,5 +158,3 @@ watch(
 );
  */
 </script>
-
-<style lang="scss" scoped></style>
