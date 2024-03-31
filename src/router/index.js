@@ -8,6 +8,7 @@ import NotFoundView from '../views/Error/NotFoundView.vue';
 import OrgListView from '@/views/Org/OrgListView.vue';
 import OrgCretView from '@/views/Org/OrgCretView.vue';
 import OrgEditView from '@/views/Org/OrgEditView.vue';
+import PersonalListView from '@/views/Personal/PersonalListView.vue';
 import CompyMainView from '@/views/Compy/CompyMainView.vue';
 
 const router = createRouter({
@@ -84,6 +85,13 @@ const router = createRouter({
 			path: '/Compy/CompyMain',
 			name: 'CompyMain',
 			component: CompyMainView,
+			// props: route => ({ id: parseInt(route.params.id) }),
+		},
+
+		{
+			path: '/Personal/PersonalListView',
+			name: 'PersonalList',
+			component: PersonalListView,
 			// props: route => ({ id: parseInt(route.params.id) }),
 		},
 	],
