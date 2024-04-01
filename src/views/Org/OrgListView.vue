@@ -56,7 +56,6 @@
 					<th>사용</th>
 				</tr>
 			</thead>
-
 			<tbody>
 				<tr
 					v-for="item in OrgList"
@@ -82,6 +81,8 @@
 		<AppPagination
 			:CurPage="CurPage"
 			:PageCnt="PageCnt"
+			:TotCnt="TotCnt"
+			:CurBlock="CurBlock"
 			@Page="GetOrgList"
 		></AppPagination>
 	</template>
@@ -118,7 +119,7 @@ const dayjs = inject('dayjs');
 
 // Axios	***********************************
 
-const { data, error, loading, execute, execUrl, reqUrl } = useAxios(
+const { data, error, loading, execUrl, reqUrl } = useAxios(
 	'',
 	{
 		method: 'post',
@@ -131,7 +132,7 @@ const { data, error, loading, execute, execUrl, reqUrl } = useAxios(
 					TotCnt.value = data.value.OrgTotCnt;
 					OrgList.value = data.value.OrgList;
 
-					if (TotCnt.value == 0) vAlert('조회된 데이터가 없습니다.');
+					if (TotCnt.value == 0) vSuccess('조회된 데이터가 없습니다.');
 
 					break;
 				default:
@@ -158,34 +159,43 @@ const Go = (nm, q) => {
 
 // List	************************
 
-const TotCnt = ref(0);
-const PageCnt = computed(() => Math.ceil(TotCnt.value / 3));
-const CurPage = ref(3);
-const OrgList = ref([]);
-
 const Parm = ref({
 	//orgId: 1,
 	srchStr: '',
 	paging: {
 		page: 1,
-		pageBlock: 1,
-		limit: 6,
+		block: 1,
+		pageCntInBlock: 2,
+		startRow: 1,
+		limit: 3,
 		sort: 'createdAt',
 		order: 'desc',
 	},
 });
 
-const GetOrgList = async () => {
+const TotCnt = ref(0);
+const PageCnt = computed(() =>
+	Math.ceil(TotCnt.value / Parm.value.paging.limit),
+);
+const CurPage = ref(1);
+const CurBlock = ref(1);
+const OrgList = ref([]);
+
+const GetOrgList = async page => {
+	page = typeof no === 'object' && page !== null ? 1 : page;
+	CurPage.value = page;
+	Parm.value.paging.page = page;
+	Parm.value.paging.startRow = (page - 1) * Parm.value.paging.limit;
 	execUrl('/api/Org/GetOrgList', Parm.value);
 };
 
-GetOrgList();
+GetOrgList(1);
 
 // List	************************************************
 
-console.log('TotCnt ; ', TotCnt);
-console.log('PageCnt ; ', PageCnt);
-console.log('CurPage ; ', CurPage);
+//console.log('TotCnt ; ', TotCnt);
+//console.log('PageCnt ; ', PageCnt);
+//console.log('CurPage ; ', CurPage);
 
 /**
 
@@ -211,7 +221,6 @@ const GetOrgListTest = () =>
 
 GetOrgListTest();
  */
-/**
 const GetList = async () => {
 	try {
 		loading.value = true;
@@ -221,7 +230,6 @@ const GetList = async () => {
 		loading.value = false;
 	}
 };
- */
 
 const show = ref(false);
 const openModal = () => {
