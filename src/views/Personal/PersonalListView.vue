@@ -20,7 +20,7 @@
 		</div>
 	</div>
 	<div class="FunBox">
-		<div>Total : {{ totalCount }}</div>
+		<div>Total : {{ TotCnt }}</div>
 		<button class="btn btn-primary" @click="Go('PersonalCreate', {})">
 			추가
 		</button>
@@ -57,26 +57,21 @@
 					<td>{{ item.persnId }}</td>
 					<td>{{ item.persnNm }}</td>
 					<td>{{ item.phone }}</td>
-					<td>{{ item.insDt }}</td>
+					<td>{{ dayjs(item.InsDt).format('YYYY-MM-DD') }}</td>
 					<td>{{ item.ExpirationDate }}</td>
-					<!-- 예시: 만기일자에 해당하는 데이터의 실제 속성 이름으로 수정 -->
 					<td>보기</td>
 				</tr>
 			</tbody>
 			<tfoot></tfoot>
 		</table>
 
-		<!-- <AppPagination
+		<AppPagination
 			:CurPage="CurPage"
 			:PageCnt="PageCnt"
+			:TotCnt="TotCnt"
+			:CurBlock="CurBlock"
 			@Page="GetPersonalList"
-		></AppPagination> -->
-
-		<AppPaginationTest
-			:current-page="params.paging.page"
-			:page-count="pageCount"
-			@page="page => (params.paging.page = page)"
-		/>
+		></AppPagination>
 	</template>
 
 	<Teleport to="#modal">
@@ -98,14 +93,12 @@
 
 <script setup>
 import { useAxios } from '@/hooks/useAxios';
-import { computed, ref } from 'vue';
+import { computed, ref, inject } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAlert } from '@/hooks/useAlert';
-
+const dayjs = inject('dayjs');
 const { vAlert, vSuccess } = useAlert();
 
-//const props = defineProps();
-//const emit = defineEmits(['ShowView']);
 const router = useRouter();
 
 const Go = (nm, q) => {
@@ -116,22 +109,25 @@ const Go = (nm, q) => {
 // List	************************************************
 
 const params = ref({
-	persnId: null,
-	persnNm: '',
-	srchStr: 'Str',
+	//persnId: null,
+	srchStr: '',
 	paging: {
 		page: 1,
-		pageBlock: 1,
-		limit: 5,
+		block: 1,
+		pageCntInBlock: 2,
+		startRow: 1,
+		limit: 3,
 		sort: 'createdAt',
 		order: 'desc',
 	},
 });
 const PersonalList = ref([]);
-const totalCount = ref(0);
-const pageCount = computed(() =>
-	Math.ceil(totalCount.value / params.value.paging.limit),
+const TotCnt = ref(0);
+const PageCnt = computed(() =>
+	Math.ceil(TotCnt.value / params.value.paging.limit),
 );
+const CurPage = ref(1);
+const CurBlock = ref(1);
 
 // Axios	**********************************************
 const { response, data, error, loading, execute, execUrl, reqUrl } = useAxios(
@@ -142,10 +138,11 @@ const { response, data, error, loading, execute, execUrl, reqUrl } = useAxios(
 	{
 		immediate: false,
 		onSuccess: () => {
-			totalCount.value = data.value.PersonalTotCnt;
+			TotCnt.value = data.value.PersonalTotCnt;
 			PersonalList.value = data.value.PersonalList;
-			console.log(totalCount.value);
+			console.log(TotCnt.value);
 			console.log(PersonalList.value);
+			if (TotCnt.value == 0) vSuccess('조회된 데이터가 없습니다.');
 		},
 		onError: err => {
 			vAlert(err.message);
@@ -153,14 +150,19 @@ const { response, data, error, loading, execute, execUrl, reqUrl } = useAxios(
 	},
 );
 
-const GetPersonalList = async () => {
+const GetPersonalList = async page => {
 	//params.value.paging.page = CurPage.value;
 	// params.value.paging.limit = 2;
+
+	page = typeof no === 'object' && page !== null ? 1 : page;
+	CurPage.value = page;
+	params.value.paging.page = page;
+	params.value.paging.startRow = (page - 1) * params.value.paging.limit;
 	console.log('GetPersonalList');
 	execUrl('/api/personal/personalList', params.value);
 };
 
-GetPersonalList();
+GetPersonalList(1);
 
 const show = ref(false);
 const openModal = () => {

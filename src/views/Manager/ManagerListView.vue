@@ -21,7 +21,7 @@
 			</div>
 		</div>
 		<div class="FunBox">
-			<div>Total : 23,223</div>
+			<div>Total : {{ TotCnt }}</div>
 			<button class="btn btn-primary" @click="goCreate">추가</button>
 		</div>
 
@@ -66,7 +66,7 @@
 								<tfoot></tfoot>
 								<tbody>
 									<tr
-										v-for="(item, index) in posts"
+										v-for="(item, index) in ManagerList"
 										:key="index"
 										@click="goPage(item.mngrId)"
 										class="Poit"
@@ -104,6 +104,8 @@
 		<AppPagination
 			:CurPage="CurPage"
 			:PageCnt="PageCnt"
+			:TotCnt="TotCnt"
+			:CurBlock="CurBlock"
 			@Page="GetOrgList"
 		></AppPagination>
 	</div>
@@ -124,21 +126,62 @@ const goCreate = () => {
 };
 
 const router = useRouter();
-const params = ref({
-	_sort: 'createdAt',
-	_order: 'desc',
-	_page: 1,
-	_limit: 6,
-	title_like: '',
+const Parm = ref({
+	//orgId: 1,
+	srchStr: '',
+	paging: {
+		page: 1,
+		block: 1,
+		pageCntInBlock: 2,
+		startRow: 1,
+		limit: 3,
+		sort: 'createdAt',
+		order: 'desc',
+	},
 });
+// const {
+// 	response,
+// 	data: posts,
+// 	error,
+// 	loading,
+// 	execute,
+// 	execUrl,
+// } = useAxios('/api/managers/managersList', {
+// 	method: 'post',
+// 	immediate: false,
+// 	onSuccess: () => {
+// 		TotCnt.value = posts.value.ManagerTotCnt;
+// 		console.log('TotCnt.value ' + TotCnt.value);
+// 		if (TotCnt.value == 0) vSuccess('조회된 데이터가 없습니다.');
+// 	},
+// 	onError: err => {
+// 		vAlert(err.message);
+// 	},
+// });
 
-const {
-	response,
-	data: posts,
-	error,
-	loading,
-} = useAxios('/api/managers', { params });
-const isExist = computed(() => posts.value && posts.value.length > 0);
+const { response, data, error, loading, execute, execUrl, reqUrl } = useAxios(
+	'',
+	{
+		method: 'post',
+	},
+	{
+		immediate: false,
+		onSuccess: () => {
+			TotCnt.value = data.value.ManagerTotCnt;
+			ManagerList.value = data.value.ManagerList;
+
+			console.log(TotCnt.value);
+			if (TotCnt.value == 0) vSuccess('조회된 데이터가 없습니다.');
+		},
+		onError: err => {
+			vAlert(err.message);
+		},
+	},
+);
+
+const isExist = computed(
+	() => ManagerList.value && ManagerList.value.length > 0,
+);
 const goPage = mngrId => {
 	router.push({
 		name: 'ManagerEdit',
@@ -147,14 +190,24 @@ const goPage = mngrId => {
 		},
 	});
 };
-
-const TotCnt = ref(10);
-const PageCnt = computed(() => Math.ceil(TotCnt.value / 3));
-const CurPage = ref(3);
+const ManagerList = ref([]);
+const TotCnt = ref(0);
+const PageCnt = computed(() =>
+	Math.ceil(TotCnt.value / Parm.value.paging.limit),
+);
+const CurPage = ref(1);
+const CurBlock = ref(1);
 
 const GetOrgList = page => {
-	CurPage.value = page ?? 1;
+	page = typeof no === 'object' && page !== null ? 1 : page;
+	CurPage.value = page;
+	Parm.value.paging.page = page;
+	Parm.value.paging.startRow = (page - 1) * Parm.value.paging.limit;
+
+	console.log('GetOrgList' + Parm.value);
+	execUrl('/api/managers/managersList', Parm.value);
 };
+GetOrgList(1);
 
 const { vAlert, vSuccess } = useAlert();
 const toggleUseYn = item => {
