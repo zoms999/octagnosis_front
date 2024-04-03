@@ -1059,10 +1059,11 @@ body {
   box-sizing: border-box;
   border:0px solid red;
 }
-.FunBox > div:nth-child(1) {
+  .FunBox > div:nth-child(1) {
     text-align: left;
     font-size:1rem;
     margin:0 0 0 10px;
+    display: flex; justify-self:flex-start;
   }
   .FunBox > div:nth-child(2) {
     text-align: right;

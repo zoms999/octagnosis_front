@@ -30,7 +30,22 @@
 		</div>
 	</div>
 	<div class="FunBox">
-		<div>Total : {{ TotCnt }}</div>
+		<div>
+			<div class="w100">Total : {{ TotCnt }}</div>
+			<div>
+				<select
+					class="form-select"
+					v-model="Parm.paging.rowCntInPage"
+					@change="chageRowCntInPage"
+				>
+					<option value="5">5 줄</option>
+					<option value="10" selected="selected">10 줄</option>
+					<option value="20">20 줄</option>
+					<option value="30">30 줄</option>
+					<option value="50">50 줄</option>
+				</select>
+			</div>
+		</div>
 		<button class="btn btn-primary" @click="Go('OrgCret', {})">추가</button>
 	</div>
 
@@ -150,7 +165,7 @@ const Parm = ref({
 		page: 1,
 		block: 1,
 		pageCntInBlock: 3,
-		rowCntInPage: 2,
+		rowCntInPage: 10,
 		startRow: 1,
 		sort: 'createdAt',
 		order: 'desc',
@@ -161,6 +176,10 @@ const TotCnt = ref(0);
 const CurPage = ref(1);
 const CurBlock = ref(1);
 const OrgList = ref([]);
+
+const chageRowCntInPage = () => {
+	GetOrgList(1);
+};
 
 const GetOrgList = async page => {
 	page = typeof no === 'object' && page !== null ? 1 : page;

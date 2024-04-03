@@ -157,24 +157,24 @@
 		<div class="row" v-else-if="ProcType == 'E'">
 			<div class="col-1 lbl">기관인증코드</div>
 			<div class="col-3">
-				<div class="input-group">
+				<div class="input-group w100p" style="width: 100% !important">
 					<input
 						v-focus
 						type="text"
-						ref="txtUrlCd"
 						class="form-control"
-						:value="orgId"
+						:value="Org.urlCd"
+						readonly
 					/>
-					<button class="btn btn-primary">변경</button>
+					<button class="btn btn-primary" @click="ShowModal.OrgUrlCd = true">
+						변경
+					</button>
 				</div>
 			</div>
 			<div class="col-1 lbl">사용기한</div>
 			<div class="col-3">
 				<div class="input-group">
 					<input type="text" class="form-control" />
-					<button class="btn btn-primary" @click="ShowModal.OrgUrlCd = true">
-						변경
-					</button>
+					<button class="btn btn-primary">변경</button>
 				</div>
 			</div>
 			<div class="col-1 lbl">등록날짜</div>
@@ -183,7 +183,12 @@
 			</div>
 			<div class="col-1 lbl">아이디</div>
 			<div class="col-3">
-				<input type="text" class="form-control" :value="UserId" />
+				<input
+					type="text"
+					class="form-control"
+					:value="Acunt.acuntId"
+					readonly
+				/>
 			</div>
 			<div class="col-1 lbl">비밀번호</div>
 			<div class="col-3">
@@ -491,9 +496,53 @@
 									class="form-control"
 									v-model="Org.urlCd"
 								/>
-								<button class="btn btn-primary">유효성검사</button>
+								<button class="btn btn-primary" @click="ChkUrlCd">
+									<template v-if="Procs.ChkUrlCd.loading">
+										<span
+											class="spinner-grow spinner-grow-sm"
+											role="status"
+											aria-hidden="true"
+										></span>
+										<span class="visually-hidden">Loading...</span>
+									</template>
+									<template v-else> 유효성검사 </template>
+								</button>
 							</div>
 						</div>
+						<div class="col-12">변경이유</div>
+						<div class="col-12">
+							<input
+								type="text"
+								class="form-control"
+								v-model="Org.actionReasn"
+							/>
+						</div>
+					</div>
+				</div>
+			</template>
+			<template #actions>
+				<button type="button" class="btn btn-primary" @click="ChangeOrgUrlCd">
+					저장
+				</button>
+				<button
+					type="button"
+					class="btn btn-secondary"
+					@click="CloseOrgCdModal"
+				>
+					닫기
+				</button>
+			</template>
+		</AppModal>
+	</Teleport>
+
+	<!--	사용기한 코드	------------------------------->
+	<Teleport to="#modal">
+		<AppModal v-model="ShowModal.OrgUrlCd" title="사용기한 변경" width="500">
+			<template #default>
+				<div class="container ItemBox">
+					<div class="row">
+						<div class="col-12">사용기한</div>
+						<div class="col-12"></div>
 						<div class="col-12">변경이유</div>
 						<div class="col-12">
 							<input
