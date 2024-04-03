@@ -80,33 +80,18 @@
 
 		<AppPagination
 			:CurPage="CurPage"
-			:PageCnt="PageCnt"
-			:TotCnt="TotCnt"
 			:CurBlock="CurBlock"
+			:TotCnt="TotCnt"
+			:RowCntInPage="Parm.paging.rowCntInPage"
+			:PageCntInBlock="Parm.paging.pageCntInBlock"
 			@Page="GetOrgList"
 		></AppPagination>
 	</template>
-
-	<Teleport to="#modal">
-		<AppModal v-model="show" title="게시글">
-			<template #default>
-				<p>제목 :</p>
-				<p>내용 :</p>
-				<p>등록일 :</p>
-			</template>
-			<template #actions>
-				<button type="button" class="btn btn-secondary" @click="closeModal">
-					닫기
-				</button>
-			</template>
-		</AppModal>
-	</Teleport>
-	<button class="btn btn-primary" @click="openModal">모달오픈</button>
 </template>
 
 <script setup>
 import { useAxios } from '@/hooks/useAxios';
-import { computed, ref, inject } from 'vue';
+import { ref, inject } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAlert } from '@/hooks/useAlert';
 
@@ -160,85 +145,35 @@ const Go = (nm, q) => {
 // List	************************
 
 const Parm = ref({
-	//orgId: 1,
 	srchStr: '',
 	paging: {
 		page: 1,
 		block: 1,
-		pageCntInBlock: 2,
+		pageCntInBlock: 3,
+		rowCntInPage: 2,
 		startRow: 1,
-		limit: 3,
 		sort: 'createdAt',
 		order: 'desc',
 	},
 });
 
 const TotCnt = ref(0);
-const PageCnt = computed(() =>
-	Math.ceil(TotCnt.value / Parm.value.paging.limit),
-);
 const CurPage = ref(1);
 const CurBlock = ref(1);
 const OrgList = ref([]);
 
 const GetOrgList = async page => {
 	page = typeof no === 'object' && page !== null ? 1 : page;
+	CurBlock.value = Math.ceil(page / Parm.value.paging.pageCntInBlock);
 	CurPage.value = page;
 	Parm.value.paging.page = page;
-	Parm.value.paging.startRow = (page - 1) * Parm.value.paging.limit;
+	Parm.value.paging.startRow = (page - 1) * Parm.value.paging.rowCntInPage;
 	execUrl('/api/Org/GetOrgList', Parm.value);
 };
 
 GetOrgList(1);
 
 // List	************************************************
-
-//console.log('TotCnt ; ', TotCnt);
-//console.log('PageCnt ; ', PageCnt);
-//console.log('CurPage ; ', CurPage);
-
-/**
-
-const GetOrgListTest = () =>
-	axios({
-		method: 'POST',
-		url: '/api/Org/GetOrgList',
-		data: {
-			page: 1,
-			limit: 6,
-			sort: 'createdAt',
-			order: 'desc',
-			srchStr: 'Str',
-		},
-	})
-		.then(res => {
-			console.log(res);
-		})
-		.catch(error => {
-			console.log(error);
-			throw new Error(error);
-		});
-
-GetOrgListTest();
- */
-const GetList = async () => {
-	try {
-		loading.value = true;
-	} catch (e) {
-		error.value = e;
-	} finally {
-		loading.value = false;
-	}
-};
-
-const show = ref(false);
-const openModal = () => {
-	show.value = true;
-};
-const closeModal = () => {
-	show.value = false;
-};
 </script>
 
 <style lang="scss" scoped></style>
-@/hooks/alert
