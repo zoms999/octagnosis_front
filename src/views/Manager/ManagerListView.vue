@@ -20,8 +20,24 @@
 				</div>
 			</div>
 		</div>
+
 		<div class="FunBox">
-			<div>Total : {{ TotCnt }}</div>
+			<div>
+				<div class="w100">Total : {{ TotCnt }}</div>
+				<div>
+					<select
+						class="form-select"
+						v-model="Parm.paging.rowCntInPage"
+						@change="chageRowCntInPage"
+					>
+						<option value="5">5 줄</option>
+						<option value="10" selected="selected">10 줄</option>
+						<option value="20">20 줄</option>
+						<option value="30">30 줄</option>
+						<option value="50">50 줄</option>
+					</select>
+				</div>
+			</div>
 			<button class="btn btn-primary" @click="goCreate">추가</button>
 		</div>
 
@@ -103,9 +119,10 @@
 
 		<AppPagination
 			:CurPage="CurPage"
-			:PageCnt="PageCnt"
-			:TotCnt="TotCnt"
 			:CurBlock="CurBlock"
+			:TotCnt="TotCnt"
+			:RowCntInPage="Parm.paging.rowCntInPage"
+			:PageCntInBlock="Parm.paging.pageCntInBlock"
 			@Page="GetOrgList"
 		></AppPagination>
 	</div>
@@ -127,14 +144,13 @@ const goCreate = () => {
 
 const router = useRouter();
 const Parm = ref({
-	//orgId: 1,
 	srchStr: '',
 	paging: {
 		page: 1,
 		block: 1,
 		pageCntInBlock: 2,
+		rowCntInPage: 10,
 		startRow: 1,
-		limit: 3,
 		sort: 'createdAt',
 		order: 'desc',
 	},
@@ -191,18 +207,19 @@ const goPage = mngrId => {
 	});
 };
 const ManagerList = ref([]);
+const CurPage = ref(1);
+const CurBlock = ref(1);
 const TotCnt = ref(0);
 const PageCnt = computed(() =>
 	Math.ceil(TotCnt.value / Parm.value.paging.limit),
 );
-const CurPage = ref(1);
-const CurBlock = ref(1);
 
 const GetOrgList = page => {
 	page = typeof no === 'object' && page !== null ? 1 : page;
+	CurBlock.value = Math.ceil(page / Parm.value.paging.pageCntInBlock);
 	CurPage.value = page;
 	Parm.value.paging.page = page;
-	Parm.value.paging.startRow = (page - 1) * Parm.value.paging.limit;
+	Parm.value.paging.startRow = (page - 1) * Parm.value.paging.rowCntInPage;
 
 	console.log('GetOrgList' + Parm.value);
 	execUrl('/api/managers/managersList', Parm.value);

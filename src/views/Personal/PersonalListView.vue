@@ -19,8 +19,24 @@
 			</div>
 		</div>
 	</div>
+
 	<div class="FunBox">
-		<div>Total : {{ TotCnt }}</div>
+		<div>
+			<div class="w100">Total : {{ TotCnt }}</div>
+			<div>
+				<select
+					class="form-select"
+					v-model="params.paging.rowCntInPage"
+					@change="chageRowCntInPage"
+				>
+					<option value="5">5 줄</option>
+					<option value="10" selected="selected">10 줄</option>
+					<option value="20">20 줄</option>
+					<option value="30">30 줄</option>
+					<option value="50">50 줄</option>
+				</select>
+			</div>
+		</div>
 		<button class="btn btn-primary" @click="Go('PersonalCreate', {})">
 			추가
 		</button>
@@ -67,9 +83,10 @@
 
 		<AppPagination
 			:CurPage="CurPage"
-			:PageCnt="PageCnt"
-			:TotCnt="TotCnt"
 			:CurBlock="CurBlock"
+			:TotCnt="TotCnt"
+			:RowCntInPage="params.paging.rowCntInPage"
+			:PageCntInBlock="params.paging.pageCntInBlock"
 			@Page="GetPersonalList"
 		></AppPagination>
 	</template>
@@ -109,23 +126,19 @@ const Go = (nm, q) => {
 // List	************************************************
 
 const params = ref({
-	//persnId: null,
 	srchStr: '',
 	paging: {
 		page: 1,
 		block: 1,
-		pageCntInBlock: 2,
+		pageCntInBlock: 3,
+		rowCntInPage: 10,
 		startRow: 1,
-		limit: 3,
 		sort: 'createdAt',
 		order: 'desc',
 	},
 });
 const PersonalList = ref([]);
 const TotCnt = ref(0);
-const PageCnt = computed(() =>
-	Math.ceil(TotCnt.value / params.value.paging.limit),
-);
 const CurPage = ref(1);
 const CurBlock = ref(1);
 
@@ -151,13 +164,11 @@ const { response, data, error, loading, execute, execUrl, reqUrl } = useAxios(
 );
 
 const GetPersonalList = async page => {
-	//params.value.paging.page = CurPage.value;
-	// params.value.paging.limit = 2;
-
 	page = typeof no === 'object' && page !== null ? 1 : page;
+	CurBlock.value = Math.ceil(page / params.value.paging.pageCntInBlock);
 	CurPage.value = page;
 	params.value.paging.page = page;
-	params.value.paging.startRow = (page - 1) * params.value.paging.limit;
+	params.value.paging.startRow = (page - 1) * params.value.paging.rowCntInPage;
 	console.log('GetPersonalList');
 	execUrl('/api/personal/personalList', params.value);
 };

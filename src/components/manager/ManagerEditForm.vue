@@ -499,13 +499,15 @@
 
 <script setup>
 import { ref, watchEffect } from 'vue';
-import { useRoute } from 'vue-router';
+import { stringifyQuery, useRoute } from 'vue-router';
 import axios from 'axios';
 import { useAlert } from '@/hooks/useAlert';
 
-defineProps({
+const member = defineProps({
 	useYn: String,
-	email: String,
+	email: {
+		type: String,
+	},
 	mngrNm: String,
 	pw: String,
 	phone: String,
@@ -533,6 +535,7 @@ defineEmits([
 	'update:authLogView',
 	'update:authStati',
 ]);
+console.log('member.email' + member.email);
 
 const route = useRoute();
 // Computed property to determine if readonly should be applied
