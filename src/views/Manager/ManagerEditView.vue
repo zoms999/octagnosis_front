@@ -136,7 +136,9 @@ const form = ref([]);
 
 const { error, loading } = useAxios(
 	`/api/managers/${mngrId}`,
-	`/api/managers/${mngrId}`,
+	{
+		method: 'get',
+	},
 	{
 		// API 요청에 대한 콜백 함수를 설정합니다.
 		onSuccess: response => {
@@ -152,6 +154,7 @@ const { error, loading } = useAxios(
 		// },
 	},
 );
+
 const {
 	error: editError,
 	loading: editLoading,

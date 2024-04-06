@@ -9,6 +9,7 @@ import OrgListView from '@/views/Org/OrgListView.vue';
 import OrgCretView from '@/views/Org/OrgCretView.vue';
 import OrgEditView from '@/views/Org/OrgEditView.vue';
 import PersonalListView from '@/views/Personal/PersonalListView.vue';
+import PersonalEditView from '@/views/Personal/PersonalEditView.vue';
 import CompyMainView from '@/views/Compy/CompyMainView.vue';
 
 const router = createRouter({
@@ -54,7 +55,7 @@ const router = createRouter({
 			path: '/manager/:mngrId/edit',
 			name: 'ManagerEdit',
 			component: ManagerEditView,
-			props: route => ({ id: parseInt(route.params.id) }),
+			//props: route => ({ id: parseInt(route.params.id) }),
 		},
 		{
 			path: '/:pathMatch(.*)*',
@@ -89,10 +90,16 @@ const router = createRouter({
 		},
 
 		{
-			path: '/Personal/PersonalListView',
+			path: '/personal/PersonalListView',
 			name: 'PersonalList',
 			component: PersonalListView,
 			// props: route => ({ id: parseInt(route.params.id) }),
+		},
+		{
+			path: '/personal/:persnId/edit',
+			name: 'PersonalEdit',
+			component: PersonalEditView,
+			//props: route => ({ persnId: parseInt(route.params.persnId) }),
 		},
 	],
 });

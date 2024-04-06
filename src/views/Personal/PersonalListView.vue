@@ -56,6 +56,7 @@
 			<thead>
 				<tr>
 					<th>No</th>
+					<th>아이디</th>
 					<th>이름</th>
 					<th>휴대폰</th>
 					<th>등록자</th>
@@ -67,10 +68,11 @@
 				<tr
 					v-for="item in PersonalList"
 					:key="item.PersnId"
-					@click="Go('PersonalEdit', { id: item.persnId })"
+					@click="goEditPage('PersonalEdit', item.persnId)"
 					class="Poit"
 				>
 					<td>{{ item.persnId }}</td>
+					<td>{{ item.persnUserId }}</td>
 					<td>{{ item.persnNm }}</td>
 					<td>{{ item.phone }}</td>
 					<td>{{ dayjs(item.InsDt).format('YYYY-MM-DD') }}</td>
@@ -118,9 +120,13 @@ const { vAlert, vSuccess } = useAlert();
 
 const router = useRouter();
 
-const Go = (nm, q) => {
-	//router.push({ name: nm, params: p });
-	router.push({ name: nm, query: q });
+const goEditPage = (name, persnId) => {
+	router.push({
+		name: 'PersonalEdit',
+		params: {
+			persnId,
+		},
+	});
 };
 
 // List	************************************************
