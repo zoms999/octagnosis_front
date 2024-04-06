@@ -165,7 +165,7 @@
 						:value="Org.urlCd"
 						readonly
 					/>
-					<button class="btn btn-primary" @click="ShowModal.OrgUrlCd = true">
+					<button class="btn btn-primary" @click="ShowHide('OrgUrlCd', true)">
 						변경
 					</button>
 				</div>
@@ -493,10 +493,17 @@
 								<input
 									v-focus
 									type="text"
+									ref="txtUrlCdNew"
 									class="form-control"
-									v-model="Org.urlCd"
+									v-model="Org.urlCdNew"
 								/>
-								<button class="btn btn-primary" @click="ChkUrlCd">
+								<span class="input-group-text"
+									><span class="material-icons text-body-tertiary"
+										>{{ Org.valid ? 'check' : 'noise_control_off' }}
+									</span></span
+								>
+
+								<button class="btn btn-primary" @click="ChkUrlNewCd">
 									<template v-if="Procs.ChkUrlCd.loading">
 										<span
 											class="spinner-grow spinner-grow-sm"
@@ -514,7 +521,7 @@
 							<input
 								type="text"
 								class="form-control"
-								v-model="Org.actionReasn"
+								v-model="MngrLog.actionReasn"
 							/>
 						</div>
 					</div>
@@ -537,7 +544,7 @@
 
 	<!--	사용기한 코드	------------------------------->
 	<Teleport to="#modal">
-		<AppModal v-model="ShowModal.OrgUrlCd" title="사용기한 변경" width="500">
+		<AppModal v-model="ShowModal.ExpirDt" title="사용기한 변경" width="500">
 			<template #default>
 				<div class="container ItemBox">
 					<div class="row">
@@ -623,6 +630,8 @@ import { useRouter } from 'vue-router';
 import { useAlert } from '@/hooks/useAlert';
 import { useAxios } from '@/hooks/useAxios';
 import { defineProps, watch, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/stores/auth';
 
 // Props / Emit  ****************************
 
@@ -637,11 +646,23 @@ const Props = defineProps({
 
 // Data *************************************
 
-const Org = ref({ actionReasn: '', urlCdSet: '', valid: false });
+const { userMngrId } = storeToRefs(useAuthStore());
+
+const Org = ref({ actionReasn: '', urlCdSet: '', valid: false, urlCdNew: '' });
 const Acunt = ref({ acuntIdSet: '', valid: false });
 const OrgTurn = ref({
 	turnConnCdSet: '',
 	valid: false,
+});
+
+const MngrLog = ref({
+	logId: '',
+	mngrId: userMngrId,
+	actinDt: '',
+	actinReasn: '',
+	actinType: 'C00101',
+	actinRslt: '',
+	actinFunc: '',
 });
 
 const { vAlert, vSuccess } = useAlert();
@@ -666,6 +687,7 @@ const txtMngerTeam1 = ref(null);
 const txtMngerPosit1 = ref(null);
 const txtMngerPhone1 = ref(null);
 const txtMngerEmail1 = ref(null);
+const txtUrlCdNew = ref(null);
 
 // Axios	***********************************
 
@@ -701,7 +723,8 @@ const { data, loading, execUrl, reqUrl } = useAxios(
 						vSuccess('이미 사용중입니다. ');
 						Org.value.urlCd = '';
 						Org.value.valid = false;
-						txtUrlCd.value.focus();
+						if (Props.ProcType == 'C') txtUrlCd.value.focus();
+						else txtUrlCdNew.value.focus();
 					} else {
 						vSuccess('사용 가능합니다. ');
 						Org.value.urlCdSet = Org.value.urlCd;
@@ -765,7 +788,18 @@ const { data, loading, execUrl, reqUrl } = useAxios(
 const ShowModal = ref({
 	OrgCd: false,
 	OrgPw: false,
+	ExpirDt: false,
 });
+
+const ShowHide = (type, showHide) => {
+	switch (type) {
+		case 'OrgUrlCd':
+			ShowModal.value.OrgUrlCd = showHide;
+			Org.value.urlCdNew = '';
+			Org.value.valid = false;
+			break;
+	}
+};
 
 // Route	***********************************
 
@@ -789,6 +823,19 @@ const ChkUrlCd = () => {
 	execUrl(Procs.value.ChkUrlCd.path, Org.value);
 };
 
+// 기관인증코드 유효성 (수정)
+const ChkUrlNewCd = () => {
+	let Val = Org.value.urlCdNew;
+
+	if (!ValidNotBlank(Val, '기관인증코드', txtUrlCdNew.value)) {
+		return;
+	}
+	if (!ValidMaxLen(Val, 0, 20, txtUrlCdNew.value)) return;
+
+	Procs.value.ChkUrlCd.loading = true;
+	execUrl(Procs.value.ChkUrlCd.path, Org.value);
+};
+
 // 기관인증코드 변경
 const ChangeOrgUrlCd = () => {
 	if (!ValidMaxLen(Org.value.urlCd, 0, 20, txtUrlCd.value)) return;
@@ -802,6 +849,17 @@ watch(
 	newValue => {
 		const val = newValue.replace(/[^a-zA-Z0-9]/g, '');
 		Org.value.urlCd = val;
+		Org.value.valid = Org.value.urlCd == Org.value.urlCdSet;
+
+		//Emit('update:urlCd', Org.value.urlCd);
+	},
+);
+
+watch(
+	() => Org.value.urlCdNew,
+	newValue => {
+		const val = newValue.replace(/[^a-zA-Z0-9]/g, '');
+		Org.value.urlCdNew = val;
 		Org.value.valid = Org.value.urlCd == Org.value.urlCdSet;
 
 		//Emit('update:urlCd', Org.value.urlCd);
