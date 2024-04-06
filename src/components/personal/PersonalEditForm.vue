@@ -44,6 +44,26 @@
 					<slot name="actionsPw"> </slot>
 				</div>
 			</div>
+			<div class="col-1 lbl">가입일</div>
+			<div class="col-2">
+				<div class="input-group">
+					<input
+						type="text"
+						class="form-control"
+						v-model="personal.PersnInsDt"
+					/>
+				</div>
+			</div>
+			<div class="col-1 lbl">사용기한</div>
+			<div class="col-2">
+				<div class="input-group">
+					<input
+						type="text"
+						class="form-control"
+						v-model="personal.PersnInsDt"
+					/>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
