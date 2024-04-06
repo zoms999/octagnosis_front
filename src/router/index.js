@@ -54,7 +54,7 @@ const router = createRouter({
 			path: '/manager/:mngrId/edit',
 			name: 'ManagerEdit',
 			component: ManagerEditView,
-			// props: route => ({ id: parseInt(route.params.id) }),
+			props: route => ({ id: parseInt(route.params.id) }),
 		},
 		{
 			path: '/:pathMatch(.*)*',

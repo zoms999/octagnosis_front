@@ -134,20 +134,24 @@ const mngrId = route.params.mngrId;
 const form = ref([]);
 //const { data, error, loading } = useAxios(`/api/managers/${mngrId}`);
 
-const { data, error, loading } = useAxios(`/api/managers/${mngrId}`, {
-	// API 요청에 대한 콜백 함수를 설정합니다.
-	onSuccess: response => {
-		// API 요청이 성공했을 때 호출되는 콜백 함수입니다.
-		// 받은 데이터를 form 변수에 할당합니다.
+const { error, loading } = useAxios(
+	`/api/managers/${mngrId}`,
+	`/api/managers/${mngrId}`,
+	{
+		// API 요청에 대한 콜백 함수를 설정합니다.
+		onSuccess: response => {
+			// API 요청이 성공했을 때 호출되는 콜백 함수입니다.
+			// 받은 데이터를 form 변수에 할당합니다.
 
-		console.log('response.data' + response.data);
-		form.value = response.data;
+			console.log('response.data' + response.data);
+			form.value = response.data;
+		},
+		// 만약 요청이 실패했을 때의 콜백 함수도 설정할 수 있습니다.
+		// onError: (error) => {
+		//   console.error('API 요청 실패:', error);
+		// },
 	},
-	// 만약 요청이 실패했을 때의 콜백 함수도 설정할 수 있습니다.
-	// onError: (error) => {
-	//   console.error('API 요청 실패:', error);
-	// },
-});
+);
 const {
 	error: editError,
 	loading: editLoading,

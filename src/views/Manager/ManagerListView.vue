@@ -155,25 +155,6 @@ const Parm = ref({
 		order: 'desc',
 	},
 });
-// const {
-// 	response,
-// 	data: posts,
-// 	error,
-// 	loading,
-// 	execute,
-// 	execUrl,
-// } = useAxios('/api/managers/managersList', {
-// 	method: 'post',
-// 	immediate: false,
-// 	onSuccess: () => {
-// 		TotCnt.value = posts.value.ManagerTotCnt;
-// 		console.log('TotCnt.value ' + TotCnt.value);
-// 		if (TotCnt.value == 0) vSuccess('조회된 데이터가 없습니다.');
-// 	},
-// 	onError: err => {
-// 		vAlert(err.message);
-// 	},
-// });
 
 const { response, data, error, loading, execute, execUrl, reqUrl } = useAxios(
 	'',
