@@ -63,10 +63,50 @@ export const useAxios = (url, config = {}, options = { immediate: false }) => {
 			});
 	};
 
-	const execUrl = (path, body) => {
+	const execute1 = async body => {
+		//console.log('execute  body- >' + body);
+		data.value = null;
+		error.value = null;
+		loading.value = true;
+
+		return await axios(unref(reqUrl), {
+			...defaultConfig,
+			...config,
+			params: unref(params),
+			data: typeof body === 'object' ? body : {},
+		})
+			.then(res => {
+				response.value = res;
+				data.value = res.data;
+				reqUrl.value = res.request.responseURL.replace(
+					axios.defaults.baseURL,
+					'',
+				);
+
+				//console.log('execute  then- >' + data.value);
+				//console.log('execute  onSuccess- >' + onSuccess);
+
+				if (onSuccess) {
+					onSuccess(res);
+				}
+			})
+			.catch(err => {
+				error.value = err;
+				if (onError) {
+					onError(err);
+				}
+			})
+			.finally(() => {
+				loading.value = false;
+			});
+	};
+
+	const execUrl = async (path, body) => {
 		url = path;
 		reqUrl.value = path;
-		execute(body);
+
+		return await execute1(body);
+		//execute(body);
 	};
 
 	if (isRef(params) || isRef(url)) {

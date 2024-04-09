@@ -173,7 +173,7 @@
 			<div class="col-1 lbl">사용기한</div>
 			<div class="col-3">
 				<div class="input-group">
-					<input type="text" class="form-control" />
+					<input type="text" class="form-control" :value="Acunt.expirDt" />
 					<button class="btn btn-primary">변경</button>
 				</div>
 			</div>
@@ -520,8 +520,9 @@
 						<div class="col-12">
 							<input
 								type="text"
+								ref="txtActinReasn"
 								class="form-control"
-								v-model="MngrLog.actionReasn"
+								v-model="MngrLog.actinReasn"
 							/>
 						</div>
 					</div>
@@ -542,20 +543,22 @@
 		</AppModal>
 	</Teleport>
 
-	<!--	사용기한 코드	------------------------------->
+	<!--	사용기한 	------------------------------->
 	<Teleport to="#modal">
 		<AppModal v-model="ShowModal.ExpirDt" title="사용기한 변경" width="500">
 			<template #default>
 				<div class="container ItemBox">
 					<div class="row">
 						<div class="col-12">사용기한</div>
-						<div class="col-12"></div>
+						<div class="col-12">
+							<input type="text" class="form-control" v-model="Acunt.expirDt" />
+						</div>
 						<div class="col-12">변경이유</div>
 						<div class="col-12">
 							<input
 								type="text"
 								class="form-control"
-								v-model="Org.actionReasn"
+								v-model="Org.actinReasn"
 							/>
 						</div>
 					</div>
@@ -640,7 +643,10 @@ const Props = defineProps({
 	ObjOrg: { type: Object },
 	ObjAcunt: { type: Object },
 	ObjOrgTurn: { type: Object },
+	OrgId: { type: Number },
 });
+
+console.log('OrgId :  ', Props.OrgId);
 
 //const Emit = defineEmits(['CretOrg']);
 
@@ -648,7 +654,7 @@ const Props = defineProps({
 
 const { userMngrId } = storeToRefs(useAuthStore());
 
-const Org = ref({ actionReasn: '', urlCdSet: '', valid: false, urlCdNew: '' });
+const Org = ref({ actinReasn: '', urlCdSet: '', valid: false, urlCdNew: '' });
 const Acunt = ref({ acuntIdSet: '', valid: false });
 const OrgTurn = ref({
 	turnConnCdSet: '',
@@ -657,12 +663,16 @@ const OrgTurn = ref({
 
 const MngrLog = ref({
 	logId: '',
-	mngrId: userMngrId,
+	mngrId: userMngrId.value,
 	actinDt: '',
 	actinReasn: '',
 	actinType: 'C00101',
 	actinRslt: '',
 	actinFunc: '',
+	insId: userMngrId.value,
+	insDt: '',
+	uptId: userMngrId.value,
+	uptDt: '',
 });
 
 const { vAlert, vSuccess } = useAlert();
@@ -699,9 +709,11 @@ const Procs = ref({
 	ChkAcuntId: { path: '/api/Acunt/ChkAcuntId', loading: false },
 	ChkTurnConnCd: { path: '/api/OrgTurn/ChkTurnConnCd', loading: false },
 	CretOrg: { path: '/api/Org/CretOrg', loading: false },
+
+	GetOrg: { path: '/api/Org/GetOrg', loading: false },
 });
 
-const { data, loading, execUrl, reqUrl } = useAxios(
+const { data, execUrl, reqUrl } = useAxios(
 	'',
 	{ method: 'post' },
 	{
@@ -710,7 +722,7 @@ const { data, loading, execUrl, reqUrl } = useAxios(
 			switch (reqUrl.value) {
 				case Procs.value.ChangeOrgUrlCd.path:
 					vSuccess('기관코드가 변경되었습니다.');
-					ShowModal.value.OrdCd = false;
+					ShowModal.value.OrgUrlCd = false;
 					break;
 
 				case Procs.value.ChangePw.path:
@@ -767,6 +779,14 @@ const { data, loading, execUrl, reqUrl } = useAxios(
 					Go('OrgList', {});
 					break;
 
+				case Procs.value.GetOrg.path:
+					Procs.value.GetOrg.loading = false;
+
+					Org.value = data.value.Org;
+					Acunt.value = data.value.Acunt;
+
+					break;
+
 				default:
 					break;
 			}
@@ -786,6 +806,7 @@ const { data, loading, execUrl, reqUrl } = useAxios(
 // Show / Hide	*****************************
 
 const ShowModal = ref({
+	OrgUrlCd: false,
 	OrgCd: false,
 	OrgPw: false,
 	ExpirDt: false,
@@ -801,6 +822,8 @@ const ShowHide = (type, showHide) => {
 	}
 };
 
+// Init	*************************************
+
 // Route	***********************************
 
 const router = useRouter();
@@ -814,9 +837,7 @@ const Go = (nm, q) => {
 const ChkUrlCd = () => {
 	let Val = Org.value.urlCd;
 
-	if (!ValidNotBlank(Val, '기관인증코드', txtUrlCd.value)) {
-		return;
-	}
+	if (!ValidNotBlank(Val, '기관인증코드', txtUrlCd.value)) return;
 	if (!ValidMaxLen(Val, 0, 20, txtUrlCd.value)) return;
 
 	Procs.value.ChkUrlCd.loading = true;
@@ -827,21 +848,30 @@ const ChkUrlCd = () => {
 const ChkUrlNewCd = () => {
 	let Val = Org.value.urlCdNew;
 
-	if (!ValidNotBlank(Val, '기관인증코드', txtUrlCdNew.value)) {
-		return;
-	}
+	if (!ValidNotBlank(Val, '기관인증코드', txtUrlCdNew.value)) return;
 	if (!ValidMaxLen(Val, 0, 20, txtUrlCdNew.value)) return;
 
 	Procs.value.ChkUrlCd.loading = true;
-	execUrl(Procs.value.ChkUrlCd.path, Org.value);
+	execUrl(Procs.value.ChkUrlCd.path, {
+		urlCd: Val,
+	});
 };
 
 // 기관인증코드 변경
 const ChangeOrgUrlCd = () => {
-	if (!ValidMaxLen(Org.value.urlCd, 0, 20, txtUrlCd.value)) return;
+	let Val = Org.value.urlCdNew;
+	if (!ValidNotBlank(Val, 0, 20, txtUrlCdNew.value)) return;
+	if (!ValidMaxLen(Val, 0, 20, txtUrlCdNew.value)) return;
+
+	MngrLog.value.actinFunc = '관리자 수정';
 
 	Procs.value.ChangeOrgUrlCd.loading = true;
-	execUrl(Procs.value.ChangeOrgUrlCd.path, Org.value);
+	execUrl(Procs.value.ChangeOrgUrlCd.path, {
+		orgId: Org.value.orgId,
+		urlCd: Val,
+		userId: userMngrId.value,
+		mngrLog: MngrLog.value,
+	});
 };
 
 watch(
@@ -860,7 +890,7 @@ watch(
 	newValue => {
 		const val = newValue.replace(/[^a-zA-Z0-9]/g, '');
 		Org.value.urlCdNew = val;
-		Org.value.valid = Org.value.urlCd == Org.value.urlCdSet;
+		Org.value.valid = Org.value.urlCdNew == Org.value.urlCdSet;
 
 		//Emit('update:urlCd', Org.value.urlCd);
 	},
@@ -950,10 +980,9 @@ watch(
 
 // 우편번호	**********************************
 
-// 등록	**************************************
-
 // Method	************************************
 
+// 등록
 const CretOrg = () => {
 	if (!Org.value.valid) {
 		vAlert('기관인증코드 유효성검사를 진행하세요.');
@@ -1038,7 +1067,19 @@ const CretOrg = () => {
 	execUrl(Procs.value.CretOrg.path, Parm);
 };
 
-//console.log('txtUrlCd : ', txtUrlCd.value);
+// 조회
+const GetOrg = () => {
+	let Parm = {
+		orgId: Props.OrgId,
+	};
+
+	Procs.value.GetOrg.loading = true;
+	execUrl(Procs.value.GetOrg.path, Parm);
+};
+
+if (Props.OrgId != null) {
+	GetOrg();
+}
 
 const ValidMaxLen = (val, minLen, maxLen, obj) => {
 	if (val.length < minLen || val.length > maxLen) {

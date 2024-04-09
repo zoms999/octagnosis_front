@@ -75,7 +75,7 @@
 				<tr
 					v-for="item in OrgList"
 					:key="item.orgId"
-					@click="Go('OrgEdit', { id: item.orgId })"
+					@click="Go('OrgEdit', { orgId: item.OrgId })"
 					class="Poit"
 				>
 					<td>{{ item.OrgId }}</td>
@@ -150,8 +150,10 @@ const { data, error, loading, execUrl, reqUrl } = useAxios(
 // Route	***********************************
 
 const router = useRouter();
+
 const Go = (nm, q) => {
 	//router.push({ name: nm, params: p });
+	console.log(('q : ', q));
 	router.push({ name: nm, query: q });
 };
 

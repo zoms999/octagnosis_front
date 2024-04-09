@@ -3,12 +3,12 @@
 		<div>기관 <span>></span><span> 수정</span></div>
 		<div></div>
 	</div>
-
 	<OrgForm
 		ProcType="E"
-		:ObjOrg="Org"
-		:ObjAcunt="Acunt"
-		:ObjOrgTurn="OrgTurn"
+		v-model:ObjOrg="Org"
+		v-model:ObjAcunt="Acunt"
+		v-model:ObjOrgTurn="OrgTurn"
+		v-model:OrgId="OrgId"
 		@Go="Go"
 		@GoBack="GoBack"
 	>
@@ -17,25 +17,31 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
-import OrgForm from '@/components/Org/OrgForm.vue';
-import { ref } from 'vue';
-import { useAxios } from '@/hooks/useAxios';
+import { onBeforeMount, ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import { useAlert } from '@/hooks/useAlert';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
+import { useAxios } from '@/hooks/useAxios';
+
+import OrgForm from '@/components/Org/OrgForm.vue';
 
 // Props / Emit  ****************************
+
+//console.log('111OrgId :  ', route.query.orgId);
 
 // Data *************************************
 
 const router = useRouter();
-const { vAlert, vSuccess } = useAlert();
+const route = useRoute();
 const { userMngrId } = storeToRefs(useAuthStore());
+const OrgId = ref(route.query.orgId);
+
+const { vAlert, vSuccess } = useAlert();
 
 const Org = ref({
 	orgId: '0',
-	bizNum: '',
+	bizNum: '11',
 	corpNum: '',
 	ceoNm: '',
 	zip: '',
@@ -61,9 +67,9 @@ const Org = ref({
 	mngerTeam2: '',
 	mngerPosit2: '',
 	urlCd: '',
-	insId: userMngrId,
+	insId: userMngrId.value,
 	insDt: '',
-	uptId: '',
+	uptId: userMngrId.value,
 	uptDt: '',
 });
 
@@ -75,9 +81,9 @@ const OrgTurn = ref({
 	turnReqCnt: '0',
 	turnUseCnt: '0',
 	turnConnCd: '',
-	insId: userMngrId,
+	insId: userMngrId.value,
 	insDt: '',
-	uptId: '',
+	uptId: userMngrId.value,
 	uptDt: '',
 });
 
@@ -95,7 +101,7 @@ const Acunt = ref({
 	termsEvent: 'Y',
 	insId: userMngrId,
 	insDt: '',
-	uptId: '',
+	uptId: userMngrId,
 	uptDt: '',
 
 	pwConfirm: '',
@@ -106,6 +112,10 @@ const Acunt = ref({
 
 // Axios	***********************************
 
+const Procs = ref({
+	GetOrg: { path: '/api/Org/GetOrg', loading: false },
+});
+
 const { data, error, loading, execute, execUrl, reqUrl } = useAxios(
 	'',
 	{
@@ -115,12 +125,9 @@ const { data, error, loading, execute, execUrl, reqUrl } = useAxios(
 		immediate: false,
 		onSuccess: () => {
 			switch (reqUrl.value) {
-				case '/api/Org/CretOrg':
-					vSuccess('기관이 등록되었습니다.');
-					//Go();
-					break;
-				case '/api/Org/ChangePw':
-					vSuccess('비밀번호가 변경되었습니다.');
+				case '/api/Org/GetOrg':
+					Org.value = data.value.Org;
+					Acunt.value = data.value.Acunt;
 					break;
 				default:
 					break;
@@ -132,9 +139,20 @@ const { data, error, loading, execute, execUrl, reqUrl } = useAxios(
 	},
 );
 
-// Show/Hide	******************************************
+// Hook 	****************************************
 
-// Route	**********************************************
+onBeforeMount(async () => {
+	let Parm = {
+		orgId: OrgId.value,
+	};
+
+	Procs.value.GetOrg.loading = true;
+	execUrl(Procs.value.GetOrg.path, Parm);
+});
+
+// Show/Hide	************************************
+
+// Route	****************************************
 
 const Go = (nm, q) => {
 	router.push({ name: nm, query: q });

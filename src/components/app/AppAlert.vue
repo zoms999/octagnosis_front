@@ -28,6 +28,7 @@ const typeStyle = type => (type === 'error' ? 'alert-danger' : 'alert-primary');
 	top: 10px;
 	right: 10px;
 	width: 300px !important;
+	z-index: 9999;
 }
 
 .slide-enter-from,
