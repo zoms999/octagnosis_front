@@ -183,35 +183,38 @@ const savePw = () => {
 };
 
 const savePersonal = () => {
-	let saveData = {};
-	saveData.persnId = personal.value.PersnId;
-	saveData.persnNm = personal.value.PersnNm;
-	saveData.sex = personal.value.Sex;
-	saveData.phone = personal.value.Phone;
-	saveData.tel = personal.value.Tel;
-	saveData.email = personal.value.Email;
-	saveData.zip = personal.value.Zip;
-	saveData.addr1 = personal.value.Addr1;
-	saveData.addr2 = personal.value.Addr2;
-	saveData.addr3 = personal.value.Addr3;
-	saveData.addr4 = personal.value.Addr4;
-	saveData.educt = personal.value.Educt;
-	saveData.scholNm = personal.value.ScholNm;
-	saveData.scholMajor = personal.value.ScholMajor;
-	saveData.scholGrade = personal.value.ScholGrade;
-	saveData.job = personal.value.Job;
-	saveData.jobNm = personal.value.JobNm;
-	saveData.jobDuty = personal.value.JobDuty;
-	saveData.uptId = userMngrId.value;
+	let personalData = {
+		persnId: personal.value.PersnId,
+		persnNm: personal.value.PersnNm,
+		sex: personal.value.Sex,
+		phone: personal.value.Phone,
+		tel: personal.value.Tel,
+		email: personal.value.Email,
+		zip: personal.value.Zip,
+		addr1: personal.value.Addr1,
+		addr2: personal.value.Addr2,
+		addr3: personal.value.Addr3,
+		addr4: personal.value.Addr4,
+		educt: personal.value.Educt,
+		scholNm: personal.value.ScholNm,
+		scholMajor: personal.value.ScholMajor,
+		scholGrade: personal.value.ScholGrade,
+		job: personal.value.Job,
+		jobNm: personal.value.JobNm,
+		jobDuty: personal.value.JobDuty,
+		uptId: userMngrId.value,
+		acuntId: personal.value.AcuntId,
+		expirDt: personal.value.ExpirDt,
+	};
 
 	axios
-		.post(`/api/personal/edit/${persnId}`, saveData) // Removed spread syntax
+		.post(`/api/personal/edit/${persnId}`, personalData) // Removed spread syntax
 		.then(response => {
 			vSuccess('수정 되었습니다.');
 			console.log('Personal data updated successfully:', response.data);
 		})
 		.catch(error => {
-			vAlert('수정실패.' + err.message);
+			vAlert('수정실패.' + error.message);
 			console.error('Error updating personal data:', error);
 		});
 };
