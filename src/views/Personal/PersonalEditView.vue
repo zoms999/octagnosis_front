@@ -1,9 +1,18 @@
 <template>
 	<div>
-		<PersonalEditForm :personal="personal" @GoBack="GoBack">
+		<PersonalEditForm
+			:personal="personal"
+			@GoBack="GoBack"
+			@editPersonal="savePersonal"
+		>
 			<template #actionsPw>
 				<button class="btn btn-primary" @click.prevent="changPwModal">
 					변경
+				</button>
+			</template>
+			<template #actionsExpirDt>
+				<button class="btn btn-primary" @click.prevent="changExpirDtModal">
+					사용기한
 				</button>
 			</template>
 		</PersonalEditForm>
@@ -64,6 +73,34 @@
 			</template>
 		</AppModal>
 	</Teleport>
+
+	<Teleport to="#modal">
+		<AppModal v-model="showExpirDt" title="변경 이력을 기록합니다.">
+			<template #default>
+				<div class="mb-3 row">
+					<label for="inputPassword" class="col-sm-4 col-form-label"
+						>변경이유?</label
+					>
+					<div class="col-sm-8">
+						<input
+							type="text"
+							class="form-control"
+							id="reasonChange"
+							v-model="reasonChange"
+						/>
+					</div>
+				</div>
+			</template>
+			<template #actions>
+				<button type="button" class="btn btn-secondary" @click="closeModal">
+					닫기
+				</button>
+				<button type="button" class="btn btn-secondary" @click="save">
+					저장
+				</button>
+			</template>
+		</AppModal>
+	</Teleport>
 </template>
 
 <script setup>
@@ -106,11 +143,17 @@ const userpw = ref();
 const userpw1 = ref();
 const userpw2 = ref();
 
+const showExpirDt = ref(false);
+
 const changPwModal = () => {
 	show.value = true;
 	userpw.value = ''; // 현재 비밀번호 초기화
 	userpw1.value = ''; // 변경 비밀번호 초기화
 	userpw2.value = ''; // 비밀번호 확인 초기화
+};
+
+const changExpirDtModal = () => {
+	showExpirDt.value = true;
 };
 
 const savePw = () => {
@@ -138,6 +181,67 @@ const savePw = () => {
 			});
 	}
 };
+
+const savePersonal = () => {
+	let saveData = {};
+	saveData.persnId = personal.value.PersnId;
+	saveData.persnNm = personal.value.PersnNm;
+	saveData.sex = personal.value.Sex;
+	saveData.phone = personal.value.Phone;
+	saveData.tel = personal.value.Tel;
+	saveData.email = personal.value.Email;
+	saveData.zip = personal.value.Zip;
+	saveData.addr1 = personal.value.Addr1;
+	saveData.addr2 = personal.value.Addr2;
+	saveData.addr3 = personal.value.Addr3;
+	saveData.addr4 = personal.value.Addr4;
+	saveData.educt = personal.value.Educt;
+	saveData.scholNm = personal.value.ScholNm;
+	saveData.scholMajor = personal.value.ScholMajor;
+	saveData.scholGrade = personal.value.ScholGrade;
+	saveData.job = personal.value.Job;
+	saveData.jobNm = personal.value.JobNm;
+	saveData.jobDuty = personal.value.JobDuty;
+	saveData.uptId = userMngrId.value;
+
+	axios
+		.post(`/api/personal/edit/${persnId}`, saveData) // Removed spread syntax
+		.then(response => {
+			vSuccess('수정 되었습니다.');
+			console.log('Personal data updated successfully:', response.data);
+		})
+		.catch(error => {
+			vAlert('수정실패.' + err.message);
+			console.error('Error updating personal data:', error);
+		});
+};
+
+// const { execute } = useAxios(
+// 	`/api/personal/edit/${persnId}`,
+// 	{ method: 'patch' },
+// 	{
+// 		immediate: false,
+// 		onSuccess: () => {
+// 			console.log('persnId-->' + persnId);
+// 			console.log('수정이 완료되었습니다! ');
+// 			vSuccess('수정 되었습니다.');
+// 			//router.push({ name: 'ManagerList' });
+// 		},
+// 		onError: err => {
+// 			//alert(err);
+// 			console.log('err ' + err.message);
+// 			vAlert('수정실패.' + err.message);
+// 			//vAlert(err.message);
+// 		},
+// 	},
+// );
+
+// const savePersonal = () => {
+// 	execute({
+// 		...personal.value,
+// 		uptId: userMngrId.value, // store에서 가져온 userMngrId 사용
+// 	});
+// };
 
 const closeModal = () => {
 	show.value = false;
