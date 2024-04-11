@@ -18,8 +18,20 @@
 				</template>
 				<template v-else> 등록 </template>
 			</button>
-			<button v-if="ProcType == 'E'" class="btn btn-primary me-2" @click="edit">
-				수정
+			<button
+				v-if="ProcType == 'E'"
+				class="btn btn-primary me-2"
+				@click="EditOrg()"
+			>
+				<template v-if="Procs.EditOrg.loading">
+					<span
+						class="spinner-grow spinner-grow-sm"
+						role="status"
+						aria-hidden="true"
+					></span>
+					<span class="visually-hidden">Loading...</span>
+				</template>
+				<template v-else> 수정 </template>
 			</button>
 			<button class="btn btn-secondary" @click="$emit('GoBack')">
 				목록으로
@@ -173,13 +185,32 @@
 			<div class="col-1 lbl">사용기한</div>
 			<div class="col-3">
 				<div class="input-group">
-					<input type="text" class="form-control" :value="Acunt.expirDt" />
-					<button class="btn btn-primary">변경</button>
+					<input
+						type="text"
+						class="form-control"
+						:value="Acunt.expirDt"
+						readonly="readonly"
+					/>
+					<button
+						class="btn btn-primary"
+						@click="ShowHide('AcuntExpirDt', true)"
+					>
+						변경
+					</button>
 				</div>
 			</div>
 			<div class="col-1 lbl">등록날짜</div>
 			<div class="col-3">
-				<input type="text" class="form-control" :value="insDt" />
+				<input
+					type="text"
+					class="form-control"
+					:value="
+						Acunt.insDt
+							.substr(0, 8)
+							.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3')
+					"
+					readonly="readonly"
+				/>
 			</div>
 			<div class="col-1 lbl">아이디</div>
 			<div class="col-3">
@@ -193,8 +224,13 @@
 			<div class="col-1 lbl">비밀번호</div>
 			<div class="col-3">
 				<div class="input-group">
-					<input type="password" class="form-control" />
-					<button class="btn btn-primary" @click="ShowModal.OrgPw = true">
+					<input
+						type="password"
+						class="form-control"
+						:value="Acunt.pw"
+						readonly="readonly"
+					/>
+					<button class="btn btn-primary" @click="Modal.AcuntPw = true">
 						변경
 					</button>
 				</div>
@@ -481,7 +517,7 @@
 
 	<!--	기관인증 코드	------------------------------->
 	<Teleport to="#modal">
-		<AppModal v-model="ShowModal.OrgUrlCd" title="변경 이력 기록" width="500">
+		<AppModal v-model="Modal.OrgUrlCd" title="변경 이력 기록" width="500">
 			<template #default>
 				<div class="container ItemBox">
 					<div class="row">
@@ -529,13 +565,13 @@
 				</div>
 			</template>
 			<template #actions>
-				<button type="button" class="btn btn-primary" @click="ChangeOrgUrlCd">
+				<button type="button" class="btn btn-primary" @click="ChgOrgUrlCd">
 					저장
 				</button>
 				<button
 					type="button"
 					class="btn btn-secondary"
-					@click="CloseOrgCdModal"
+					@click="ShowHide('OrgUrlCd', fase)"
 				>
 					닫기
 				</button>
@@ -545,33 +581,48 @@
 
 	<!--	사용기한 	------------------------------->
 	<Teleport to="#modal">
-		<AppModal v-model="ShowModal.ExpirDt" title="사용기한 변경" width="500">
+		<AppModal v-model="Modal.AcuntExpirDt" title="사용기한 변경" width="500">
 			<template #default>
 				<div class="container ItemBox">
 					<div class="row">
 						<div class="col-12">사용기한</div>
 						<div class="col-12">
-							<input type="text" class="form-control" v-model="Acunt.expirDt" />
+							<VueDatePicker
+								v-model="Acunt.expirDtNew"
+								locale="ko"
+								:format="formatDate"
+								:enable-time-picker="false"
+							>
+							</VueDatePicker>
 						</div>
 						<div class="col-12">변경이유</div>
 						<div class="col-12">
 							<input
 								type="text"
+								ref="txtActinReasnExpir"
 								class="form-control"
-								v-model="Org.actinReasn"
+								v-model="MngrLog.actinReasn"
 							/>
 						</div>
 					</div>
 				</div>
 			</template>
 			<template #actions>
-				<button type="button" class="btn btn-primary" @click="ChangeOrgUrlCd">
-					저장
+				<button type="button" class="btn btn-primary" @click="ChgExpirDt">
+					<template v-if="Procs.ChgExpirDt.loading">
+						<span
+							class="spinner-grow spinner-grow-sm"
+							role="status"
+							aria-hidden="true"
+						></span>
+						<span class="visually-hidden">Loading...</span>
+					</template>
+					<template v-else> 저장 </template>
 				</button>
 				<button
 					type="button"
 					class="btn btn-secondary"
-					@click="CloseOrgCdModal"
+					@click="ShowHide('AcuntExpirDt', false)"
 				>
 					닫기
 				</button>
@@ -581,45 +632,58 @@
 
 	<!--	비밀번호 변경 코드	------------------------------->
 	<Teleport to="#modal">
-		<AppModal v-model="ShowModal.OrgPw" title="비밀번호 변경" width="500">
+		<AppModal v-model="Modal.AcuntPw" title="비밀번호 변경" width="500">
 			<template #default>
 				<div class="container ItemBox">
 					<div class="row">
-						<div class="col-4 lbl"><i></i>기존비밀번호</div>
-						<div class="col-8">
+						<div class="col-12">
+							<i></i>신규비밀번호 [ 6~20 자, 영문(대소문자 구분안함), 숫자 ]
+						</div>
+						<div class="col-12">
 							<input
 								type="password"
+								ref="txtpwNew"
 								class="form-control"
-								v-model="ObjPw.oldPw"
+								v-model="Acunt.pwNew"
 							/>
 						</div>
-						<div class="col-4 lbl"><i></i>신규비밀번호</div>
-						<div class="col-8">
+						<div class="col-12"><i></i>신규비밀번호 확인</div>
+						<div class="col-12">
 							<input
 								type="password"
+								ref="txtpwNewConfirm"
 								class="form-control"
-								v-model="ObjPw.newPw"
+								v-model="Acunt.pwNewConfirm"
 							/>
 						</div>
-						<div class="col-4 lbl"><i></i>신규비밀번호 확인</div>
-						<div class="col-8">
+						<div class="col-12">변경이유</div>
+						<div class="col-12">
 							<input
-								type="password"
+								type="text"
+								ref="txtActinReasnPw"
 								class="form-control"
-								v-model="ObjPw.newPwConfirm"
+								v-model="MngrLog.actinReasn"
 							/>
 						</div>
 					</div>
 				</div>
 			</template>
 			<template #actions>
-				<button type="button" class="btn btn-primary" @click="ChangePw">
-					비밀번호 변경
+				<button type="button" class="btn btn-primary" @click="ChgPw">
+					<template v-if="Procs.ChgPw.loading">
+						<span
+							class="spinner-grow spinner-grow-sm"
+							role="status"
+							aria-hidden="true"
+						></span>
+						<span class="visually-hidden">Loading...</span>
+					</template>
+					<template v-else> 비밀번호 변경 </template>
 				</button>
 				<button
 					type="button"
 					class="btn btn-secondary"
-					@click="ShowModal.value.OrdPw = false"
+					@click="Modal.value.OrdPw = false"
 				>
 					닫기
 				</button>
@@ -655,7 +719,7 @@ console.log('OrgId :  ', Props.OrgId);
 const { userMngrId } = storeToRefs(useAuthStore());
 
 const Org = ref({ actinReasn: '', urlCdSet: '', valid: false, urlCdNew: '' });
-const Acunt = ref({ acuntIdSet: '', valid: false });
+const Acunt = ref({ acuntIdSet: '', valid: false, expirDtNew: '' });
 const OrgTurn = ref({
 	turnConnCdSet: '',
 	valid: false,
@@ -699,18 +763,28 @@ const txtMngerPhone1 = ref(null);
 const txtMngerEmail1 = ref(null);
 const txtUrlCdNew = ref(null);
 
+const txtActinReasn = ref(null);
+const txtActinReasnExpir = ref(null);
+
+const txtpwNew = ref(null);
+const txtpwNewConfirm = ref(null);
+const txtActinReasnPw = ref(null);
+
 // Axios	***********************************
 
 const Procs = ref({
-	ChangeOrgUrlCd: { path: '/api/Org/ChangeOrgUrlCd', loading: false },
-	ChangePw: { path: '/api/Org/ChangePw', loading: false },
+	ChgOrgUrlCd: { path: '/api/Org/ChgOrgUrlCd', loading: false },
+	ChgPw: { path: '/api/Acunt/ChgPw', loading: false },
 
 	ChkUrlCd: { path: '/api/Org/ChkUrlCd', loading: false },
-	ChkAcuntId: { path: '/api/Acunt/ChkAcuntId', loading: false },
 	ChkTurnConnCd: { path: '/api/OrgTurn/ChkTurnConnCd', loading: false },
 	CretOrg: { path: '/api/Org/CretOrg', loading: false },
+	EditOrg: { path: '/api/Org/EditOrg', loading: false },
 
 	GetOrg: { path: '/api/Org/GetOrg', loading: false },
+
+	ChkAcuntId: { path: '/api/Acunt/ChkAcuntId', loading: false },
+	ChgExpirDt: { path: '/api/Acunt/ChgExpirDt', loading: false },
 });
 
 const { data, execUrl, reqUrl } = useAxios(
@@ -720,14 +794,16 @@ const { data, execUrl, reqUrl } = useAxios(
 		immediate: false,
 		onSuccess: () => {
 			switch (reqUrl.value) {
-				case Procs.value.ChangeOrgUrlCd.path:
+				case Procs.value.ChgOrgUrlCd.path:
 					vSuccess('기관코드가 변경되었습니다.');
-					ShowModal.value.OrgUrlCd = false;
+					Org.value.urlCd = Org.value.urlCdNew;
+					Modal.value.OrgUrlCd = false;
 					break;
 
-				case Procs.value.ChangePw.path:
+				case Procs.value.ChgPw.path:
 					vSuccess('비밀번호가 변경되었습니다.');
-					ShowModal.value.OrdPw = false;
+					Acunt.value.pw = Acunt.value.pwNew;
+					Modal.value.AcuntPw = false;
 					break;
 
 				case Procs.value.ChkUrlCd.path:
@@ -779,12 +855,24 @@ const { data, execUrl, reqUrl } = useAxios(
 					Go('OrgList', {});
 					break;
 
+				case Procs.value.EditOrg.path:
+					vSuccess('기관이 수정되었습니다. ');
+					Procs.value.EditOrg.loading = false;
+					break;
+
 				case Procs.value.GetOrg.path:
 					Procs.value.GetOrg.loading = false;
 
 					Org.value = data.value.Org;
 					Acunt.value = data.value.Acunt;
 
+					break;
+
+				case Procs.value.ChgExpirDt.path:
+					Procs.value.ChgExpirDt.loading = false;
+					Modal.value.AcuntExpirDt = false;
+
+					Acunt.value.expirDt = formatDate(Acunt.value.expirDtNew);
 					break;
 
 				default:
@@ -805,19 +893,32 @@ const { data, execUrl, reqUrl } = useAxios(
 
 // Show / Hide	*****************************
 
-const ShowModal = ref({
+const Modal = ref({
 	OrgUrlCd: false,
-	OrgCd: false,
-	OrgPw: false,
-	ExpirDt: false,
+	AcuntExpirDt: false,
+	AcuntPw: false,
 });
 
 const ShowHide = (type, showHide) => {
 	switch (type) {
 		case 'OrgUrlCd':
-			ShowModal.value.OrgUrlCd = showHide;
+			Modal.value.OrgUrlCd = showHide;
+			MngrLog.value.actinReasn = '';
 			Org.value.urlCdNew = '';
 			Org.value.valid = false;
+			break;
+		case 'AcuntExpirDt':
+			Modal.value.AcuntExpirDt = showHide;
+			MngrLog.value.actinReasn = '';
+			Acunt.value.expirDtNew = '';
+			Acunt.value.valid = false;
+			break;
+		case 'AcuntPw':
+			Modal.value.AcuntPw = showHide;
+			Acunt.value.pwNew = '';
+			Acunt.value.pwNewConfirm = '';
+			Acunt.value.valid = false;
+			MngrLog.value.actinReasn = '';
 			break;
 	}
 };
@@ -858,15 +959,18 @@ const ChkUrlNewCd = () => {
 };
 
 // 기관인증코드 변경
-const ChangeOrgUrlCd = () => {
+const ChgOrgUrlCd = () => {
 	let Val = Org.value.urlCdNew;
-	if (!ValidNotBlank(Val, 0, 20, txtUrlCdNew.value)) return;
+	if (!ValidNotBlank(Val, '기관인증코드', txtUrlCdNew.value)) return;
 	if (!ValidMaxLen(Val, 0, 20, txtUrlCdNew.value)) return;
+	if (!ValidNotBlank(MngrLog.value.actinReasn, '변경사유', txtActinReasn.value))
+		return;
 
+	MngrLog.value.actinType = 'C00201';
 	MngrLog.value.actinFunc = '관리자 수정';
 
-	Procs.value.ChangeOrgUrlCd.loading = true;
-	execUrl(Procs.value.ChangeOrgUrlCd.path, {
+	Procs.value.ChgOrgUrlCd.loading = true;
+	execUrl(Procs.value.ChgOrgUrlCd.path, {
 		orgId: Org.value.orgId,
 		urlCd: Val,
 		userId: userMngrId.value,
@@ -898,6 +1002,35 @@ watch(
 
 // 사용기한 변경	*****************************
 
+const ChgExpirDt = () => {
+	if (!ValidNotBlank(Acunt.value.expirDtNew, '사용기한', null)) return;
+	if (!ValidNotBlank(MngrLog.value.actinReasn, '변경이유', txtActinReasnExpir))
+		return;
+
+	MngrLog.value.actinType = 'C00202';
+	MngrLog.value.actinFunc = '관리자-기관계정 사용기한 수정';
+
+	Procs.value.ChgExpirDt.loading = true;
+	execUrl(Procs.value.ChgExpirDt.path, {
+		acuntId: Acunt.value.acuntId,
+		expirDt: formatDate(Acunt.value.expirDtNew).replace(/-/g, ''),
+		userId: userMngrId.value,
+		mngrLog: MngrLog.value,
+	});
+};
+
+watch(
+	() => Acunt.value.expirDt,
+	newValue => {
+		const val = newValue.replace(/[^0-9]/g, '');
+
+		if (val.length == 8) {
+			Acunt.value.expirDt = val.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3');
+		}
+		//Emit('update:urlCd', Org.value.urlCd);
+	},
+);
+
 // 아이디 	**********************************
 
 // 아이디 중복확인
@@ -924,22 +1057,42 @@ watch(
 
 // 비밀번호 변경	*****************************
 
-const ObjPw = ref({
-	orgId: Props.orgId,
-	oldPw: '',
-	newPw: '',
-	newPwConfirm: '',
-	valid: false,
-});
-
-const ChangePw = () => {
-	if (ObjPw.value.newPw != ObjPw.value.newPwConfirm) {
+const ChgPw = () => {
+	if (Acunt.value.pwNew != Acunt.value.pwNewConfirm) {
 		vAlert('비밀번호가 일치하지 않습니다.');
 		return;
 	}
+	if (!ValidNotBlank(Acunt.value.pwNew, '비밀번호', txtPw.value)) {
+		return;
+	}
+	if (
+		!ValidNotBlank(
+			Acunt.value.pwNewConfirm,
+			'비밀번호 확인',
+			txtPwConfirm.value,
+		)
+	) {
+		return;
+	}
+	if (
+		!ValidNotBlank(MngrLog.value.actinReasn, '변경이유', txtActinReasnPw.value)
+	) {
+		return;
+	}
+	if (!ValidMaxLen(Acunt.value.pwNew, 6, 20, txtpwNew.value)) return;
+	if (!ValidMaxLen(Acunt.value.pwNewConfirm, 6, 20, txtpwNewConfirm.value))
+		return;
 
-	Procs.value.ChangePw.loading = true;
-	execUrl(Procs.value.ChangePw.path, ObjPw.value);
+	MngrLog.value.actinType = 'C00203';
+	MngrLog.value.actinFunc = '관리자-기관계정 비밀번호 변경';
+
+	Procs.value.ChgPw.loading = true;
+	execUrl(Procs.value.ChgPw.path, {
+		acuntId: Acunt.value.acuntId,
+		pw: Acunt.value.pwNew,
+		userId: userMngrId.value,
+		mngrLog: MngrLog.value,
+	});
 };
 
 // 1회차 코드	********************************
@@ -1067,6 +1220,42 @@ const CretOrg = () => {
 	execUrl(Procs.value.CretOrg.path, Parm);
 };
 
+// 기관수정
+const EditOrg = () => {
+	if (!ValidNotBlank(Org.value.compyNm, '기관명', txtCompyNm.value)) {
+		return;
+	}
+	if (!ValidNotBlank(Org.value.ceoNm, '대표자', txtCeoNm.value)) {
+		return;
+	}
+	if (!ValidNotBlank(Org.value.bizNum, '사업자번호', txtBizNum.value)) {
+		return;
+	}
+	if (!ValidNotBlank(Org.value.tel1, '연락처1', txtTel1.value)) {
+		return;
+	}
+	if (!ValidNotBlank(Org.value.zip, '우편번호', txtZip.value)) {
+		return;
+	}
+	if (!ValidNotBlank(Org.value.mngerNm1, '정(이름)', txtMngerNm1.value)) {
+		return;
+	}
+	if (!ValidNotBlank(Org.value.mngerTeam1, '부서', txtMngerTeam1.value)) {
+		return;
+	}
+	if (!ValidNotBlank(Org.value.mngerPosit1, '직급', txtMngerPosit1.value)) {
+		return;
+	}
+	if (!ValidNotBlank(Org.value.mngerPhone1, '휴대번호', txtMngerPhone1.value)) {
+		return;
+	}
+	if (!ValidNotBlank(Org.value.mngerEmail1, '이메일', txtMngerEmail1.value)) {
+		return;
+	}
+	Procs.value.EditOrg.loading = true;
+	execUrl(Procs.value.EditOrg.path, Org.value);
+};
+
 // 조회
 const GetOrg = () => {
 	let Parm = {
@@ -1093,6 +1282,7 @@ const ValidMaxLen = (val, minLen, maxLen, obj) => {
 };
 
 const ValidNotBlank = (val, tit, obj) => {
+	val = typeof val != 'string' ? val.toString() : val;
 	var Val = val.replace(/\s/g, '');
 	if (Val.length == 0) {
 		vAlert(tit == null ? `입력해 주세요.` : `${tit}를(을) 입력해 주세요.`);
@@ -1102,6 +1292,22 @@ const ValidNotBlank = (val, tit, obj) => {
 		return false;
 	}
 	return true;
+};
+
+const formatDate = date => {
+	const year = date.getFullYear();
+	const month = date.getMonth() + 1;
+	const day = date.getDate();
+
+	// 날짜 앞에 0을 붙여야 하는 경우
+	if (month || day < 10) {
+		const zeroDay = ('00' + day).slice(-2);
+		const zeroMonth = ('00' + month).slice(-2);
+
+		return `${year}-${zeroMonth}-${zeroDay}`;
+	} else {
+		return `${year}-${month}-${day}`;
+	}
 };
 </script>
 

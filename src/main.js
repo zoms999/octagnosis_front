@@ -11,12 +11,16 @@ import dayjs from './plugins/dayjs';
 import globalComponents from './plugins/global-components';
 import globalDirective from './plugins/global-directive';
 
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
+
 const app = createApp(App);
 app.use(globalComponents);
 app.use(globalDirective);
 app.use(router);
 app.use(dayjs);
 app.use(createPinia());
+app.component('VueDatePicker', VueDatePicker);
 app.mount('#app');
 
 import 'bootstrap/dist/js/bootstrap.js';

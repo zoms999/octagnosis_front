@@ -105,9 +105,9 @@ const Acunt = ref({
 	uptDt: '',
 
 	pwConfirm: '',
-	oldPw: '',
-	newPw: '',
-	newPwConfirm: '',
+
+	pwNew: '',
+	pwNewConfirm: '',
 });
 
 // Axios	***********************************
