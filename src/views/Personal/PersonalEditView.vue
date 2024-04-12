@@ -74,20 +74,32 @@
 		</AppModal>
 	</Teleport>
 
+	<!--	사용기한 	------------------------------->
 	<Teleport to="#modal">
-		<AppModal v-model="showExpirDt" title="변경 이력을 기록합니다.">
+		<AppModal v-model="showExpirDt" title="사용기한 변경" width="500">
 			<template #default>
-				<div class="mb-3 row">
-					<label for="inputPassword" class="col-sm-4 col-form-label"
-						>변경이유?</label
-					>
-					<div class="col-sm-8">
-						<input
-							type="text"
-							class="form-control"
-							id="reasonChange"
-							v-model="reasonChange"
-						/>
+				<div class="container ItemBox">
+					<div class="row">
+						<div class="col-12">사용기한</div>
+						<div class="col-12">
+							<VueDatePicker
+								v-model="expirDt"
+								locale="ko"
+								:format="formatDate"
+								:enable-time-picker="false"
+							>
+							</VueDatePicker>
+						</div>
+						<div class="col-12">변경이유</div>
+						<div class="col-12">
+							<input
+								type="text"
+								ref="txtActinReasnExpir"
+								class="form-control"
+								id="reasonChange"
+								v-model="reasonChange"
+							/>
+						</div>
 					</div>
 				</div>
 			</template>
@@ -95,7 +107,7 @@
 				<button type="button" class="btn btn-secondary" @click="closeModal">
 					닫기
 				</button>
-				<button type="button" class="btn btn-secondary" @click="save">
+				<button type="button" class="btn btn-secondary" @click="saveExpirDt">
 					저장
 				</button>
 			</template>
@@ -104,7 +116,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 //import { getPostById, updatePost } from '@/api/managers';
 import PersonalEditForm from '@/components/personal/PersonalEditForm.vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -113,6 +125,7 @@ import { useAlert } from '@/hooks/useAlert';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 import axios from 'axios';
+import { useAlertStore } from '@/stores/alert';
 const store = useAuthStore();
 const { userMngrId } = storeToRefs(store);
 const { vAlert, vSuccess } = useAlert();
@@ -120,6 +133,7 @@ const router = useRouter();
 const route = useRoute();
 const persnId = route.params.persnId;
 const personal = ref([]);
+const expirDt = ref('');
 console.log('goEditPage -- > ' + persnId);
 
 const getPersnByPersnIdAndType = async () => {
@@ -219,6 +233,29 @@ const savePersonal = () => {
 		});
 };
 
+const saveExpirDt = () => {
+	const formattedDate = formatDate(expirDt.value);
+	personal.value.ExpirDt = formattedDate;
+	let personalData = {
+		persnId: personal.value.PersnId,
+		expirDt: personal.value.ExpirDt.replace(/-/g, ''),
+	};
+
+	showExpirDt.value = false;
+	axios
+		.patch(`/api/personal/editExpir/${persnId}`, personalData) // Removed spread syntax
+		.then(response => {
+			vSuccess('수정 되었습니다.');
+			showExpirDt.value = false;
+			console.log('Personal data updated successfully:', response.data);
+		})
+		.catch(error => {
+			vAlert('수정실패.' + error.message);
+			console.error('Error updating personal data:', error);
+			showExpirDt.value = false;
+		});
+};
+
 // const { execute } = useAxios(
 // 	`/api/personal/edit/${persnId}`,
 // 	{ method: 'patch' },
@@ -252,7 +289,24 @@ const closeModal = () => {
 const GoBack = () => {
 	window.history.back();
 };
+
 getPersnByPersnIdAndType();
+
+const formatDate = date => {
+	const year = date.getFullYear();
+	const month = date.getMonth() + 1;
+	const day = date.getDate();
+
+	// 날짜 앞에 0을 붙여야 하는 경우
+	if (month || day < 10) {
+		const zeroDay = ('00' + day).slice(-2);
+		const zeroMonth = ('00' + month).slice(-2);
+
+		return `${year}-${zeroMonth}-${zeroDay}`;
+	} else {
+		return `${year}-${month}-${day}`;
+	}
+};
 </script>
 
 <style lang="scss" scoped></style>

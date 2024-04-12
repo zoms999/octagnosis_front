@@ -58,7 +58,7 @@
 						<input
 							type="text"
 							class="form-control"
-							v-model="personal.RegDt"
+							v-model="formattedRegDt"
 							readonly
 						/>
 					</div>
@@ -309,11 +309,31 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 
 const props = defineProps({
 	personal: Object,
 });
+
+const formattedRegDt = computed(() => {
+	// Check if personal.RegDt is defined and not empty
+	if (props.personal && props.personal.RegDt) {
+		const regDt = props.personal.RegDt;
+		// Format the date as 'YYYY-MM-DD'
+		return `${regDt.substring(0, 4)}-${regDt.substring(4, 6)}-${regDt.substring(6, 8)}`;
+	} else {
+		return '';
+	}
+});
+
+// const formattedExpirDt = computed(() => {
+// 	if (props.personal && props.personal.ExpirDt) {
+// 		const expirDt = props.personal.ExpirDt;
+// 		return `${expirDt.substring(0, 4)}-${expirDt.substring(4, 6)}-${expirDt.substring(6, 8)}`;
+// 	} else {
+// 		return '';
+// 	}
+// });
 
 const birthYear = ref(props.personal.BirthYear || null);
 const birthMonth = ref(props.personal.BirthMonth || null);
