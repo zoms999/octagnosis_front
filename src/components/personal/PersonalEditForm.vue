@@ -69,7 +69,8 @@
 						<input
 							type="text"
 							class="form-control"
-							v-model="personal.ExpirDt"
+							:value="personal.ExpirDt"
+							readonly="readonly"
 						/>
 						<slot name="actionsExpirDt"> </slot>
 					</div>
@@ -91,7 +92,13 @@
 				<div class="col-1 lbl">생년월일</div>
 				<div class="col-2">
 					<div class="input-group">
-						<input type="text" class="form-control" v-model="birthdate" />
+						<VueDatePicker
+							v-model="formattedBirthDate"
+							locale="ko"
+							:format="formatDate"
+							:enable-time-picker="false"
+						>
+						</VueDatePicker>
 					</div>
 				</div>
 				<div class="col-1 lbl">성별</div>
@@ -326,28 +333,47 @@ const formattedRegDt = computed(() => {
 	}
 });
 
-// const formattedExpirDt = computed(() => {
-// 	if (props.personal && props.personal.ExpirDt) {
-// 		const expirDt = props.personal.ExpirDt;
-// 		return `${expirDt.substring(0, 4)}-${expirDt.substring(4, 6)}-${expirDt.substring(6, 8)}`;
-// 	} else {
-// 		return '';
-// 	}
-// });
-
-const birthYear = ref(props.personal.BirthYear || null);
-const birthMonth = ref(props.personal.BirthMonth || null);
-const birthDay = ref(props.personal.BirthDay || null);
-
-const birthdate = ref('');
-
-// 생일 연, 월, 일이 변경될 때마다 합쳐진 생일 값을 업데이트합니다.
-watch([birthYear, birthMonth, birthDay], () => {
-	const year = birthYear.value || '0000';
-	const month = birthMonth.value || '00';
-	const day = birthDay.value || '00';
-	birthdate.value = `${year}-${month}-${day}`;
+const formattedBirthDate = computed(() => {
+	// Check if personal.RegDt is defined and not empty
+	if (props.personal && props.personal.BirthDate) {
+		const birthDate = props.personal.BirthDate;
+		// Format the date as 'YYYY-MM-DD'
+		return `${birthDate.substring(0, 4)}-${birthDate.substring(4, 6)}-${birthDate.substring(6, 8)}`;
+	} else {
+		return '';
+	}
 });
+
+watch(
+	() => props.personal.ExpirDt,
+	newValue => {
+		const val = newValue.replace(/[^0-9]/g, '');
+
+		if (val.length == 8) {
+			props.personal.ExpirDt = val.replace(
+				/^(\d{4})(\d{2})(\d{2})$/,
+				'$1-$2-$3',
+			);
+		}
+		//Emit('update:urlCd', Org.value.urlCd);
+	},
+);
+
+const formatDate = date => {
+	const year = date.getFullYear();
+	const month = date.getMonth() + 1;
+	const day = date.getDate();
+
+	// 날짜 앞에 0을 붙여야 하는 경우
+	if (month || day < 10) {
+		const zeroDay = ('00' + day).slice(-2);
+		const zeroMonth = ('00' + month).slice(-2);
+
+		return `${year}-${zeroMonth}-${zeroDay}`;
+	} else {
+		return `${year}-${month}-${day}`;
+	}
+};
 
 const showPassword = ref(false);
 const passwordFieldType = ref('password');

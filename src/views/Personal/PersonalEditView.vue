@@ -83,7 +83,7 @@
 						<div class="col-12">사용기한</div>
 						<div class="col-12">
 							<VueDatePicker
-								v-model="expirDt"
+								v-model="expirDtNew"
 								locale="ko"
 								:format="formatDate"
 								:enable-time-picker="false"
@@ -96,8 +96,7 @@
 								type="text"
 								ref="txtActinReasnExpir"
 								class="form-control"
-								id="reasonChange"
-								v-model="reasonChange"
+								v-model="MngrLog.actinReasn"
 							/>
 						</div>
 					</div>
@@ -107,7 +106,7 @@
 				<button type="button" class="btn btn-secondary" @click="closeModal">
 					닫기
 				</button>
-				<button type="button" class="btn btn-secondary" @click="saveExpirDt">
+				<button type="button" class="btn btn-primary" @click="saveExpirDt">
 					저장
 				</button>
 			</template>
@@ -148,7 +147,6 @@ const getPersnByPersnIdAndType = async () => {
 		console.log('Response:', response.data.Personal); // Log the response
 	} catch (error) {
 		console.error('Error checking email duplication:', error);
-		alert('An error occurred while checking email duplication.');
 	}
 };
 
@@ -200,6 +198,7 @@ const savePersonal = () => {
 	let personalData = {
 		persnId: personal.value.PersnId,
 		persnNm: personal.value.PersnNm,
+		birthDate: personal.value.BirthDate,
 		sex: personal.value.Sex,
 		phone: personal.value.Phone,
 		tel: personal.value.Tel,
@@ -218,7 +217,7 @@ const savePersonal = () => {
 		jobDuty: personal.value.JobDuty,
 		uptId: userMngrId.value,
 		acuntId: personal.value.AcuntId,
-		expirDt: personal.value.ExpirDt,
+		expirDt: personal.value.ExpirDt.replace(/-/g, ''),
 	};
 
 	axios
@@ -233,64 +232,93 @@ const savePersonal = () => {
 		});
 };
 
+getPersnByPersnIdAndType();
+
+const txtActinReasnExpir = ref(null);
+const MngrLog = ref({
+	logId: '',
+	mngrId: userMngrId.value,
+	actinDt: '',
+	actinReasn: '',
+	actinType: 'C00102',
+	actinRslt: '',
+	actinFunc: '',
+	insId: userMngrId.value,
+	insDt: '',
+	uptId: userMngrId.value,
+	uptDt: '',
+});
+const Procs = ref({
+	ChgExpirDt: { path: '/api/Acunt/ChgExpirDt', loading: false },
+});
+
+const { data, execUrl, reqUrl } = useAxios(
+	'',
+	{ method: 'post' },
+	{
+		immediate: false,
+		onSuccess: () => {
+			switch (reqUrl.value) {
+				case Procs.value.ChgExpirDt.path:
+					Procs.value.ChgExpirDt.loading = false;
+					showExpirDt.value = false;
+					MngrLog.value.actinReasn = '';
+					personal.value.ExpirDt = formatDate(expirDtNew.value);
+					vSuccess('사용기한이 수정되었습니다. ');
+					break;
+
+				default:
+					break;
+			}
+		},
+		onError: err => {
+			vAlert(err.message);
+			// Procs의 모든 속성에 대해 반복문을 실행하여 loading 값을 true로 변경
+			for (const key in Procs.value) {
+				if (Object.hasOwnProperty.call(Procs.value, key)) {
+					Procs.value[key].loading = false;
+				}
+			}
+		},
+	},
+);
+const expirDtNew = ref('');
 const saveExpirDt = () => {
-	const formattedDate = formatDate(expirDt.value);
-	personal.value.ExpirDt = formattedDate;
-	let personalData = {
-		persnId: personal.value.PersnId,
-		expirDt: personal.value.ExpirDt.replace(/-/g, ''),
-	};
+	if (!ValidNotBlank(expirDtNew.value, '사용기한', null)) return;
+	if (!ValidNotBlank(MngrLog.value.actinReasn, '변경이유', txtActinReasnExpir))
+		return;
 
-	showExpirDt.value = false;
-	axios
-		.patch(`/api/personal/editExpir/${persnId}`, personalData) // Removed spread syntax
-		.then(response => {
-			vSuccess('수정 되었습니다.');
-			showExpirDt.value = false;
-			console.log('Personal data updated successfully:', response.data);
-		})
-		.catch(error => {
-			vAlert('수정실패.' + error.message);
-			console.error('Error updating personal data:', error);
-			showExpirDt.value = false;
-		});
+	MngrLog.value.actinType = 'C00202';
+	MngrLog.value.actinFunc = '관리자-기관계정 사용기한 수정';
+
+	Procs.value.ChgExpirDt.loading = true;
+	execUrl(Procs.value.ChgExpirDt.path, {
+		acuntId: personal.value.AcuntId,
+		expirDt: formatDate(expirDtNew.value).replace(/-/g, ''),
+		userId: userMngrId.value,
+		mngrLog: MngrLog.value,
+	});
 };
-
-// const { execute } = useAxios(
-// 	`/api/personal/edit/${persnId}`,
-// 	{ method: 'patch' },
-// 	{
-// 		immediate: false,
-// 		onSuccess: () => {
-// 			console.log('persnId-->' + persnId);
-// 			console.log('수정이 완료되었습니다! ');
-// 			vSuccess('수정 되었습니다.');
-// 			//router.push({ name: 'ManagerList' });
-// 		},
-// 		onError: err => {
-// 			//alert(err);
-// 			console.log('err ' + err.message);
-// 			vAlert('수정실패.' + err.message);
-// 			//vAlert(err.message);
-// 		},
-// 	},
-// );
-
-// const savePersonal = () => {
-// 	execute({
-// 		...personal.value,
-// 		uptId: userMngrId.value, // store에서 가져온 userMngrId 사용
-// 	});
-// };
 
 const closeModal = () => {
 	show.value = false;
+	showExpirDt.value = false;
 };
 const GoBack = () => {
 	window.history.back();
 };
-
-getPersnByPersnIdAndType();
+const ValidNotBlank = (val, tit, obj) => {
+	val = typeof val != 'string' ? val.toString() : val;
+	var Val = val.replace(/\s/g, '');
+	if (Val.length == 0) {
+		vAlert(tit == null ? `입력해 주세요.` : `${tit}를(을) 입력해 주세요.`);
+		if (obj != null) {
+			obj.focus();
+		}
+		return false;
+	}
+	return true;
+};
 
 const formatDate = date => {
 	const year = date.getFullYear();

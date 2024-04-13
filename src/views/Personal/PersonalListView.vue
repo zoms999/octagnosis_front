@@ -37,9 +37,6 @@
 				</select>
 			</div>
 		</div>
-		<button class="btn btn-primary" @click="Go('PersonalCreate', {})">
-			추가
-		</button>
 	</div>
 
 	<AppLoading v-if="loading"></AppLoading>
