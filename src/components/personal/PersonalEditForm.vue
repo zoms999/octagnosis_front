@@ -216,15 +216,20 @@
 			<div class="row">
 				<div class="col-1 lbl">학업군</div>
 				<div class="col-2">
-					<select name="Educt" id="Educt" class="form-select">
+					<select
+						name="Educt"
+						id="Educt"
+						class="form-select"
+						v-model="personal.Educt"
+					>
 						<option value="" hidden selected>학력</option>
-						<option value="">초등</option>
-						<option value="">중등</option>
-						<option value="">고등</option>
-						<option value="">2,3년제 대학</option>
-						<option value="">4년제 대학교</option>
-						<option value="">대학원 석사</option>
-						<option value="">대학원 박사</option>
+						<option value="C01001">초등</option>
+						<option value="C01002">중등</option>
+						<option value="C01003">고등</option>
+						<option value="C01004">2,3년제 대학</option>
+						<option value="C01005">4년제 대학교</option>
+						<option value="C01006">대학원 석사</option>
+						<option value="C01007">대학원 박사</option>
 					</select>
 				</div>
 				<div class="col-1 lbl">학교명</div>
@@ -268,15 +273,20 @@
 			<div class="row">
 				<div class="col-1 lbl">직업군</div>
 				<div class="col-2">
-					<select name="Job" id="Job" class="form-select">
+					<select
+						name="Job"
+						id="Job"
+						class="form-select"
+						v-model="personal.Job"
+					>
 						<option value="" hidden selected>기타</option>
-						<option value="">학생</option>
-						<option value="">회사원</option>
-						<option value="">전문직</option>
-						<option value="">사업가</option>
-						<option value="">공무원</option>
-						<option value="">주부</option>
-						<option value="">무직</option>
+						<option value="C02001">학생</option>
+						<option value="C02002">회사원</option>
+						<option value="C02003">전문직</option>
+						<option value="C02004">사업가</option>
+						<option value="C02005">공무원</option>
+						<option value="C02006">주부</option>
+						<option value="C02007">무직</option>
 					</select>
 				</div>
 				<div class="col-1 lbl">직장명</div>
@@ -321,6 +331,15 @@ import { ref, watch, computed } from 'vue';
 const props = defineProps({
 	personal: Object,
 });
+
+const selectJobs = ref('');
+
+watch(
+	() => props.personal.Job,
+	newValue => {
+		selectJobs.value = newValue;
+	},
+);
 
 const formattedRegDt = computed(() => {
 	// Check if personal.RegDt is defined and not empty

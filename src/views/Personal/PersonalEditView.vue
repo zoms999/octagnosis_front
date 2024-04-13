@@ -195,6 +195,71 @@ const savePw = () => {
 };
 
 const savePersonal = () => {
+	if (!personal.value.PersnNm) {
+		vAlert('이름을 입력해주세요.');
+		return; // Stop execution if name is not provided
+	}
+	if (!personal.value.BirthDate) {
+		vAlert('생년월일을 입력해주세요.');
+		return;
+	}
+	if (!personal.value.Sex) {
+		vAlert('성별을 선택해주세요.');
+		return;
+	}
+	if (!personal.value.Phone) {
+		vAlert('휴대전화를 입력해주세요.');
+		return;
+	}
+	if (!personal.value.Email) {
+		vAlert('이메일을 입력해주세요.');
+		return;
+	}
+	// if (!personal.value.Zip) {
+	// 	vAlert('우편번호를 입력해주세요.');
+	// 	return;
+	// }
+	// if (!personal.value.Addr1) {
+	// 	vAlert('도로명 주소를 입력해주세요.');
+	// 	return;
+	// }
+	// if (!personal.value.Addr2) {
+	// 	vAlert('지번 주소를 입력해주세요.');
+	// 	return;
+	// }
+	// if (!personal.value.Addr3) {
+	// 	vAlert('상세 주소를 입력해주세요.');
+	// 	return;
+	// }
+	if (!personal.value.Educt) {
+		vAlert('학력을 선택해주세요.');
+		return;
+	}
+	if (!personal.value.ScholNm) {
+		vAlert('학교명을 입력해주세요.');
+		return;
+	}
+	if (!personal.value.ScholMajor) {
+		vAlert('전공을 입력해주세요.');
+		return;
+	}
+	if (!personal.value.ScholGrade) {
+		vAlert('학년을 입력해주세요.');
+		return;
+	}
+	if (!personal.value.Job) {
+		vAlert('직업군을 선택해주세요.');
+		return;
+	}
+	if (!personal.value.JobNm) {
+		vAlert('직장명을 입력해주세요.');
+		return;
+	}
+	if (!personal.value.JobDuty) {
+		vAlert('하는 일을 입력해주세요.');
+		return;
+	}
+
 	let personalData = {
 		persnId: personal.value.PersnId,
 		persnNm: personal.value.PersnNm,
@@ -225,6 +290,7 @@ const savePersonal = () => {
 		.then(response => {
 			vSuccess('수정 되었습니다.');
 			console.log('Personal data updated successfully:', response.data);
+			router.push({ name: 'PersonalList' });
 		})
 		.catch(error => {
 			vAlert('수정실패.' + error.message);
@@ -335,6 +401,8 @@ const formatDate = date => {
 		return `${year}-${month}-${day}`;
 	}
 };
+
+const passwordsMatch = computed(() => userpw1.value === userpw2.value);
 </script>
 
 <style lang="scss" scoped></style>
