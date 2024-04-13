@@ -1,5 +1,5 @@
 <template>
-	<nav class="mt-5" aria-label="Page navigation example">
+	<nav aria-label="Page navigation example">
 		<ul class="pagination justify-content-center">
 			<li class="page-item" :class="isPrevBlock">
 				<a
@@ -30,7 +30,11 @@
 				<a
 					class="page-link pt-2 pb-1 px-3"
 					href="#"
-					@click.prevent="GoPage((CurBlock - 1) * PageCntInBlock + page)"
+					@click.prevent="
+						(CurBlock - 1) * PageCntInBlock + page != CurPage
+							? GoPage((CurBlock - 1) * PageCntInBlock + page)
+							: ''
+					"
 					>{{ (CurBlock - 1) * PageCntInBlock + page }}</a
 				>
 			</li>
@@ -97,7 +101,9 @@ const emit = defineEmits(['page']);
 const pageCnt = computed(() => {
 	var restPageCnt =
 		Math.ceil(props.TotCnt / props.RowCntInPage) % props.PageCntInBlock;
-	if (props.CurBlock < totBlockCnt.value || restPageCnt == 0) {
+	if (props.TotCnt == 0) {
+		return 0;
+	} else if (props.CurBlock < totBlockCnt.value || restPageCnt == 0) {
 		return props.PageCntInBlock;
 	} else {
 		return restPageCnt;

@@ -3,6 +3,11 @@
 		<div v-if="modelValue">
 			<div
 				class="modal-backdrop fade __web-inspector-hide-shortcut__ show"
+				:class="{
+					depth1_back: depth == 1,
+					depth2_back: depth == 2,
+					depth3_back: depth == 3,
+				}"
 			></div>
 
 			<div
@@ -10,6 +15,11 @@
 				tabindex="-1"
 				aria-labelledby="exampleModalLabel"
 				aria-hidden="true"
+				:class="{
+					depth1_cont: depth == 1,
+					depth2_cont: depth == 2,
+					depth3_cont: depth == 3,
+				}"
 			>
 				<div
 					class="modal-dialog"
@@ -33,7 +43,7 @@
 						<div class="modal-body">
 							<slot></slot>
 						</div>
-						<div class="modal-footer">
+						<div class="modal-footer" v-if="footer">
 							<slot name="actions"> </slot>
 						</div>
 					</div>
@@ -52,6 +62,14 @@ defineProps({
 	width: {
 		type: String,
 	},
+	depth: {
+		type: Number,
+		default: 1,
+	},
+	footer: {
+		type: Boolean,
+		default: true,
+	},
 });
 defineEmits(['close', 'update:modelValue']);
 </script>
@@ -68,5 +86,18 @@ defineEmits(['close', 'update:modelValue']);
 .v-enter-to,
 .v-leave-from {
 	opacity: 1;
+}
+
+.depth1_back {
+	z-index: 1055;
+}
+.depth1_cont {
+	z-index: 1056;
+}
+.depth2_back {
+	z-index: 1065;
+}
+.depth2_cont {
+	z-index: 1066;
 }
 </style>

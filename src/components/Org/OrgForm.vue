@@ -128,9 +128,9 @@
 			<div class="col-2">
 				<input
 					type="text"
-					ref="txtTurnNum"
+					ref="txtTurnReqCnt"
 					class="form-control"
-					v-model="OrgTurn.turnNum"
+					v-model="OrgTurn.turnReqCnt"
 				/>
 			</div>
 			<div class="col-1 lbl"><i></i>1회차 코드</div>
@@ -237,13 +237,19 @@
 			</div>
 			<div class="col-1 lbl">로그확인</div>
 			<div class="col-3 d-flex">
-				<button class="btn btn-primary IconBtn me-2">
+				<button
+					class="btn btn-primary IconBtn me-2"
+					@click="ShowHide('AcuntLoginLog', true)"
+				>
 					<div class="d-flex">
 						<span class="me-2">접속로그</span>
 						<span class="material-icons"> poll </span>
 					</div>
 				</button>
-				<button class="btn btn-primary IconBtn">
+				<button
+					class="btn btn-primary IconBtn"
+					@click="ShowHide('AcuntLog', true)"
+				>
 					<div class="d-flex">
 						<span class="me-2">변경로그</span>
 						<span class="material-icons"> poll </span>
@@ -558,7 +564,7 @@
 								type="text"
 								ref="txtActinReasn"
 								class="form-control"
-								v-model="MngrLog.actinReasn"
+								v-model="AcuntLog.actinReasn"
 							/>
 						</div>
 					</div>
@@ -601,7 +607,7 @@
 								type="text"
 								ref="txtActinReasnExpir"
 								class="form-control"
-								v-model="MngrLog.actinReasn"
+								v-model="AcuntLog.actinReasn"
 							/>
 						</div>
 					</div>
@@ -662,7 +668,7 @@
 								type="text"
 								ref="txtActinReasnPw"
 								class="form-control"
-								v-model="MngrLog.actinReasn"
+								v-model="AcuntLog.actinReasn"
 							/>
 						</div>
 					</div>
@@ -683,7 +689,43 @@
 				<button
 					type="button"
 					class="btn btn-secondary"
-					@click="Modal.value.OrdPw = false"
+					@click="ShowHide('AcuntPw', false)"
+				>
+					닫기
+				</button>
+			</template>
+		</AppModal>
+	</Teleport>
+
+	<!--	계정로그	------------------------------->
+	<Teleport to="#modal">
+		<AppModal v-model="Modal.AcuntLog" title="변경로그" width="1000">
+			<template #default>
+				<AcuntLogList :AcuntId="Acunt.acuntId"></AcuntLogList>
+			</template>
+			<template #actions>
+				<button
+					type="button"
+					class="btn btn-secondary"
+					@click="ShowHide('AcuntLog', false)"
+				>
+					닫기
+				</button>
+			</template>
+		</AppModal>
+	</Teleport>
+
+	<!--	계정로그인로그	------------------------------->
+	<Teleport to="#modal">
+		<AppModal v-model="Modal.AcuntLoginLog" title="변경로그" width="1000">
+			<template #default>
+				<AcuntLoginLogList :AcuntId="Acunt.acuntId"></AcuntLoginLogList>
+			</template>
+			<template #actions>
+				<button
+					type="button"
+					class="btn btn-secondary"
+					@click="ShowHide('AcuntLoginLog', false)"
 				>
 					닫기
 				</button>
@@ -699,6 +741,9 @@ import { useAxios } from '@/hooks/useAxios';
 import { defineProps, watch, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
+
+import AcuntLogList from '@/components/Acunt/AcuntLogList.vue';
+import AcuntLoginLogList from '@/components/Acunt/AcuntLoginLogList.vue';
 
 // Props / Emit  ****************************
 
@@ -725,9 +770,9 @@ const OrgTurn = ref({
 	valid: false,
 });
 
-const MngrLog = ref({
+const AcuntLog = ref({
 	logId: '',
-	mngrId: userMngrId.value,
+	acuntId: Acunt.value.acuntId,
 	actinDt: '',
 	actinReasn: '',
 	actinType: 'C00101',
@@ -749,7 +794,7 @@ const txtUrlCd = ref(null);
 const txtAcuntId = ref(null);
 const txtPw = ref(null);
 const txtPwConfirm = ref(null);
-const txtTurnNum = ref(null);
+const txtTurnReqCnt = ref(null);
 const txtTurnConnCd = ref(null);
 const txtCompyNm = ref(null);
 const txtCeoNm = ref(null);
@@ -865,6 +910,7 @@ const { data, execUrl, reqUrl } = useAxios(
 
 					Org.value = data.value.Org;
 					Acunt.value = data.value.Acunt;
+					AcuntLog.value.acuntId = Acunt.value.acuntId;
 
 					break;
 
@@ -891,25 +937,26 @@ const { data, execUrl, reqUrl } = useAxios(
 	},
 );
 
-// Show / Hide	*****************************
+// Modal ************************************
 
 const Modal = ref({
 	OrgUrlCd: false,
 	AcuntExpirDt: false,
 	AcuntPw: false,
+	AcuntLog: false,
 });
 
 const ShowHide = (type, showHide) => {
 	switch (type) {
 		case 'OrgUrlCd':
 			Modal.value.OrgUrlCd = showHide;
-			MngrLog.value.actinReasn = '';
+			AcuntLog.value.actinReasn = '';
 			Org.value.urlCdNew = '';
 			Org.value.valid = false;
 			break;
 		case 'AcuntExpirDt':
 			Modal.value.AcuntExpirDt = showHide;
-			MngrLog.value.actinReasn = '';
+			AcuntLog.value.actinReasn = '';
 			Acunt.value.expirDtNew = '';
 			Acunt.value.valid = false;
 			break;
@@ -918,7 +965,13 @@ const ShowHide = (type, showHide) => {
 			Acunt.value.pwNew = '';
 			Acunt.value.pwNewConfirm = '';
 			Acunt.value.valid = false;
-			MngrLog.value.actinReasn = '';
+			AcuntLog.value.actinReasn = '';
+			break;
+		case 'AcuntLog':
+			Modal.value.AcuntLog = showHide;
+			break;
+		case 'AcuntLoginLog':
+			Modal.value.AcuntLoginLog = showHide;
 			break;
 	}
 };
@@ -963,18 +1016,20 @@ const ChgOrgUrlCd = () => {
 	let Val = Org.value.urlCdNew;
 	if (!ValidNotBlank(Val, '기관인증코드', txtUrlCdNew.value)) return;
 	if (!ValidMaxLen(Val, 0, 20, txtUrlCdNew.value)) return;
-	if (!ValidNotBlank(MngrLog.value.actinReasn, '변경사유', txtActinReasn.value))
+	if (
+		!ValidNotBlank(AcuntLog.value.actinReasn, '변경사유', txtActinReasn.value)
+	)
 		return;
 
-	MngrLog.value.actinType = 'C00201';
-	MngrLog.value.actinFunc = '관리자 수정';
+	AcuntLog.value.actinType = 'C00201';
+	AcuntLog.value.actinFunc = '관리자 수정';
 
 	Procs.value.ChgOrgUrlCd.loading = true;
 	execUrl(Procs.value.ChgOrgUrlCd.path, {
 		orgId: Org.value.orgId,
 		urlCd: Val,
 		userId: userMngrId.value,
-		mngrLog: MngrLog.value,
+		acuntLog: AcuntLog.value,
 	});
 };
 
@@ -1004,18 +1059,18 @@ watch(
 
 const ChgExpirDt = () => {
 	if (!ValidNotBlank(Acunt.value.expirDtNew, '사용기한', null)) return;
-	if (!ValidNotBlank(MngrLog.value.actinReasn, '변경이유', txtActinReasnExpir))
+	if (!ValidNotBlank(AcuntLog.value.actinReasn, '변경이유', txtActinReasnExpir))
 		return;
 
-	MngrLog.value.actinType = 'C00202';
-	MngrLog.value.actinFunc = '관리자-기관계정 사용기한 수정';
+	AcuntLog.value.actinType = 'C00202';
+	AcuntLog.value.actinFunc = '관리자-기관계정 사용기한 수정';
 
 	Procs.value.ChgExpirDt.loading = true;
 	execUrl(Procs.value.ChgExpirDt.path, {
 		acuntId: Acunt.value.acuntId,
 		expirDt: formatDate(Acunt.value.expirDtNew).replace(/-/g, ''),
 		userId: userMngrId.value,
-		mngrLog: MngrLog.value,
+		acuntLog: AcuntLog.value,
 	});
 };
 
@@ -1075,7 +1130,7 @@ const ChgPw = () => {
 		return;
 	}
 	if (
-		!ValidNotBlank(MngrLog.value.actinReasn, '변경이유', txtActinReasnPw.value)
+		!ValidNotBlank(AcuntLog.value.actinReasn, '변경이유', txtActinReasnPw.value)
 	) {
 		return;
 	}
@@ -1083,15 +1138,15 @@ const ChgPw = () => {
 	if (!ValidMaxLen(Acunt.value.pwNewConfirm, 6, 20, txtpwNewConfirm.value))
 		return;
 
-	MngrLog.value.actinType = 'C00203';
-	MngrLog.value.actinFunc = '관리자-기관계정 비밀번호 변경';
+	AcuntLog.value.actinType = 'C00203';
+	AcuntLog.value.actinFunc = '관리자-기관계정 비밀번호 변경';
 
 	Procs.value.ChgPw.loading = true;
 	execUrl(Procs.value.ChgPw.path, {
 		acuntId: Acunt.value.acuntId,
 		pw: Acunt.value.pwNew,
 		userId: userMngrId.value,
-		mngrLog: MngrLog.value,
+		acuntLog: AcuntLog.value,
 	});
 };
 
@@ -1166,7 +1221,13 @@ const CretOrg = () => {
 		return;
 	}
 
-	if (!ValidNotBlank(OrgTurn.value.turnNum, '1회차 요청수', txtTurnNum.value)) {
+	if (
+		!ValidNotBlank(
+			OrgTurn.value.turnReqCnt,
+			'1회차 요청수',
+			txtTurnReqCnt.value,
+		)
+	) {
 		return;
 	}
 	if (

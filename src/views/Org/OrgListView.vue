@@ -85,23 +85,48 @@
 					<td>{{ item.MngerNm1 }}</td>
 					<td>{{ dayjs(item.InsDt).format('YYYY-MM-DD') }}</td>
 					<td>{{ dayjs(item.InsDt).format('YYYY-MM-DD') }}</td>
-					<td>{{ item.TurnNum }}</td>
+					<td>
+						<buton
+							class="btn btn-primary btn-sm w40"
+							@click.stop="ShowHide('OrgTurn', true, item.OrgId)"
+							>{{ item.TurnNum }}</buton
+						>
+					</td>
 					<td>{{ item.TurnReqCnt }}</td>
 					<td>{{ item.TurnUseCnt }}</td>
 				</tr>
 			</tbody>
 			<tfoot></tfoot>
 		</table>
-
-		<AppPagination
-			:CurPage="CurPage"
-			:CurBlock="CurBlock"
-			:TotCnt="TotCnt"
-			:RowCntInPage="Parm.paging.rowCntInPage"
-			:PageCntInBlock="Parm.paging.pageCntInBlock"
-			@Page="GetOrgList"
-		></AppPagination>
+		<div class="mt-3">
+			<AppPagination
+				:CurPage="CurPage"
+				:CurBlock="CurBlock"
+				:TotCnt="TotCnt"
+				:RowCntInPage="Parm.paging.rowCntInPage"
+				:PageCntInBlock="Parm.paging.pageCntInBlock"
+				@Page="GetOrgList"
+			></AppPagination>
+		</div>
 	</template>
+
+	<!--	기관회차	------------------------------->
+	<Teleport to="#modal">
+		<AppModal v-model="Modal.OrgTurn" title="기관 회차" width="1100">
+			<template #default>
+				<OrgTurnList :OrgId="OrgId"></OrgTurnList>
+			</template>
+			<template #actions>
+				<button
+					type="button"
+					class="btn btn-secondary"
+					@click="ShowHide('OrgTurn', false)"
+				>
+					닫기
+				</button>
+			</template>
+		</AppModal>
+	</Teleport>
 </template>
 
 <script setup>
@@ -110,12 +135,16 @@ import { ref, inject } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAlert } from '@/hooks/useAlert';
 
+import OrgTurnList from '@/components/Org/OrgTurnList.vue';
+
 const { vAlert, vSuccess } = useAlert();
 const dayjs = inject('dayjs');
 
 // Props / Emit  ****************************
 
 // Data *************************************
+
+const OrgId = ref(0);
 
 // Axios	***********************************
 
@@ -145,7 +174,20 @@ const { data, error, loading, execUrl, reqUrl } = useAxios(
 	},
 );
 
-// Show/Hide	*******************************
+// Modal ************************************
+
+const Modal = ref({
+	OrgTurn: false,
+});
+
+const ShowHide = (type, showHide, acuntId) => {
+	switch (type) {
+		case 'OrgTurn':
+			Modal.value.OrgTurn = showHide;
+			OrgId.value = acuntId;
+			break;
+	}
+};
 
 // Route	***********************************
 

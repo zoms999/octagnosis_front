@@ -70,7 +70,7 @@ const OrgTurn = ref({
 	orgId: '',
 	turnId: '',
 	useYn: 'Y',
-	turnNum: '',
+	turnNum: '1',
 	turnReqCnt: '0',
 	turnUseCnt: '0',
 	turnConnCd: '',
