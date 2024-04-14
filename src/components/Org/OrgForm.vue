@@ -523,178 +523,42 @@
 
 	<!--	기관인증 코드	------------------------------->
 	<Teleport to="#modal">
-		<AppModal v-model="Modal.OrgUrlCd" title="변경 이력 기록" width="500">
-			<template #default>
-				<div class="container ItemBox">
-					<div class="row">
-						<div class="col-12">
-							기관인증코드 [ 10~20자, 영문(대소문자 구분함), 숫자 ]
-						</div>
-						<div class="col-12">
-							<div class="input-group">
-								<input
-									v-focus
-									type="text"
-									ref="txtUrlCdNew"
-									class="form-control"
-									v-model="Org.urlCdNew"
-								/>
-								<span class="input-group-text"
-									><span class="material-icons text-body-tertiary"
-										>{{ Org.valid ? 'check' : 'noise_control_off' }}
-									</span></span
-								>
-
-								<button class="btn btn-primary" @click="ChkUrlNewCd">
-									<template v-if="Procs.ChkUrlCd.loading">
-										<span
-											class="spinner-grow spinner-grow-sm"
-											role="status"
-											aria-hidden="true"
-										></span>
-										<span class="visually-hidden">Loading...</span>
-									</template>
-									<template v-else> 유효성검사 </template>
-								</button>
-							</div>
-						</div>
-						<div class="col-12">변경이유</div>
-						<div class="col-12">
-							<input
-								type="text"
-								ref="txtActinReasn"
-								class="form-control"
-								v-model="AcuntLog.actinReasn"
-							/>
-						</div>
-					</div>
-				</div>
-			</template>
-			<template #actions>
-				<button type="button" class="btn btn-primary" @click="ChgOrgUrlCd">
-					저장
-				</button>
-				<button
-					type="button"
-					class="btn btn-secondary"
-					@click="ShowHide('OrgUrlCd', fase)"
-				>
-					닫기
-				</button>
-			</template>
+		<AppModal v-model="Modal.OrgUrlCd" title="기관인증코드 변경" width="500">
+			<ChgUrlCd
+				v-model="Modal.OrgUrlCd"
+				:OrgId="Org.orgId"
+				:AcuntId="Acunt.acuntId"
+				ActinType="C00201"
+				ActinFunc="관리자-기관계정 사용기한 수정"
+				@SetUrlCd="SetUrlCd"
+			></ChgUrlCd>
 		</AppModal>
 	</Teleport>
 
 	<!--	사용기한 	------------------------------->
 	<Teleport to="#modal">
-		<AppModal v-model="Modal.AcuntExpirDt" title="사용기한 변경" width="500">
-			<template #default>
-				<div class="container ItemBox">
-					<div class="row">
-						<div class="col-12">사용기한</div>
-						<div class="col-12">
-							<VueDatePicker
-								v-model="Acunt.expirDtNew"
-								locale="ko"
-								:format="formatDate"
-								:enable-time-picker="false"
-							>
-							</VueDatePicker>
-						</div>
-						<div class="col-12">변경이유</div>
-						<div class="col-12">
-							<input
-								type="text"
-								ref="txtActinReasnExpir"
-								class="form-control"
-								v-model="AcuntLog.actinReasn"
-							/>
-						</div>
-					</div>
-				</div>
-			</template>
-			<template #actions>
-				<button type="button" class="btn btn-primary" @click="ChgExpirDt">
-					<template v-if="Procs.ChgExpirDt.loading">
-						<span
-							class="spinner-grow spinner-grow-sm"
-							role="status"
-							aria-hidden="true"
-						></span>
-						<span class="visually-hidden">Loading...</span>
-					</template>
-					<template v-else> 저장 </template>
-				</button>
-				<button
-					type="button"
-					class="btn btn-secondary"
-					@click="ShowHide('AcuntExpirDt', false)"
-				>
-					닫기
-				</button>
-			</template>
-		</AppModal>
+		<AppModalV1 v-model="Modal.AcuntExpirDt" title="사용기한 변경" width="500">
+			<ChgExpireDt
+				v-model="Modal.AcuntExpirDt"
+				:AcuntId="Acunt.acuntId"
+				ActinType="C00202"
+				ActinFunc="관리자-기관계정 사용기한 수정"
+				@SetExpireDt="SetExpireDt"
+			></ChgExpireDt>
+		</AppModalV1>
 	</Teleport>
 
 	<!--	비밀번호 변경 코드	------------------------------->
 	<Teleport to="#modal">
-		<AppModal v-model="Modal.AcuntPw" title="비밀번호 변경" width="500">
-			<template #default>
-				<div class="container ItemBox">
-					<div class="row">
-						<div class="col-12">
-							<i></i>신규비밀번호 [ 6~20 자, 영문(대소문자 구분안함), 숫자 ]
-						</div>
-						<div class="col-12">
-							<input
-								type="password"
-								ref="txtpwNew"
-								class="form-control"
-								v-model="Acunt.pwNew"
-							/>
-						</div>
-						<div class="col-12"><i></i>신규비밀번호 확인</div>
-						<div class="col-12">
-							<input
-								type="password"
-								ref="txtpwNewConfirm"
-								class="form-control"
-								v-model="Acunt.pwNewConfirm"
-							/>
-						</div>
-						<div class="col-12">변경이유</div>
-						<div class="col-12">
-							<input
-								type="text"
-								ref="txtActinReasnPw"
-								class="form-control"
-								v-model="AcuntLog.actinReasn"
-							/>
-						</div>
-					</div>
-				</div>
-			</template>
-			<template #actions>
-				<button type="button" class="btn btn-primary" @click="ChgPw">
-					<template v-if="Procs.ChgPw.loading">
-						<span
-							class="spinner-grow spinner-grow-sm"
-							role="status"
-							aria-hidden="true"
-						></span>
-						<span class="visually-hidden">Loading...</span>
-					</template>
-					<template v-else> 비밀번호 변경 </template>
-				</button>
-				<button
-					type="button"
-					class="btn btn-secondary"
-					@click="ShowHide('AcuntPw', false)"
-				>
-					닫기
-				</button>
-			</template>
-		</AppModal>
+		<AppModalV1 v-model="Modal.AcuntPw" title="비밀번호 변경" width="500">
+			<ChgPw
+				v-model="Modal.AcuntPw"
+				:AcuntId="Acunt.acuntId"
+				ActinType="C00203"
+				ActinFunc="관리자-기관계정 비밀번호 변경"
+				@SetPw="SetPw"
+			></ChgPw>
+		</AppModalV1>
 	</Teleport>
 
 	<!--	계정로그	------------------------------->
@@ -742,6 +606,9 @@ import { defineProps, watch, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 
+import ChgUrlCd from '@/components/Org/ChgUrlCd.vue';
+import ChgExpireDt from '@/components/Acunt/ChgExpirDt.vue';
+import ChgPw from '@/components/Acunt/ChgPw.vue';
 import AcuntLogList from '@/components/Acunt/AcuntLogList.vue';
 import AcuntLoginLogList from '@/components/Acunt/AcuntLoginLogList.vue';
 
@@ -808,28 +675,16 @@ const txtMngerPhone1 = ref(null);
 const txtMngerEmail1 = ref(null);
 const txtUrlCdNew = ref(null);
 
-const txtActinReasn = ref(null);
-const txtActinReasnExpir = ref(null);
-
-const txtpwNew = ref(null);
-const txtpwNewConfirm = ref(null);
-const txtActinReasnPw = ref(null);
-
 // Axios	***********************************
 
 const Procs = ref({
-	ChgOrgUrlCd: { path: '/api/Org/ChgOrgUrlCd', loading: false },
-	ChgPw: { path: '/api/Acunt/ChgPw', loading: false },
-
 	ChkUrlCd: { path: '/api/Org/ChkUrlCd', loading: false },
+	ChkAcuntId: { path: '/api/Acunt/ChkAcuntId', loading: false },
 	ChkTurnConnCd: { path: '/api/OrgTurn/ChkTurnConnCd', loading: false },
+
 	CretOrg: { path: '/api/Org/CretOrg', loading: false },
 	EditOrg: { path: '/api/Org/EditOrg', loading: false },
-
 	GetOrg: { path: '/api/Org/GetOrg', loading: false },
-
-	ChkAcuntId: { path: '/api/Acunt/ChkAcuntId', loading: false },
-	ChgExpirDt: { path: '/api/Acunt/ChgExpirDt', loading: false },
 });
 
 const { data, execUrl, reqUrl } = useAxios(
@@ -839,18 +694,6 @@ const { data, execUrl, reqUrl } = useAxios(
 		immediate: false,
 		onSuccess: () => {
 			switch (reqUrl.value) {
-				case Procs.value.ChgOrgUrlCd.path:
-					vSuccess('기관코드가 변경되었습니다.');
-					Org.value.urlCd = Org.value.urlCdNew;
-					Modal.value.OrgUrlCd = false;
-					break;
-
-				case Procs.value.ChgPw.path:
-					vSuccess('비밀번호가 변경되었습니다.');
-					Acunt.value.pw = Acunt.value.pwNew;
-					Modal.value.AcuntPw = false;
-					break;
-
 				case Procs.value.ChkUrlCd.path:
 					if (data.value.ExistYn == 'Y') {
 						vSuccess('이미 사용중입니다. ');
@@ -911,16 +754,7 @@ const { data, execUrl, reqUrl } = useAxios(
 					Org.value = data.value.Org;
 					Acunt.value = data.value.Acunt;
 					AcuntLog.value.acuntId = Acunt.value.acuntId;
-
 					break;
-
-				case Procs.value.ChgExpirDt.path:
-					Procs.value.ChgExpirDt.loading = false;
-					Modal.value.AcuntExpirDt = false;
-
-					Acunt.value.expirDt = formatDate(Acunt.value.expirDtNew);
-					break;
-
 				default:
 					break;
 			}
@@ -950,9 +784,6 @@ const ShowHide = (type, showHide) => {
 	switch (type) {
 		case 'OrgUrlCd':
 			Modal.value.OrgUrlCd = showHide;
-			AcuntLog.value.actinReasn = '';
-			Org.value.urlCdNew = '';
-			Org.value.valid = false;
 			break;
 		case 'AcuntExpirDt':
 			Modal.value.AcuntExpirDt = showHide;
@@ -999,39 +830,6 @@ const ChkUrlCd = () => {
 };
 
 // 기관인증코드 유효성 (수정)
-const ChkUrlNewCd = () => {
-	let Val = Org.value.urlCdNew;
-
-	if (!ValidNotBlank(Val, '기관인증코드', txtUrlCdNew.value)) return;
-	if (!ValidMaxLen(Val, 0, 20, txtUrlCdNew.value)) return;
-
-	Procs.value.ChkUrlCd.loading = true;
-	execUrl(Procs.value.ChkUrlCd.path, {
-		urlCd: Val,
-	});
-};
-
-// 기관인증코드 변경
-const ChgOrgUrlCd = () => {
-	let Val = Org.value.urlCdNew;
-	if (!ValidNotBlank(Val, '기관인증코드', txtUrlCdNew.value)) return;
-	if (!ValidMaxLen(Val, 0, 20, txtUrlCdNew.value)) return;
-	if (
-		!ValidNotBlank(AcuntLog.value.actinReasn, '변경사유', txtActinReasn.value)
-	)
-		return;
-
-	AcuntLog.value.actinType = 'C00201';
-	AcuntLog.value.actinFunc = '관리자 수정';
-
-	Procs.value.ChgOrgUrlCd.loading = true;
-	execUrl(Procs.value.ChgOrgUrlCd.path, {
-		orgId: Org.value.orgId,
-		urlCd: Val,
-		userId: userMngrId.value,
-		acuntLog: AcuntLog.value,
-	});
-};
 
 watch(
 	() => Org.value.urlCd,
@@ -1044,35 +842,7 @@ watch(
 	},
 );
 
-watch(
-	() => Org.value.urlCdNew,
-	newValue => {
-		const val = newValue.replace(/[^a-zA-Z0-9]/g, '');
-		Org.value.urlCdNew = val;
-		Org.value.valid = Org.value.urlCdNew == Org.value.urlCdSet;
-
-		//Emit('update:urlCd', Org.value.urlCd);
-	},
-);
-
 // 사용기한 변경	*****************************
-
-const ChgExpirDt = () => {
-	if (!ValidNotBlank(Acunt.value.expirDtNew, '사용기한', null)) return;
-	if (!ValidNotBlank(AcuntLog.value.actinReasn, '변경이유', txtActinReasnExpir))
-		return;
-
-	AcuntLog.value.actinType = 'C00202';
-	AcuntLog.value.actinFunc = '관리자-기관계정 사용기한 수정';
-
-	Procs.value.ChgExpirDt.loading = true;
-	execUrl(Procs.value.ChgExpirDt.path, {
-		acuntId: Acunt.value.acuntId,
-		expirDt: formatDate(Acunt.value.expirDtNew).replace(/-/g, ''),
-		userId: userMngrId.value,
-		acuntLog: AcuntLog.value,
-	});
-};
 
 watch(
 	() => Acunt.value.expirDt,
@@ -1111,44 +881,6 @@ watch(
 );
 
 // 비밀번호 변경	*****************************
-
-const ChgPw = () => {
-	if (Acunt.value.pwNew != Acunt.value.pwNewConfirm) {
-		vAlert('비밀번호가 일치하지 않습니다.');
-		return;
-	}
-	if (!ValidNotBlank(Acunt.value.pwNew, '비밀번호', txtPw.value)) {
-		return;
-	}
-	if (
-		!ValidNotBlank(
-			Acunt.value.pwNewConfirm,
-			'비밀번호 확인',
-			txtPwConfirm.value,
-		)
-	) {
-		return;
-	}
-	if (
-		!ValidNotBlank(AcuntLog.value.actinReasn, '변경이유', txtActinReasnPw.value)
-	) {
-		return;
-	}
-	if (!ValidMaxLen(Acunt.value.pwNew, 6, 20, txtpwNew.value)) return;
-	if (!ValidMaxLen(Acunt.value.pwNewConfirm, 6, 20, txtpwNewConfirm.value))
-		return;
-
-	AcuntLog.value.actinType = 'C00203';
-	AcuntLog.value.actinFunc = '관리자-기관계정 비밀번호 변경';
-
-	Procs.value.ChgPw.loading = true;
-	execUrl(Procs.value.ChgPw.path, {
-		acuntId: Acunt.value.acuntId,
-		pw: Acunt.value.pwNew,
-		userId: userMngrId.value,
-		acuntLog: AcuntLog.value,
-	});
-};
 
 // 1회차 코드	********************************
 
@@ -1331,6 +1063,23 @@ if (Props.OrgId != null) {
 	GetOrg();
 }
 
+// 기관인증코드 수정
+const SetUrlCd = urlCd => {
+	Org.value.urlCd = urlCd;
+};
+
+// 사용기한 수정
+const SetExpireDt = expireDt => {
+	Acunt.value.expirDt = expireDt;
+};
+
+// 비밀번호 수정
+const SetPw = expireDt => {
+	Acunt.value.expirDt = expireDt;
+};
+
+// Etc	**************************************
+
 const ValidMaxLen = (val, minLen, maxLen, obj) => {
 	if (val.length < minLen || val.length > maxLen) {
 		vAlert(`${minLen}~${maxLen}자 사이로 입력해주세요.`);
@@ -1353,22 +1102,6 @@ const ValidNotBlank = (val, tit, obj) => {
 		return false;
 	}
 	return true;
-};
-
-const formatDate = date => {
-	const year = date.getFullYear();
-	const month = date.getMonth() + 1;
-	const day = date.getDate();
-
-	// 날짜 앞에 0을 붙여야 하는 경우
-	if (month || day < 10) {
-		const zeroDay = ('00' + day).slice(-2);
-		const zeroMonth = ('00' + month).slice(-2);
-
-		return `${year}-${zeroMonth}-${zeroDay}`;
-	} else {
-		return `${year}-${month}-${day}`;
-	}
 };
 </script>
 

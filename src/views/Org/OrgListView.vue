@@ -83,8 +83,8 @@
 					<td>{{ item.Tel1 }}</td>
 					<td>{{ item.CeoNm }}</td>
 					<td>{{ item.MngerNm1 }}</td>
-					<td>{{ dayjs(item.InsDt).format('YYYY-MM-DD') }}</td>
-					<td>{{ dayjs(item.InsDt).format('YYYY-MM-DD') }}</td>
+					<td>{{ dayjs(item.RegDt).format('YYYY-MM-DD') }}</td>
+					<td>{{ dayjs(item.ExpirDt).format('YYYY-MM-DD') }}</td>
 					<td>
 						<buton
 							class="btn btn-primary btn-sm w40"
