@@ -14,7 +14,7 @@
 						v-model="Parm.srchStr"
 						placeholder="기관명/대표/담당자(정)"
 					/>
-					<button class="btn btn-primary w80" @click="GetOrgList">
+					<button class="btn btn-primary w80" @click="GetOrgList(1)">
 						<template v-if="loading">
 							<span
 								class="spinner-grow spinner-grow-sm"
@@ -231,6 +231,7 @@ const GetOrgList = async page => {
 	CurPage.value = page;
 	Parm.value.paging.page = page;
 	Parm.value.paging.startRow = (page - 1) * Parm.value.paging.rowCntInPage;
+
 	execUrl('/api/Org/GetOrgList', Parm.value);
 };
 

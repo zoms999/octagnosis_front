@@ -138,7 +138,7 @@ const { data, execUrl, reqUrl } = useAxios(
 				case Procs.value.ChgOrgUrlCd.path:
 					Procs.value.ChgOrgUrlCd.loading = false;
 					vSuccess('기관인증코드가 변경되었습니다.');
-					Emits('setUrlCd', OrgParm.value.urlCd);
+					Emits('SetUrlCd', OrgParm.value.urlCd);
 					Emits('update:modelValue');
 					break;
 				default:

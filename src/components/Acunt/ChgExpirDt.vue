@@ -97,7 +97,7 @@ const Procs = ref({
 	ChgExpirDt: { path: '/api/Acunt/ChgExpirDt', loading: false },
 });
 
-const { data, execUrl, reqUrl } = useAxios(
+const { execUrl, reqUrl } = useAxios(
 	'',
 	{ method: 'post' },
 	{

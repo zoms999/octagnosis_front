@@ -523,7 +523,7 @@
 
 	<!--	기관인증 코드	------------------------------->
 	<Teleport to="#modal">
-		<AppModal v-model="Modal.OrgUrlCd" title="기관인증코드 변경" width="500">
+		<AppModalV1 v-model="Modal.OrgUrlCd" title="기관인증코드 변경" width="500">
 			<ChgUrlCd
 				v-model="Modal.OrgUrlCd"
 				:OrgId="Org.orgId"
@@ -532,7 +532,7 @@
 				ActinFunc="관리자-기관계정 사용기한 수정"
 				@SetUrlCd="SetUrlCd"
 			></ChgUrlCd>
-		</AppModal>
+		</AppModalV1>
 	</Teleport>
 
 	<!--	사용기한 	------------------------------->
@@ -561,9 +561,14 @@
 		</AppModalV1>
 	</Teleport>
 
-	<!--	계정로그	------------------------------->
+	<!--	변경로그	------------------------------->
 	<Teleport to="#modal">
-		<AppModal v-model="Modal.AcuntLog" title="변경로그" width="1000">
+		<AppModal
+			v-model="Modal.AcuntLog"
+			title="변경로그"
+			width="1000"
+			:footer="false"
+		>
 			<template #default>
 				<AcuntLogList :AcuntId="Acunt.acuntId"></AcuntLogList>
 			</template>
@@ -579,9 +584,14 @@
 		</AppModal>
 	</Teleport>
 
-	<!--	계정로그인로그	------------------------------->
+	<!--	접속로그	------------------------------->
 	<Teleport to="#modal">
-		<AppModal v-model="Modal.AcuntLoginLog" title="변경로그" width="1000">
+		<AppModal
+			v-model="Modal.AcuntLoginLog"
+			title="변경로그"
+			width="1000"
+			:footer="false"
+		>
 			<template #default>
 				<AcuntLoginLogList :AcuntId="Acunt.acuntId"></AcuntLoginLogList>
 			</template>
@@ -842,7 +852,7 @@ watch(
 	},
 );
 
-// 사용기한 변경	*****************************
+// 사용기한 날짜
 
 watch(
 	() => Acunt.value.expirDt,
@@ -880,8 +890,6 @@ watch(
 	},
 );
 
-// 비밀번호 변경	*****************************
-
 // 1회차 코드	********************************
 
 const ChkTurnConnCd = () => {
@@ -913,10 +921,6 @@ watch(
 			OrgTurn.value.turnConnCd == OrgTurn.value.turnConnCdSet;
 	},
 );
-
-// 접속로그	**********************************
-
-// 변경로그	**********************************
 
 // 우편번호	**********************************
 

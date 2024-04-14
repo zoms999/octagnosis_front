@@ -120,7 +120,7 @@ const { execUrl, reqUrl } = useAxios(
 				case Procs.value.ChgPw.path:
 					Procs.value.ChgPw.loading = false;
 					vSuccess('비밀번호가 변경되었습니다.');
-					Emits('setPw', AcuntParm.value.pw);
+					Emits('SetPw', AcuntParm.value.pw);
 					Emits('update:modelValue');
 					break;
 				default:
