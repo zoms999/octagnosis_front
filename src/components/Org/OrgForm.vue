@@ -4,7 +4,7 @@
 		<div>
 			<button
 				v-if="ProcType == 'C'"
-				class="btn btn-primary me-2"
+				class="btn btn-primary ms-2"
 				@click="CretOrg()"
 				:disabled="Procs.CretOrg.loading"
 			>
@@ -20,7 +20,7 @@
 			</button>
 			<button
 				v-if="ProcType == 'E'"
-				class="btn btn-primary me-2"
+				class="btn btn-primary ms-2"
 				@click="EditOrg()"
 			>
 				<template v-if="Procs.EditOrg.loading">
@@ -33,8 +33,28 @@
 				</template>
 				<template v-else> 수정 </template>
 			</button>
-			<button class="btn btn-secondary" @click="$emit('GoBack')">
+			<button class="btn btn-primary ms-2" @click="$emit('GoBack')">
 				목록으로
+			</button>
+			<button
+				v-if="ProcType == 'E'"
+				class="btn btn-primary IconBtn ms-2"
+				@click="ShowHide('AcuntLoginLog', true)"
+			>
+				<div class="d-flex">
+					<span class="me-2">접속로그</span>
+					<span class="material-icons"> poll </span>
+				</div>
+			</button>
+			<button
+				v-if="ProcType == 'E'"
+				class="btn btn-primary IconBtn ms-2"
+				@click="ShowHide('AcuntLog', true)"
+			>
+				<div class="d-flex">
+					<span class="me-2">변경로그</span>
+					<span class="material-icons"> poll </span>
+				</div>
 			</button>
 		</div>
 	</div>
@@ -235,27 +255,6 @@
 					</button>
 				</div>
 			</div>
-			<div class="col-1 lbl">로그확인</div>
-			<div class="col-3 d-flex">
-				<button
-					class="btn btn-primary IconBtn me-2"
-					@click="ShowHide('AcuntLoginLog', true)"
-				>
-					<div class="d-flex">
-						<span class="me-2">접속로그</span>
-						<span class="material-icons"> poll </span>
-					</div>
-				</button>
-				<button
-					class="btn btn-primary IconBtn"
-					@click="ShowHide('AcuntLog', true)"
-				>
-					<div class="d-flex">
-						<span class="me-2">변경로그</span>
-						<span class="material-icons"> poll </span>
-					</div>
-				</button>
-			</div>
 		</div>
 	</div>
 
@@ -384,36 +383,36 @@
 			<div class="col-5">
 				<input
 					type="text"
-					ref="txtAddr1"
+					ref="txtRoadAddr1"
 					class="form-control"
-					v-model="Org.addr1"
+					v-model="Org.roadAddr1"
 				/>
 			</div>
 			<div class="col-1 lbl">지번 주소</div>
 			<div class="col-5">
 				<input
 					type="text"
-					ref="txtAddr2"
+					ref="txtRoadAddr2"
 					class="form-control"
-					v-model="Org.addr2"
+					v-model="Org.stretAddr1"
 				/>
 			</div>
 			<div class="col-1 lbl">상세 주소</div>
 			<div class="col-5">
 				<input
 					type="text"
-					ref="txtAddr3"
+					ref="txtStretAddr1"
 					class="form-control"
-					v-model="Org.addr3"
+					v-model="Org.roadAddr2"
 				/>
 			</div>
 			<div class="col-1 lbl">추가 주소</div>
 			<div class="col-5">
 				<input
 					type="text"
-					ref="txtAddr4"
+					ref="txtStretAddr2"
 					class="form-control"
-					v-model="Org.addr4"
+					v-model="Org.stretAddr2"
 				/>
 			</div>
 		</div>
@@ -588,7 +587,7 @@
 	<Teleport to="#modal">
 		<AppModal
 			v-model="Modal.AcuntLoginLog"
-			title="변경로그"
+			title="접속로그"
 			width="1000"
 			:footer="false"
 		>
@@ -1078,8 +1077,8 @@ const SetExpireDt = expireDt => {
 };
 
 // 비밀번호 수정
-const SetPw = expireDt => {
-	Acunt.value.expirDt = expireDt;
+const SetPw = pw => {
+	Acunt.value.Pw = pw;
 };
 
 // Etc	**************************************

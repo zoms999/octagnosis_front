@@ -1,22 +1,99 @@
 <template>
-	<div>
-		<PersonalEditForm
-			:personal="personal"
-			@GoBack="GoBack"
-			@editPersonal="savePersonal"
-		>
-			<template #actionsPw>
-				<button class="btn btn-primary" @click.prevent="changPwModal">
-					변경
-				</button>
-			</template>
-			<template #actionsExpirDt>
-				<button class="btn btn-primary" @click.prevent="changExpirDtModal">
-					사용기한
-				</button>
-			</template>
-		</PersonalEditForm>
+	<div class="TitPage">
+		<div>개인관리 <span>></span><span> 수정</span></div>
+		<div></div>
 	</div>
+	<PersonalEditForm
+		:personal="personal"
+		@GoBack="GoBack"
+		@editPersonal="savePersonal"
+	>
+		<template #actionsLog>
+			<button
+				class="btn btn-primary IconBtn ms-2"
+				@click.prevent="showAcuntLoginLog = true"
+			>
+				<div class="d-flex">
+					<span class="me-2">접속로그</span>
+					<span class="material-icons"> poll </span>
+				</div>
+			</button>
+			<button
+				class="btn btn-primary IconBtn ms-2"
+				@click.prevent="showAcuntLog = true"
+			>
+				<div class="d-flex">
+					<span class="me-2">변경로그</span>
+					<span class="material-icons"> poll </span>
+				</div>
+			</button>
+		</template>
+
+		<template #actionsPw>
+			<button class="btn btn-primary" @click.prevent="changPwModal">
+				변경
+			</button>
+		</template>
+		<template #actionsExpirDt>
+			<button class="btn btn-primary" @click.prevent="changExpirDtModal">
+				사용기한
+			</button>
+		</template>
+	</PersonalEditForm>
+
+	<!--	비밀번호 변경 코드	------------------------------->
+	<Teleport to="#modal">
+		<AppModalV1 v-model="show" title="비밀번호 변경" width="500">
+			<ChgPw
+				v-model="show"
+				:AcuntId="personal.AcuntId"
+				ActinType="C00205"
+				ActinFunc="관리자-개인계정 비밀번호 변경"
+				@SetPw="setPw"
+			></ChgPw>
+		</AppModalV1>
+	</Teleport>
+
+	<!--	사용기한 	------------------------------->
+	<Teleport to="#modal">
+		<AppModalV1 v-model="showExpirDt" title="사용기한 변경" width="500">
+			<ChgExpireDt
+				v-model="showExpirDt"
+				:AcuntId="personal.AcuntId"
+				ActinType="C00204"
+				ActinFunc="관리자-개인계정 사용기한 수정"
+				@SetExpireDt="setExpireDt"
+			></ChgExpireDt>
+		</AppModalV1>
+	</Teleport>
+
+	<!--	접속로그	------------------------------->
+	<Teleport to="#modal">
+		<AppModal
+			v-model="showAcuntLoginLog"
+			title="접속로그"
+			width="1000"
+			:footer="false"
+		>
+			<template #default>
+				<AcuntLoginLogList :AcuntId="personal.AcuntId"></AcuntLoginLogList>
+			</template>
+		</AppModal>
+	</Teleport>
+
+	<!--	변경로그	------------------------------->
+	<Teleport to="#modal">
+		<AppModal
+			v-model="showAcuntLog"
+			title="변경로그"
+			width="1000"
+			:footer="false"
+		>
+			<AcuntLogList :AcuntId="personal.AcuntId"></AcuntLogList>
+		</AppModal>
+	</Teleport>
+
+	<!--
 	<Teleport to="#modal">
 		<AppModal v-model="show" title="비밀번호변경">
 			<template #default>
@@ -73,8 +150,9 @@
 			</template>
 		</AppModal>
 	</Teleport>
+	-->
 
-	<!--	사용기한 	------------------------------->
+	<!--	사용기한 	-----------------------------
 	<Teleport to="#modal">
 		<AppModal v-model="showExpirDt" title="사용기한 변경" width="500">
 			<template #default>
@@ -112,7 +190,7 @@
 			</template>
 		</AppModal>
 	</Teleport>
-</template>
+--></template>
 
 <script setup>
 import { ref, computed } from 'vue';
@@ -125,6 +203,12 @@ import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 import axios from 'axios';
 import { useAlertStore } from '@/stores/alert';
+
+import ChgPw from '@/components/Acunt/ChgPw.vue';
+import ChgExpireDt from '@/components/Acunt/ChgExpirDt.vue';
+import AcuntLogList from '@/components/Acunt/AcuntLogList.vue';
+import AcuntLoginLogList from '@/components/Acunt/AcuntLoginLogList.vue';
+
 const store = useAuthStore();
 const { userMngrId } = storeToRefs(store);
 const { vAlert, vSuccess } = useAlert();
@@ -133,6 +217,7 @@ const route = useRoute();
 const persnId = route.params.persnId;
 const personal = ref([]);
 const expirDt = ref('');
+
 console.log('goEditPage -- > ' + persnId);
 
 const getPersnByPersnIdAndType = async () => {
@@ -150,12 +235,14 @@ const getPersnByPersnIdAndType = async () => {
 	}
 };
 
-const show = ref(false);
 const userpw = ref();
 const userpw1 = ref();
 const userpw2 = ref();
 
+const show = ref(false);
 const showExpirDt = ref(false);
+const showAcuntLog = ref(false);
+const showAcuntLoginLog = ref(false);
 
 const changPwModal = () => {
 	show.value = true;
@@ -168,6 +255,7 @@ const changExpirDtModal = () => {
 	showExpirDt.value = true;
 };
 
+/*
 const savePw = () => {
 	if (!userpw1.value) {
 		vAlert('변경할 비밀번호를 입력하세요.');
@@ -193,6 +281,7 @@ const savePw = () => {
 			});
 	}
 };
+*/
 
 const savePersonal = () => {
 	if (!personal.value.PersnNm) {
@@ -219,15 +308,15 @@ const savePersonal = () => {
 	// 	vAlert('우편번호를 입력해주세요.');
 	// 	return;
 	// }
-	// if (!personal.value.Addr1) {
+	// if (!personal.value.RoadAddr1) {
 	// 	vAlert('도로명 주소를 입력해주세요.');
 	// 	return;
 	// }
-	// if (!personal.value.Addr2) {
+	// if (!personal.value.RoadAddr2) {
 	// 	vAlert('지번 주소를 입력해주세요.');
 	// 	return;
 	// }
-	// if (!personal.value.Addr3) {
+	// if (!personal.value.StretAddr1) {
 	// 	vAlert('상세 주소를 입력해주세요.');
 	// 	return;
 	// }
@@ -269,10 +358,10 @@ const savePersonal = () => {
 		tel: personal.value.Tel,
 		email: personal.value.Email,
 		zip: personal.value.Zip,
-		addr1: personal.value.Addr1,
-		addr2: personal.value.Addr2,
-		addr3: personal.value.Addr3,
-		addr4: personal.value.Addr4,
+		roadAddr1: personal.value.RoadAddr1,
+		roadAddr2: personal.value.RoadAddr2,
+		stretAddr1: personal.value.StretAddr1,
+		stretAddr2: personal.value.StretAddr2,
 		educt: personal.value.Educt,
 		scholNm: personal.value.ScholNm,
 		scholMajor: personal.value.ScholMajor,
@@ -384,6 +473,16 @@ const ValidNotBlank = (val, tit, obj) => {
 		return false;
 	}
 	return true;
+};
+
+// 사용기한 수정
+const setExpireDt = expireDt => {
+	personal.value.ExpirDt = expireDt;
+};
+
+// 비밀번호 수정
+const setPw = pw => {
+	personal.value.Pw = pw;
 };
 
 const formatDate = date => {

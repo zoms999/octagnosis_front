@@ -1128,7 +1128,7 @@ body {
 .Poit{cursor: pointer;}
 
 .ItemBox {
-
+  width:100% !important
 }
   .ItemBox > div {
     margin: 0 !important;

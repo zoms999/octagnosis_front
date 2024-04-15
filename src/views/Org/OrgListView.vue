@@ -112,7 +112,12 @@
 
 	<!--	기관회차	------------------------------->
 	<Teleport to="#modal">
-		<AppModal v-model="Modal.OrgTurn" title="기관 회차" width="1100">
+		<AppModal
+			v-model="Modal.OrgTurn"
+			title="기관 회차"
+			width="1100"
+			:footer="false"
+		>
 			<template #default>
 				<OrgTurnList :OrgId="OrgId"></OrgTurnList>
 			</template>
@@ -185,6 +190,9 @@ const ShowHide = (type, showHide, acuntId) => {
 		case 'OrgTurn':
 			Modal.value.OrgTurn = showHide;
 			OrgId.value = acuntId;
+			if (showHide == false) {
+				GetOrgList(CurPage.value);
+			}
 			break;
 	}
 };

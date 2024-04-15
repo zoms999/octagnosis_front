@@ -3,12 +3,14 @@
 		<div class="ActionBtn">
 			<div></div>
 			<div>
-				<button class="btn btn-primary me-2" @click="$emit('editPersonal')">
+				<button class="btn btn-primary" @click="$emit('editPersonal')">
 					수정
 				</button>
-				<button class="btn btn-secondary" @click="$emit('GoBack')">
+				<button class="btn btn-primary ms-2" @click="$emit('GoBack')">
 					목록으로
 				</button>
+
+				<slot name="actionsLog"> </slot>
 			</div>
 		</div>
 		<div class="Tit1">
@@ -38,15 +40,12 @@
 							:value="personal.Pw"
 							@input="$emit('update:pw', $event.target.value)"
 						/>
-						<button class="button" @click.prevent="togglePasswordVisibility">
-							<span class="icon">
-								<i
-									class="bi"
-									:class="{
-										'bi-eye-slash': showPassword,
-										'bi-eye-fill': !showPassword,
-									}"
-								></i>
+						<button
+							class="btn btn-light border"
+							@click.prevent="togglePasswordVisibility"
+						>
+							<span class="material-icons fs120">
+								{{ showPassword ? 'visibility' : 'visibility_off' }}
 							</span>
 						</button>
 						<slot name="actionsPw"> </slot>
@@ -166,44 +165,35 @@
 			<div class="row">
 				<div class="col-1 lbl">도로명 주소</div>
 				<div class="col-5">
-					<input type="text" class="form-control" />
+					<input
+						type="text"
+						class="form-control"
+						v-model="personal.RoadAddr1"
+					/>
 				</div>
 				<div class="col-1 lbl">지번 주소</div>
 				<div class="col-5">
-					<input type="text" class="form-control" />
+					<input
+						type="text"
+						class="form-control"
+						v-model="personal.StretAddr1"
+					/>
 				</div>
 				<div class="col-1 lbl">상세 주소</div>
 				<div class="col-5">
-					<input type="text" class="form-control" />
+					<input
+						type="text"
+						class="form-control"
+						v-model="personal.RoadAddr2"
+					/>
 				</div>
 				<div class="col-1 lbl">추가 주소</div>
 				<div class="col-5">
-					<input type="text" class="form-control" />
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-1 lbl">로그확인</div>
-				<div class="col-4">
-					<div class="input-group">
-						<button
-							class="btn btn-primary IconBtn me-2"
-							@click.prevent="connectionLogModal"
-						>
-							<div class="d-flex">
-								<span class="me-2">접속로그</span>
-								<span class="material-icons"> poll </span>
-							</div>
-						</button>
-						<button
-							class="btn btn-primary IconBtn"
-							@click.prevent="authChangeLogModal"
-						>
-							<div class="d-flex">
-								<span class="me-2">변경로그</span>
-								<span class="material-icons"> poll </span>
-							</div>
-						</button>
-					</div>
+					<input
+						type="text"
+						class="form-control"
+						v-model="personal.StretAddr2"
+					/>
 				</div>
 			</div>
 		</div>
