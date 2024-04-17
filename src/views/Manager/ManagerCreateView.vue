@@ -1,7 +1,10 @@
 <template>
+	<div class="TitPage">
+		<div>매니저관리 <span>></span><span>등록</span></div>
+		<div></div>
+	</div>
+
 	<AppError v-if="error" :message="error.message" />
-	<h2 @click="visibleForm = !visibleForm">게시글 등록</h2>
-	<hr class="my-4" />
 	<ManagerCreateForm
 		v-model:useYn="form.useYn"
 		v-model:email="form.email"
@@ -62,12 +65,17 @@ const store = useAuthStore();
 const { userMngrId } = storeToRefs(store);
 
 const router = useRouter();
+
 const form = ref({
 	useYn: 'Y',
 	email: null,
 	mngrNm: null,
 	phone: null,
 	tel: null,
+	lotNumAddr1: '',
+	lotNumAddr2: '',
+	stretAddr1: '',
+	stretAddr2: '',
 	authAdmin: null,
 	authOrg: null,
 	authPersn: null,
@@ -77,8 +85,11 @@ const form = ref({
 	authStati: null,
 	insId: userMngrId.value,
 });
+
 console.log('ManagerCreateForm userMngrId.value --> ' + userMngrId.value);
+
 const { vAlert, vSuccess } = useAlert();
+
 const { error, loading, execute } = useAxios(
 	'/api/managers',
 	{

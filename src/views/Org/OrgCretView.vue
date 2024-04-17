@@ -1,16 +1,18 @@
 <template>
 	<div class="TitPage">
-		<div>기관 <span>></span><span>등록</span></div>
+		<div>계정관리 > 기관 <span>></span><span>등록</span></div>
 		<div></div>
 	</div>
 	<OrgForm
 		ProcType="C"
 		:ObjOrg="Org"
 		:ObjAcunt="Acunt"
-		:ObjOrgTurn="OrgTurn"
+		:ObjObjOrgTurn="OrgTurn"
 		@Go="Go"
 		@GoBack="GoBack"
+		@CretOrg="cretOrg"
 	>
+		<template #LogBtn> </template>
 	</OrgForm>
 	<br /><br />
 </template>
@@ -38,8 +40,8 @@ const Org = ref({
 	corpNum: '',
 	ceoNm: '',
 	zip: '',
-	roadAddr1: '',
-	roadAddr2: '',
+	lotNumAddr1: '',
+	lotNumAddr2: '',
 	stretAddr1: '',
 	stretAddr2: '',
 	compyNm: '',
@@ -114,12 +116,9 @@ const { data, error, loading, execute, execUrl, reqUrl } = useAxios(
 		immediate: false,
 		onSuccess: () => {
 			switch (reqUrl.value) {
-				case '/api/Org/CretOrg':
+				case '/api/Org/cretOrg':
 					vSuccess('기관이 등록되었습니다.');
 					//Go();
-					break;
-				case '/api/Org/ChangePw':
-					vSuccess('비밀번호가 변경되었습니다.');
 					break;
 				default:
 					break;

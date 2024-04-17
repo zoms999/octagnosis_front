@@ -1,6 +1,6 @@
 <template>
 	<div class="TitPage">
-		<div>개인관리 <span>></span><span> 수정</span></div>
+		<div>계정관리 > 개인 <span>></span><span> 수정</span></div>
 		<div></div>
 	</div>
 	<PersonalEditForm
@@ -308,11 +308,11 @@ const savePersonal = () => {
 	// 	vAlert('우편번호를 입력해주세요.');
 	// 	return;
 	// }
-	// if (!personal.value.RoadAddr1) {
+	// if (!personal.value.LotNumAddr1) {
 	// 	vAlert('도로명 주소를 입력해주세요.');
 	// 	return;
 	// }
-	// if (!personal.value.RoadAddr2) {
+	// if (!personal.value.LotNumAddr2) {
 	// 	vAlert('지번 주소를 입력해주세요.');
 	// 	return;
 	// }
@@ -358,8 +358,8 @@ const savePersonal = () => {
 		tel: personal.value.Tel,
 		email: personal.value.Email,
 		zip: personal.value.Zip,
-		roadAddr1: personal.value.RoadAddr1,
-		roadAddr2: personal.value.RoadAddr2,
+		lotNumAddr1: personal.value.LotNumAddr1,
+		lotNumAddr2: personal.value.LotNumAddr2,
 		stretAddr1: personal.value.StretAddr1,
 		stretAddr2: personal.value.StretAddr2,
 		educt: personal.value.Educt,
@@ -404,7 +404,7 @@ const MngrLog = ref({
 	uptDt: '',
 });
 const Procs = ref({
-	ChgExpirDt: { path: '/api/Acunt/ChgExpirDt', loading: false },
+	chgExpirDt: { path: '/api/Acunt/chgExpirDt', loading: false },
 });
 
 const { data, execUrl, reqUrl } = useAxios(
@@ -414,8 +414,8 @@ const { data, execUrl, reqUrl } = useAxios(
 		immediate: false,
 		onSuccess: () => {
 			switch (reqUrl.value) {
-				case Procs.value.ChgExpirDt.path:
-					Procs.value.ChgExpirDt.loading = false;
+				case Procs.value.chgExpirDt.path:
+					Procs.value.chgExpirDt.loading = false;
 					showExpirDt.value = false;
 					MngrLog.value.actinReasn = '';
 					personal.value.ExpirDt = formatDate(expirDtNew.value);
@@ -439,15 +439,15 @@ const { data, execUrl, reqUrl } = useAxios(
 );
 const expirDtNew = ref('');
 const saveExpirDt = () => {
-	if (!ValidNotBlank(expirDtNew.value, '사용기한', null)) return;
-	if (!ValidNotBlank(MngrLog.value.actinReasn, '변경이유', txtActinReasnExpir))
+	if (!validNotBlank(expirDtNew.value, '사용기한', null)) return;
+	if (!validNotBlank(MngrLog.value.actinReasn, '변경이유', txtActinReasnExpir))
 		return;
 
 	MngrLog.value.actinType = 'C00202';
 	MngrLog.value.actinFunc = '관리자-기관계정 사용기한 수정';
 
-	Procs.value.ChgExpirDt.loading = true;
-	execUrl(Procs.value.ChgExpirDt.path, {
+	Procs.value.chgExpirDt.loading = true;
+	execUrl(Procs.value.chgExpirDt.path, {
 		acuntId: personal.value.AcuntId,
 		expirDt: formatDate(expirDtNew.value).replace(/-/g, ''),
 		userId: userMngrId.value,
@@ -462,7 +462,7 @@ const closeModal = () => {
 const GoBack = () => {
 	window.history.back();
 };
-const ValidNotBlank = (val, tit, obj) => {
+const validNotBlank = (val, tit, obj) => {
 	val = typeof val != 'string' ? val.toString() : val;
 	var Val = val.replace(/\s/g, '');
 	if (Val.length == 0) {

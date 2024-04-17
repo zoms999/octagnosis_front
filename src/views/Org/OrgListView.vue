@@ -1,6 +1,6 @@
 <template>
 	<div class="TitPage">
-		<div>기관</div>
+		<div>계정관리 > 기관</div>
 		<div></div>
 	</div>
 	<div class="SrchBox">
@@ -14,7 +14,7 @@
 						v-model="Parm.srchStr"
 						placeholder="기관명/대표/담당자(정)"
 					/>
-					<button class="btn btn-primary w80" @click="GetOrgList(1)">
+					<button class="btn btn-primary w80" @click="getOrgList(1)">
 						<template v-if="loading">
 							<span
 								class="spinner-grow spinner-grow-sm"
@@ -105,7 +105,7 @@
 				:TotCnt="TotCnt"
 				:RowCntInPage="Parm.paging.rowCntInPage"
 				:PageCntInBlock="Parm.paging.pageCntInBlock"
-				@Page="GetOrgList"
+				@Page="getOrgList"
 			></AppPagination>
 		</div>
 	</template>
@@ -162,7 +162,7 @@ const { data, error, loading, execUrl, reqUrl } = useAxios(
 		immediate: false,
 		onSuccess: () => {
 			switch (reqUrl.value) {
-				case '/api/Org/GetOrgList':
+				case '/api/Org/getOrgList':
 					TotCnt.value = data.value.OrgTotCnt;
 					OrgList.value = data.value.OrgList;
 
@@ -191,7 +191,7 @@ const ShowHide = (type, showHide, acuntId) => {
 			Modal.value.OrgTurn = showHide;
 			OrgId.value = acuntId;
 			if (showHide == false) {
-				GetOrgList(CurPage.value);
+				getOrgList(CurPage.value);
 			}
 			break;
 	}
@@ -230,20 +230,20 @@ const CurBlock = ref(1);
 const OrgList = ref([]);
 
 const chageRowCntInPage = () => {
-	GetOrgList(1);
+	getOrgList(1);
 };
 
-const GetOrgList = async page => {
+const getOrgList = async page => {
 	page = typeof no === 'object' && page !== null ? 1 : page;
 	CurBlock.value = Math.ceil(page / Parm.value.paging.pageCntInBlock);
 	CurPage.value = page;
 	Parm.value.paging.page = page;
 	Parm.value.paging.startRow = (page - 1) * Parm.value.paging.rowCntInPage;
 
-	execUrl('/api/Org/GetOrgList', Parm.value);
+	execUrl('/api/Org/getOrgList', Parm.value);
 };
 
-GetOrgList(1);
+getOrgList(1);
 
 // List	************************************************
 </script>

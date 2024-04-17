@@ -5,10 +5,10 @@
 			<button
 				v-if="ProcType == 'C'"
 				class="btn btn-primary ms-2"
-				@click="CretOrg()"
-				:disabled="Procs.CretOrg.loading"
+				@click="cretOrg()"
+				:disabled="Procs.cretOrg.loading"
 			>
-				<template v-if="Procs.CretOrg.loading">
+				<template v-if="Procs.cretOrg.loading">
 					<span
 						class="spinner-grow spinner-grow-sm"
 						role="status"
@@ -21,9 +21,9 @@
 			<button
 				v-if="ProcType == 'E'"
 				class="btn btn-primary ms-2"
-				@click="EditOrg()"
+				@click="editOrg()"
 			>
-				<template v-if="Procs.EditOrg.loading">
+				<template v-if="Procs.editOrg.loading">
 					<span
 						class="spinner-grow spinner-grow-sm"
 						role="status"
@@ -62,7 +62,7 @@
 		<div>기관계정</div>
 		<div></div>
 	</div>
-	<div class="container ItemBox">
+	<div class="container-fluid ItemBox">
 		<!-- 등록	----------------------------->
 		<div class="row" v-if="ProcType == 'C'">
 			<div class="col-1 lbl"><i></i>기관인증코드</div>
@@ -81,8 +81,8 @@
 						</span></span
 					>
 
-					<button class="btn btn-primary w100" @click="ChkUrlCd">
-						<template v-if="Procs.ChkUrlCd.loading">
+					<button class="btn btn-primary w100" @click="chkUrlCd">
+						<template v-if="Procs.chkUrlCd.loading">
 							<span
 								class="spinner-grow spinner-grow-sm"
 								role="status"
@@ -111,8 +111,8 @@
 							Acunt.valid ? 'check' : 'noise_control_off'
 						}}</span></span
 					>
-					<button class="btn btn-primary w100" @click="ChkAcuntId">
-						<template v-if="Procs.ChkAcuntId.loading">
+					<button class="btn btn-primary w100" @click="chkAcuntId">
+						<template v-if="Procs.chkAcuntId.loading">
 							<span
 								class="spinner-grow spinner-grow-sm"
 								role="status"
@@ -168,8 +168,8 @@
 						}}</span></span
 					>
 
-					<button class="btn btn-primary w100" @click="ChkTurnConnCd">
-						<template v-if="Procs.ChkTurnConnCd.loading">
+					<button class="btn btn-primary w100" @click="chkTurnConnCd">
+						<template v-if="Procs.chkTurnConnCd.loading">
 							<span
 								class="spinner-grow spinner-grow-sm"
 								role="status"
@@ -263,7 +263,7 @@
 		<div></div>
 	</div>
 
-	<div class="container ItemBox">
+	<div class="container-fluid ItemBox">
 		<div class="row">
 			<div class="col-1 lbl"><i></i>기관명</div>
 			<div class="col-7">
@@ -394,7 +394,7 @@
 					type="text"
 					ref="txtRoadAddr2"
 					class="form-control"
-					v-model="Org.stretAddr1"
+					v-model="Org.roadAddr2"
 				/>
 			</div>
 			<div class="col-1 lbl">상세 주소</div>
@@ -403,7 +403,7 @@
 					type="text"
 					ref="txtStretAddr1"
 					class="form-control"
-					v-model="Org.roadAddr2"
+					v-model="Org.stretAddr1"
 				/>
 			</div>
 			<div class="col-1 lbl">추가 주소</div>
@@ -423,7 +423,7 @@
 		<div></div>
 	</div>
 
-	<div class="container ItemBox">
+	<div class="container-fluid ItemBox">
 		<div class="row">
 			<div class="col-1 lbl"><i></i>(정)이름</div>
 			<div class="col-1">
@@ -529,7 +529,7 @@
 				:AcuntId="Acunt.acuntId"
 				ActinType="C00201"
 				ActinFunc="관리자-기관계정 사용기한 수정"
-				@SetUrlCd="SetUrlCd"
+				@SetUrlCd="setUrlCd"
 			></ChgUrlCd>
 		</AppModalV1>
 	</Teleport>
@@ -542,7 +542,7 @@
 				:AcuntId="Acunt.acuntId"
 				ActinType="C00202"
 				ActinFunc="관리자-기관계정 사용기한 수정"
-				@SetExpireDt="SetExpireDt"
+				@SetExpireDt="setExpireDt"
 			></ChgExpireDt>
 		</AppModalV1>
 	</Teleport>
@@ -633,7 +633,7 @@ const Props = defineProps({
 
 console.log('OrgId :  ', Props.OrgId);
 
-//const Emit = defineEmits(['CretOrg']);
+//const Emit = defineEmits(['cretOrg']);
 
 // Data *************************************
 
@@ -687,13 +687,13 @@ const txtUrlCdNew = ref(null);
 // Axios	***********************************
 
 const Procs = ref({
-	ChkUrlCd: { path: '/api/Org/ChkUrlCd', loading: false },
-	ChkAcuntId: { path: '/api/Acunt/ChkAcuntId', loading: false },
-	ChkTurnConnCd: { path: '/api/OrgTurn/ChkTurnConnCd', loading: false },
+	chkUrlCd: { path: '/api/Org/chkUrlCd', loading: false },
+	chkAcuntId: { path: '/api/Acunt/chkAcuntId', loading: false },
+	chkTurnConnCd: { path: '/api/OrgTurn/chkTurnConnCd', loading: false },
 
-	CretOrg: { path: '/api/Org/CretOrg', loading: false },
-	EditOrg: { path: '/api/Org/EditOrg', loading: false },
-	GetOrg: { path: '/api/Org/GetOrg', loading: false },
+	cretOrg: { path: '/api/Org/cretOrg', loading: false },
+	editOrg: { path: '/api/Org/editOrg', loading: false },
+	getOrg: { path: '/api/Org/getOrg', loading: false },
 });
 
 const { data, execUrl, reqUrl } = useAxios(
@@ -703,7 +703,7 @@ const { data, execUrl, reqUrl } = useAxios(
 		immediate: false,
 		onSuccess: () => {
 			switch (reqUrl.value) {
-				case Procs.value.ChkUrlCd.path:
+				case Procs.value.chkUrlCd.path:
 					if (data.value.ExistYn == 'Y') {
 						vSuccess('이미 사용중입니다. ');
 						Org.value.urlCd = '';
@@ -715,10 +715,10 @@ const { data, execUrl, reqUrl } = useAxios(
 						Org.value.urlCdSet = Org.value.urlCd;
 						Org.value.valid = true;
 					}
-					Procs.value.ChkUrlCd.loading = false;
+					Procs.value.chkUrlCd.loading = false;
 					break;
 
-				case Procs.value.ChkAcuntId.path:
+				case Procs.value.chkAcuntId.path:
 					if (data.value.ExistYn == 'Y') {
 						vSuccess('이미 사용중인 아이디 입니다.');
 						Acunt.value.acuntId = '';
@@ -729,10 +729,10 @@ const { data, execUrl, reqUrl } = useAxios(
 						Acunt.value.acuntIdSet = Acunt.value.acuntId;
 						Acunt.value.valid = true;
 					}
-					Procs.value.ChkAcuntId.loading = false;
+					Procs.value.chkAcuntId.loading = false;
 					break;
 
-				case Procs.value.ChkTurnConnCd.path:
+				case Procs.value.chkTurnConnCd.path:
 					if (data.value.ExistYn == 'Y') {
 						vSuccess('이미 사용중인 코드 입니다.');
 						OrgTurn.value.turnConnCd = '';
@@ -743,22 +743,22 @@ const { data, execUrl, reqUrl } = useAxios(
 						OrgTurn.value.turnConnCdSet = OrgTurn.value.turnConnCd;
 						OrgTurn.value.valid = true;
 					}
-					Procs.value.ChkTurnConnCd.loading = false;
+					Procs.value.chkTurnConnCd.loading = false;
 					break;
 
-				case Procs.value.CretOrg.path:
+				case Procs.value.cretOrg.path:
 					vSuccess('기관이 등록되었습니다. ');
-					Procs.value.CretOrg.loading = false;
+					Procs.value.cretOrg.loading = false;
 					Go('OrgList', {});
 					break;
 
-				case Procs.value.EditOrg.path:
+				case Procs.value.editOrg.path:
 					vSuccess('기관이 수정되었습니다. ');
-					Procs.value.EditOrg.loading = false;
+					Procs.value.editOrg.loading = false;
 					break;
 
-				case Procs.value.GetOrg.path:
-					Procs.value.GetOrg.loading = false;
+				case Procs.value.getOrg.path:
+					Procs.value.getOrg.loading = false;
 
 					Org.value = data.value.Org;
 					Acunt.value = data.value.Acunt;
@@ -828,14 +828,14 @@ const Go = (nm, q) => {
 // 기관인증코드 변경	**************************
 
 // 기관인증코드 유효성
-const ChkUrlCd = () => {
+const chkUrlCd = () => {
 	let Val = Org.value.urlCd;
 
-	if (!ValidNotBlank(Val, '기관인증코드', txtUrlCd.value)) return;
-	if (!ValidMaxLen(Val, 0, 20, txtUrlCd.value)) return;
+	if (!validNotBlank(Val, '기관인증코드', txtUrlCd.value)) return;
+	if (!validMaxLen(Val, 0, 20, txtUrlCd.value)) return;
 
-	Procs.value.ChkUrlCd.loading = true;
-	execUrl(Procs.value.ChkUrlCd.path, Org.value);
+	Procs.value.chkUrlCd.loading = true;
+	execUrl(Procs.value.chkUrlCd.path, Org.value);
 };
 
 // 기관인증코드 유효성 (수정)
@@ -868,16 +868,16 @@ watch(
 // 아이디 	**********************************
 
 // 아이디 중복확인
-const ChkAcuntId = () => {
+const chkAcuntId = () => {
 	let Val = Acunt.value.acuntId;
 
-	if (!ValidNotBlank(Val, '아이디', txtAcuntId.value)) {
+	if (!validNotBlank(Val, '아이디', txtAcuntId.value)) {
 		return;
 	}
-	if (!ValidMaxLen(Val, 6, 20, txtAcuntId.value)) return;
+	if (!validMaxLen(Val, 6, 20, txtAcuntId.value)) return;
 
-	Procs.value.ChkAcuntId.loading = true;
-	execUrl(Procs.value.ChkAcuntId.path, Acunt.value);
+	Procs.value.chkAcuntId.loading = true;
+	execUrl(Procs.value.chkAcuntId.path, Acunt.value);
 };
 
 watch(
@@ -891,16 +891,16 @@ watch(
 
 // 1회차 코드	********************************
 
-const ChkTurnConnCd = () => {
+const chkTurnConnCd = () => {
 	let Val = OrgTurn.value.turnConnCd;
 
-	if (!ValidNotBlank(Val, '1회차 코드', txtTurnConnCd.value)) {
+	if (!validNotBlank(Val, '1회차 코드', txtTurnConnCd.value)) {
 		return;
 	}
-	if (!ValidMaxLen(Val, 10, 20, txtTurnConnCd.value)) return;
+	if (!validMaxLen(Val, 10, 20, txtTurnConnCd.value)) return;
 
-	Procs.value.ChkTurnConnCd.loading = true;
-	execUrl(Procs.value.ChkTurnConnCd.path, OrgTurn.value);
+	Procs.value.chkTurnConnCd.loading = true;
+	execUrl(Procs.value.chkTurnConnCd.path, OrgTurn.value);
 };
 
 watch(
@@ -926,7 +926,7 @@ watch(
 // Method	************************************
 
 // 등록
-const CretOrg = () => {
+const cretOrg = () => {
 	if (!Org.value.valid) {
 		vAlert('기관인증코드 유효성검사를 진행하세요.');
 		return;
@@ -936,17 +936,17 @@ const CretOrg = () => {
 		return;
 	}
 
-	if (!ValidNotBlank(Org.value.urlCd, '기관인증코드', txtUrlCd.value)) {
+	if (!validNotBlank(Org.value.urlCd, '기관인증코드', txtUrlCd.value)) {
 		return;
 	}
-	if (!ValidNotBlank(Acunt.value.acuntId, '아이디', txtAcuntId.value)) {
+	if (!validNotBlank(Acunt.value.acuntId, '아이디', txtAcuntId.value)) {
 		return;
 	}
-	if (!ValidNotBlank(Acunt.value.pw, '비밀번호', txtPw.value)) {
+	if (!validNotBlank(Acunt.value.pw, '비밀번호', txtPw.value)) {
 		return;
 	}
 	if (
-		!ValidNotBlank(Acunt.value.pwConfirm, '비밀번호 확인', txtPwConfirm.value)
+		!validNotBlank(Acunt.value.pwConfirm, '비밀번호 확인', txtPwConfirm.value)
 	) {
 		return;
 	}
@@ -957,7 +957,7 @@ const CretOrg = () => {
 	}
 
 	if (
-		!ValidNotBlank(
+		!validNotBlank(
 			OrgTurn.value.turnReqCnt,
 			'1회차 요청수',
 			txtTurnReqCnt.value,
@@ -966,7 +966,7 @@ const CretOrg = () => {
 		return;
 	}
 	if (
-		!ValidNotBlank(OrgTurn.value.turnConnCd, '1회차 코드', txtTurnConnCd.value)
+		!validNotBlank(OrgTurn.value.turnConnCd, '1회차 코드', txtTurnConnCd.value)
 	) {
 		return;
 	}
@@ -975,34 +975,34 @@ const CretOrg = () => {
 		return;
 	}
 
-	if (!ValidNotBlank(Org.value.compyNm, '기관명', txtCompyNm.value)) {
+	if (!validNotBlank(Org.value.compyNm, '기관명', txtCompyNm.value)) {
 		return;
 	}
-	if (!ValidNotBlank(Org.value.ceoNm, '대표자', txtCeoNm.value)) {
+	if (!validNotBlank(Org.value.ceoNm, '대표자', txtCeoNm.value)) {
 		return;
 	}
-	if (!ValidNotBlank(Org.value.bizNum, '사업자번호', txtBizNum.value)) {
+	if (!validNotBlank(Org.value.bizNum, '사업자번호', txtBizNum.value)) {
 		return;
 	}
-	if (!ValidNotBlank(Org.value.tel1, '연락처1', txtTel1.value)) {
+	if (!validNotBlank(Org.value.tel1, '연락처1', txtTel1.value)) {
 		return;
 	}
-	if (!ValidNotBlank(Org.value.zip, '우편번호', txtZip.value)) {
+	if (!validNotBlank(Org.value.zip, '우편번호', txtZip.value)) {
 		return;
 	}
-	if (!ValidNotBlank(Org.value.mngerNm1, '정(이름)', txtMngerNm1.value)) {
+	if (!validNotBlank(Org.value.mngerNm1, '정(이름)', txtMngerNm1.value)) {
 		return;
 	}
-	if (!ValidNotBlank(Org.value.mngerTeam1, '부서', txtMngerTeam1.value)) {
+	if (!validNotBlank(Org.value.mngerTeam1, '부서', txtMngerTeam1.value)) {
 		return;
 	}
-	if (!ValidNotBlank(Org.value.mngerPosit1, '직급', txtMngerPosit1.value)) {
+	if (!validNotBlank(Org.value.mngerPosit1, '직급', txtMngerPosit1.value)) {
 		return;
 	}
-	if (!ValidNotBlank(Org.value.mngerPhone1, '휴대번호', txtMngerPhone1.value)) {
+	if (!validNotBlank(Org.value.mngerPhone1, '휴대번호', txtMngerPhone1.value)) {
 		return;
 	}
-	if (!ValidNotBlank(Org.value.mngerEmail1, '이메일', txtMngerEmail1.value)) {
+	if (!validNotBlank(Org.value.mngerEmail1, '이메일', txtMngerEmail1.value)) {
 		return;
 	}
 
@@ -1012,67 +1012,67 @@ const CretOrg = () => {
 		OrgTurn: OrgTurn.value,
 	};
 
-	Procs.value.CretOrg.loading = true;
-	execUrl(Procs.value.CretOrg.path, Parm);
+	Procs.value.cretOrg.loading = true;
+	execUrl(Procs.value.cretOrg.path, Parm);
 };
 
 // 기관수정
-const EditOrg = () => {
-	if (!ValidNotBlank(Org.value.compyNm, '기관명', txtCompyNm.value)) {
+const editOrg = () => {
+	if (!validNotBlank(Org.value.compyNm, '기관명', txtCompyNm.value)) {
 		return;
 	}
-	if (!ValidNotBlank(Org.value.ceoNm, '대표자', txtCeoNm.value)) {
+	if (!validNotBlank(Org.value.ceoNm, '대표자', txtCeoNm.value)) {
 		return;
 	}
-	if (!ValidNotBlank(Org.value.bizNum, '사업자번호', txtBizNum.value)) {
+	if (!validNotBlank(Org.value.bizNum, '사업자번호', txtBizNum.value)) {
 		return;
 	}
-	if (!ValidNotBlank(Org.value.tel1, '연락처1', txtTel1.value)) {
+	if (!validNotBlank(Org.value.tel1, '연락처1', txtTel1.value)) {
 		return;
 	}
-	if (!ValidNotBlank(Org.value.zip, '우편번호', txtZip.value)) {
+	if (!validNotBlank(Org.value.zip, '우편번호', txtZip.value)) {
 		return;
 	}
-	if (!ValidNotBlank(Org.value.mngerNm1, '정(이름)', txtMngerNm1.value)) {
+	if (!validNotBlank(Org.value.mngerNm1, '정(이름)', txtMngerNm1.value)) {
 		return;
 	}
-	if (!ValidNotBlank(Org.value.mngerTeam1, '부서', txtMngerTeam1.value)) {
+	if (!validNotBlank(Org.value.mngerTeam1, '부서', txtMngerTeam1.value)) {
 		return;
 	}
-	if (!ValidNotBlank(Org.value.mngerPosit1, '직급', txtMngerPosit1.value)) {
+	if (!validNotBlank(Org.value.mngerPosit1, '직급', txtMngerPosit1.value)) {
 		return;
 	}
-	if (!ValidNotBlank(Org.value.mngerPhone1, '휴대번호', txtMngerPhone1.value)) {
+	if (!validNotBlank(Org.value.mngerPhone1, '휴대번호', txtMngerPhone1.value)) {
 		return;
 	}
-	if (!ValidNotBlank(Org.value.mngerEmail1, '이메일', txtMngerEmail1.value)) {
+	if (!validNotBlank(Org.value.mngerEmail1, '이메일', txtMngerEmail1.value)) {
 		return;
 	}
-	Procs.value.EditOrg.loading = true;
-	execUrl(Procs.value.EditOrg.path, Org.value);
+	Procs.value.editOrg.loading = true;
+	execUrl(Procs.value.editOrg.path, Org.value);
 };
 
 // 조회
-const GetOrg = () => {
+const getOrg = () => {
 	let Parm = {
 		orgId: Props.OrgId,
 	};
 
-	Procs.value.GetOrg.loading = true;
-	execUrl(Procs.value.GetOrg.path, Parm);
+	Procs.value.getOrg.loading = true;
+	execUrl(Procs.value.getOrg.path, Parm);
 };
 
 if (Props.OrgId != null) {
-	GetOrg();
+	getOrg();
 }
 
 // 기관인증코드 수정
-const SetUrlCd = urlCd => {
+const setUrlCd = urlCd => {
 	Org.value.urlCd = urlCd;
 };
 
 // 사용기한 수정
-const SetExpireDt = expireDt => {
+const setExpireDt = expireDt => {
 	Acunt.value.expirDt = expireDt;
 };
 
@@ -1083,7 +1083,7 @@ const SetPw = pw => {
 
 // Etc	**************************************
 
-const ValidMaxLen = (val, minLen, maxLen, obj) => {
+const validMaxLen = (val, minLen, maxLen, obj) => {
 	if (val.length < minLen || val.length > maxLen) {
 		vAlert(`${minLen}~${maxLen}자 사이로 입력해주세요.`);
 		if (obj != null) {
@@ -1094,7 +1094,7 @@ const ValidMaxLen = (val, minLen, maxLen, obj) => {
 	return true;
 };
 
-const ValidNotBlank = (val, tit, obj) => {
+const validNotBlank = (val, tit, obj) => {
 	val = typeof val != 'string' ? val.toString() : val;
 	var Val = val.replace(/\s/g, '');
 	if (Val.length == 0) {

@@ -225,7 +225,7 @@ const ShowHide = (type, showHide) => {
 // Init	****************
 
 const { execute: execInit } = useAxios(
-	'/api/OrgTurn/GetOrgTurnList',
+	'/api/OrgTurn/getOrgTurnList',
 	{ method: 'post' },
 	{
 		immediate: false,
@@ -264,7 +264,7 @@ const Parm = ref({
 });
 
 const { data, error, loading, execute } = useAxios(
-	'/api/OrgTurn/GetOrgTurnPersnList',
+	'/api/OrgTurn/getOrgTurnPersnList',
 	{ method: 'post' },
 	{
 		immediate: false,
@@ -310,7 +310,7 @@ watch(
 
 // OrgTurn 사용여부	****************
 const { execute: execOrgTurnUse } = useAxios(
-	'/api/OrgTurn/EditOrgTurnUse',
+	'/api/OrgTurn/editOrgTurnUse',
 	{ method: 'post' },
 	{
 		immediate: false,

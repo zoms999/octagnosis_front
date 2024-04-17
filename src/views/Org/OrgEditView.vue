@@ -5,10 +5,10 @@
 	</div>
 	<OrgForm
 		ProcType="E"
-		v-model:ObjOrg="Org"
-		v-model:ObjAcunt="Acunt"
-		v-model:ObjOrgTurn="OrgTurn"
-		v-model:OrgId="OrgId"
+		:ObjOrg="Org"
+		:ObjAcunt="Acunt"
+		:ObjOrgTurn="OrgTurn"
+		:OrgId="OrgId"
 		@Go="Go"
 		@GoBack="GoBack"
 	>

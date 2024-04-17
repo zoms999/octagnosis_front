@@ -101,7 +101,7 @@ const Parm = ref({
 });
 
 const { data, error, execute } = useAxios(
-	'/api/AcuntLoginLog/GetAcuntLoginLogList',
+	'/api/AcuntLoginLog/getAcuntLoginLogList',
 	{ method: 'post' },
 	{
 		immediate: false,

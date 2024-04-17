@@ -25,7 +25,7 @@
 		</div>
 	</div>
 	<div class="modal-footer">
-		<button type="button" class="btn btn-primary" @click="ChgExpirDt">
+		<button type="button" class="btn btn-primary" @click="chgExpirDt">
 			<template v-if="Procs.ChgExpirDt.loading">
 				<span
 					class="spinner-grow spinner-grow-sm"
@@ -94,7 +94,7 @@ const { vAlert, vSuccess } = useAlert();
 // Axios	***********************************
 
 const Procs = ref({
-	ChgExpirDt: { path: '/api/Acunt/ChgExpirDt', loading: false },
+	ChgExpirDt: { path: '/api/Acunt/chgExpirDt', loading: false },
 });
 
 const { execUrl, reqUrl } = useAxios(
@@ -128,10 +128,10 @@ const { execUrl, reqUrl } = useAxios(
 
 // 사용기한 변경	*****************************
 
-const ChgExpirDt = () => {
-	if (!ValidNotBlank(AcuntParm.value.expirDt, '사용기한', null)) return;
+const chgExpirDt = () => {
+	if (!validNotBlank(AcuntParm.value.expirDt, '사용기한', null)) return;
 	if (
-		!ValidNotBlank(
+		!validNotBlank(
 			AcuntParm.value.acuntLog.actinReasn,
 			'변경이유',
 			txtActinReasnExpir,
@@ -150,7 +150,7 @@ const ChgExpirDt = () => {
 
 // Etc	**************************************
 
-const ValidNotBlank = (val, tit, obj) => {
+const validNotBlank = (val, tit, obj) => {
 	val = typeof val != 'string' ? val.toString() : val;
 	var Val = val.replace(/\s/g, '');
 	if (Val.length == 0) {

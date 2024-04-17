@@ -8,7 +8,7 @@
 				<div>기본정보</div>
 				<div></div>
 			</div>
-			<div class="container ItemBox">
+			<div class="container-fluid ItemBox">
 				<div class="row">
 					<div class="col-1 lbl">이메일</div>
 					<div class="col-3">
@@ -42,6 +42,14 @@
 					<div class="col-1 lbl">비밀번호</div>
 					<div class="col-3">
 						<div class="input-group">
+							<button
+								class="btn btn-primary"
+								@click.prevent="togglePasswordVisibility"
+							>
+								<span class="material-icons">{{
+									showPassword ? 'visibility_off' : 'visibility'
+								}}</span>
+							</button>
 							<input
 								id="pw"
 								:type="passwordFieldType"
@@ -49,17 +57,6 @@
 								:value="pw"
 								@input="$emit('update:pw', $event.target.value)"
 							/>
-							<button class="button" @click.prevent="togglePasswordVisibility">
-								<span class="icon">
-									<i
-										class="bi"
-										:class="{
-											'bi-eye-slash': showPassword,
-											'bi-eye-fill': !showPassword,
-										}"
-									></i>
-								</span>
-							</button>
 							<slot name="actionsPw"> </slot>
 						</div>
 					</div>
@@ -119,12 +116,11 @@
 					</div>
 				</div>
 			</div>
-
 			<div class="Tit1">
 				<div>권한설정</div>
 				<div></div>
 			</div>
-			<div class="container ItemBox">
+			<div class="container-fluid ItemBox">
 				<div class="row">
 					<div class="col-1 lbl">매니저관리</div>
 					<div class="col-3 d-flex">
@@ -423,7 +419,7 @@
 			<div class="container ItemBox">
 				<div class="row">
 					<div class="col-1 lbl">로그확인</div>
-					<div class="col-3 d-flex">
+					<div class="col-5 d-flex">
 						<button
 							class="btn btn-primary IconBtn me-2"
 							@click.prevent="connectionLogModal"
@@ -453,7 +449,7 @@
 						</button>
 					</div>
 					<div class="col-1 lbl">로그인관리</div>
-					<div class="col-3 d-flex">
+					<div class="col-5 d-flex">
 						<button class="btn btn-primary IconBtn me-2">
 							<div class="d-flex">
 								<span class="me-2">자동연장차단</span>

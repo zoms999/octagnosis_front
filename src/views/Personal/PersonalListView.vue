@@ -1,6 +1,6 @@
 <template>
 	<div class="TitPage">
-		<div>개인관리</div>
+		<div>계정관리 > 개인</div>
 		<div></div>
 	</div>
 	<div class="SrchBox">

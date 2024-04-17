@@ -17,7 +17,7 @@
 			<div>개인 기본정보</div>
 			<div></div>
 		</div>
-		<div class="container ItemBox">
+		<div class="container-fluid ItemBox">
 			<div class="row">
 				<div class="col-1 lbl">아이디</div>
 				<div class="col-2">
@@ -168,7 +168,7 @@
 					<input
 						type="text"
 						class="form-control"
-						v-model="personal.RoadAddr1"
+						v-model="personal.LotNumAddr1"
 					/>
 				</div>
 				<div class="col-1 lbl">지번 주소</div>
@@ -184,7 +184,7 @@
 					<input
 						type="text"
 						class="form-control"
-						v-model="personal.RoadAddr2"
+						v-model="personal.LotNumAddr2"
 					/>
 				</div>
 				<div class="col-1 lbl">추가 주소</div>
@@ -202,7 +202,7 @@
 			<div>최종(현재) 학력 정보</div>
 			<div></div>
 		</div>
-		<div class="container ItemBox">
+		<div class="container-fluid ItemBox">
 			<div class="row">
 				<div class="col-1 lbl">학업군</div>
 				<div class="col-2">
@@ -259,7 +259,7 @@
 			<div>최종(현재) 직업 정보</div>
 			<div></div>
 		</div>
-		<div class="container ItemBox">
+		<div class="container-fluid ItemBox">
 			<div class="row">
 				<div class="col-1 lbl">직업군</div>
 				<div class="col-2">

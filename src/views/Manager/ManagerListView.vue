@@ -49,71 +49,64 @@
 		<template v-else>
 			<div class="container-fluid">
 				<!-- DataTales Example -->
-				<div class="card shadow mb-4">
-					<div class="card-header py-3">
-						<h6 class="m-0 font-weight-bold text-primary">매니저 관리</h6>
-					</div>
-					<div class="card-body">
-						<div class="table-responsive">
-							<table
-								class="table table-bordered"
-								id="dataTable"
-								width="100%"
-								cellspacing="0"
-							>
-								<thead>
-									<tr>
-										<th>No.</th>
-										<th>활동</th>
-										<th>이름</th>
-										<th>이메일</th>
-										<th>휴대폰</th>
-										<th>연락처</th>
-										<th>매니저</th>
-										<th>기관</th>
-										<th>개인</th>
-										<th>문의</th>
-										<th>결과</th>
-										<th>로그</th>
-										<th>통계</th>
-										<th>등록일</th>
-									</tr>
-								</thead>
-								<tfoot></tfoot>
-								<tbody>
-									<tr
-										v-for="(item, index) in ManagerList"
-										:key="index"
-										@click="goPage(item.mngrId)"
-										class="Poit"
-									>
-										<td>{{ item.mngrId }}</td>
-										<td>
-											<button
-												class="btn btn-sm btn-outline-dark"
-												@click.stop="toggleUseYn(item)"
-											>
-												{{ item.useYn }}
-											</button>
-										</td>
-										<td>{{ item.mngrNm }}</td>
-										<td>{{ item.email }}</td>
-										<td>{{ item.phone }}</td>
-										<td>{{ item.tel }}</td>
-										<td v-html="getIcon(item.authAdmin)"></td>
-										<td v-html="getIcon(item.authOrg)"></td>
-										<td v-html="getIcon(item.authPersn)"></td>
-										<td v-html="getIcon(item.authBbs)"></td>
-										<td v-html="getIcon(item.authRsltView)"></td>
-										<td v-html="getIcon(item.authLogView)"></td>
-										<td v-html="getIcon(item.authStati)"></td>
-										<td>{{ formatInsDt(item.insDt) }}</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
+				<table
+					class="table table-bordered Tbl1"
+					id="dataTable"
+					width="100%"
+					cellspacing="0"
+				>
+					<thead>
+						<tr>
+							<th>No.</th>
+							<th>활동</th>
+							<th>이름</th>
+							<th>이메일</th>
+							<th>휴대폰</th>
+							<th>연락처</th>
+							<th>매니저</th>
+							<th>기관</th>
+							<th>개인</th>
+							<th>문의</th>
+							<th>결과</th>
+							<th>로그</th>
+							<th>통계</th>
+							<th>등록일</th>
+						</tr>
+					</thead>
+					<tfoot></tfoot>
+					<tbody>
+						<tr
+							v-for="(item, index) in ManagerList"
+							:key="index"
+							@click="goPage(item.mngrId)"
+							class="Poit text-center"
+						>
+							<td>{{ item.mngrId }}</td>
+							<td>
+								<button
+									class="btn btn-sm btn-primary w30"
+									@click.stop="toggleUseYn(item)"
+								>
+									{{ item.useYn }}
+								</button>
+							</td>
+							<td>{{ item.mngrNm }}</td>
+							<td>{{ item.email }}</td>
+							<td>{{ item.phone }}</td>
+							<td>{{ item.tel }}</td>
+							<td v-html="getIcon(item.authAdmin)"></td>
+							<td v-html="getIcon(item.authOrg)"></td>
+							<td v-html="getIcon(item.authPersn)"></td>
+							<td v-html="getIcon(item.authBbs)"></td>
+							<td v-html="getIcon(item.authRsltView)"></td>
+							<td v-html="getIcon(item.authLogView)"></td>
+							<td v-html="getIcon(item.authStati)"></td>
+							<td>
+								{{ formatInsDt(item.insDt) }}
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</template>
 
@@ -226,9 +219,12 @@ const toggleUseYn = item => {
 };
 
 const getIcon = authValue => {
-	if (authValue === 0) return '<i class="bi bi-x-square"></i>';
-	else if (authValue === 1) return '<i class="bi bi-eye-fill"></i>';
-	else if (authValue === 2) return '<i class="bi bi-pencil-square"></i>';
+	if (authValue === 0)
+		return '<span class="material-icons">not_interested</span>';
+	else if (authValue === 1)
+		return '<span class="material-icons">visibility</span>';
+	else if (authValue === 2)
+		return '<span class="material-symbols-outlined">edit_square</span>';
 	else return '';
 };
 

@@ -24,8 +24,8 @@
 							OrgTurn.valid ? 'check' : 'noise_control_off'
 						}}</span></span
 					>
-					<button class="btn btn-primary w100" @click="ChkTurnConnCd">
-						<template v-if="Procs.ChkTurnConnCd.loading">
+					<button class="btn btn-primary w100" @click="chkTurnConnCd">
+						<template v-if="Procs.chkTurnConnCd.loading">
 							<span
 								class="spinner-grow spinner-grow-sm"
 								role="status"
@@ -44,8 +44,8 @@
 		</div>
 	</div>
 	<div class="mt-5 mb-3 text-center">
-		<button class="btn btn-primary w100" @click="CretOrgTurn">
-			<template v-if="Procs.CretOrgTurn.loading">
+		<button class="btn btn-primary w100" @click="cretOrgTurn">
+			<template v-if="Procs.cretOrgTurn.loading">
 				<span
 					class="spinner-grow spinner-grow-sm"
 					role="status"
@@ -102,8 +102,8 @@ const OrgTurn = ref({
 // Axios	***********************************
 
 const Procs = ref({
-	ChkTurnConnCd: { path: '/api/OrgTurn/ChkTurnConnCd', loading: false },
-	CretOrgTurn: { path: '/api/OrgTurn/CretOrgTurn', loading: false },
+	chkTurnConnCd: { path: '/api/OrgTurn/chkTurnConnCd', loading: false },
+	cretOrgTurn: { path: '/api/OrgTurn/cretOrgTurn', loading: false },
 });
 
 const { data, execUrl, reqUrl } = useAxios(
@@ -113,7 +113,7 @@ const { data, execUrl, reqUrl } = useAxios(
 		immediate: false,
 		onSuccess: () => {
 			switch (reqUrl.value) {
-				case Procs.value.ChkTurnConnCd.path:
+				case Procs.value.chkTurnConnCd.path:
 					if (data.value.ExistYn == 'Y') {
 						vSuccess('이미 사용중인 코드 입니다.');
 						OrgTurn.value.turnConnCd = '';
@@ -123,11 +123,11 @@ const { data, execUrl, reqUrl } = useAxios(
 						OrgTurn.value.turnConnCdSet = OrgTurn.value.turnConnCd;
 						OrgTurn.value.valid = true;
 					}
-					Procs.value.ChkTurnConnCd.loading = false;
+					Procs.value.chkTurnConnCd.loading = false;
 					break;
 
-				case Procs.value.CretOrgTurn.path:
-					Procs.value.CretOrgTurn.loading = false;
+				case Procs.value.cretOrgTurn.path:
+					Procs.value.cretOrgTurn.loading = false;
 					vSuccess('회차 추가되었습니다.');
 					Emits('reload');
 					break;
@@ -151,16 +151,16 @@ const { data, execUrl, reqUrl } = useAxios(
 // Method	************************************
 
 // 유효성 검사  ****************
-const ChkTurnConnCd = () => {
+const chkTurnConnCd = () => {
 	let Val = OrgTurn.value.turnConnCd;
 
-	if (!ValidNotBlank(Val, '회차 코드', txtTurnConnCd.value)) {
+	if (!validNotBlank(Val, '회차 코드', txtTurnConnCd.value)) {
 		return;
 	}
-	if (!ValidMaxLen(Val, 10, 20, txtTurnConnCd.value)) return;
+	if (!validMaxLen(Val, 10, 20, txtTurnConnCd.value)) return;
 
-	Procs.value.ChkTurnConnCd.loading = true;
-	execUrl(Procs.value.ChkTurnConnCd.path, OrgTurn.value);
+	Procs.value.chkTurnConnCd.loading = true;
+	execUrl(Procs.value.chkTurnConnCd.path, OrgTurn.value);
 };
 
 watch(
@@ -183,14 +183,14 @@ watch(
 
 // 기관 회차 등록  ****************
 
-const CretOrgTurn = () => {
+const cretOrgTurn = () => {
 	if (
-		!ValidNotBlank(OrgTurn.value.turnReqCnt, '회차 요청수', txtTurnReqCnt.value)
+		!validNotBlank(OrgTurn.value.turnReqCnt, '회차 요청수', txtTurnReqCnt.value)
 	) {
 		return;
 	}
 	if (
-		!ValidNotBlank(OrgTurn.value.turnConnCd, '회차 코드', txtTurnConnCd.value)
+		!validNotBlank(OrgTurn.value.turnConnCd, '회차 코드', txtTurnConnCd.value)
 	) {
 		return;
 	}
@@ -199,13 +199,13 @@ const CretOrgTurn = () => {
 		return;
 	}
 
-	Procs.value.CretOrgTurn.loading = true;
-	execUrl(Procs.value.CretOrgTurn.path, OrgTurn.value);
+	Procs.value.cretOrgTurn.loading = true;
+	execUrl(Procs.value.cretOrgTurn.path, OrgTurn.value);
 };
 
 // ******************************
 
-const ValidMaxLen = (val, minLen, maxLen, obj) => {
+const validMaxLen = (val, minLen, maxLen, obj) => {
 	if (val.length < minLen || val.length > maxLen) {
 		vAlert(`${minLen}~${maxLen}자 사이로 입력해주세요.`);
 		if (obj != null) {
@@ -216,7 +216,7 @@ const ValidMaxLen = (val, minLen, maxLen, obj) => {
 	return true;
 };
 
-const ValidNotBlank = (val, tit, obj) => {
+const validNotBlank = (val, tit, obj) => {
 	val = typeof val != 'string' ? val.toString() : val;
 	var Val = val.replace(/\s/g, '');
 	if (Val.length == 0) {

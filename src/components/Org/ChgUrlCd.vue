@@ -19,7 +19,7 @@
 								>{{ OrgParm.valid ? 'check' : 'noise_control_off' }}
 							</span></span
 						>
-						<button class="btn btn-primary" @click="ChkUrlNewCd">
+						<button class="btn btn-primary" @click="chkUrlNewCd">
 							<template v-if="Procs.ChkUrlCd.loading">
 								<span
 									class="spinner-grow spinner-grow-sm"
@@ -45,7 +45,7 @@
 		</div>
 	</div>
 	<div class="modal-footer">
-		<button type="button" class="btn btn-primary" @click="ChgOrgUrlCd">
+		<button type="button" class="btn btn-primary" @click="chgOrgUrlCd">
 			저장
 		</button>
 		<button
@@ -70,29 +70,29 @@ const { userMngrId } = storeToRefs(useAuthStore());
 
 // Props / Emit  ****************************
 
-const Props = defineProps({
+const props = defineProps({
 	OrgId: { type: Number },
 	AcuntId: { type: String },
 	ActinType: { type: String },
 	ActinFunc: { type: String },
 });
 
-const Emits = defineEmits(['update:modelValue', 'setExpireDt']);
+const emits = defineEmits(['update:modelValue', 'setExpireDt']);
 
 // Data *************************************
 
 const OrgParm = ref({
-	orgId: Props.OrgId,
+	orgId: props.OrgId,
 	urlCd: '',
 	userId: userMngrId.value,
 	acuntLog: {
 		logId: '',
-		acuntId: Props.AcuntId,
+		acuntId: props.AcuntId,
 		actinDt: '',
 		actinReasn: '',
-		actinType: Props.ActinType,
+		actinType: props.ActinType,
 		actinRslt: '',
-		actinFunc: Props.ActinFunc,
+		actinFunc: props.ActinFunc,
 		insId: userMngrId.value,
 		insDt: '',
 		uptId: userMngrId.value,
@@ -109,8 +109,8 @@ const { vAlert, vSuccess } = useAlert();
 // Axios	***********************************
 
 const Procs = ref({
-	ChkUrlCd: { path: '/api/Org/ChkUrlCd', loading: false },
-	ChgOrgUrlCd: { path: '/api/Org/ChgOrgUrlCd', loading: false },
+	ChkUrlCd: { path: '/api/Org/chkUrlCd', loading: false },
+	ChgOrgUrlCd: { path: '/api/Org/chgOrgUrlCd', loading: false },
 });
 
 const { data, execUrl, reqUrl } = useAxios(
@@ -125,7 +125,7 @@ const { data, execUrl, reqUrl } = useAxios(
 						vSuccess('이미 사용중입니다. ');
 						OrgParm.value.urlCd = '';
 						OrgParm.value.valid = false;
-						if (Props.ProcType == 'C') txtUrlCd.value.focus();
+						if (props.ProcType == 'C') txtUrlCd.value.focus();
 						else txtUrlCd.value.focus();
 					} else {
 						vSuccess('사용 가능합니다. ');
@@ -138,8 +138,8 @@ const { data, execUrl, reqUrl } = useAxios(
 				case Procs.value.ChgOrgUrlCd.path:
 					Procs.value.ChgOrgUrlCd.loading = false;
 					vSuccess('기관인증코드가 변경되었습니다.');
-					Emits('SetUrlCd', OrgParm.value.urlCd);
-					Emits('update:modelValue');
+					emits('SetUrlCd', OrgParm.value.urlCd);
+					emits('update:modelValue');
 					break;
 				default:
 					break;
@@ -159,11 +159,11 @@ const { data, execUrl, reqUrl } = useAxios(
 
 // 사용기한 변경	*****************************
 
-const ChkUrlNewCd = () => {
+const chkUrlNewCd = () => {
 	let Val = OrgParm.value.urlCd;
 
-	if (!ValidNotBlank(Val, '기관인증코드', txtUrlCd.value)) return;
-	if (!ValidMaxLen(Val, 0, 20, txtUrlCd.value)) return;
+	if (!validNotBlank(Val, '기관인증코드', txtUrlCd.value)) return;
+	if (!validMaxLen(Val, 0, 20, txtUrlCd.value)) return;
 
 	Procs.value.ChkUrlCd.loading = true;
 	execUrl(Procs.value.ChkUrlCd.path, {
@@ -172,13 +172,13 @@ const ChkUrlNewCd = () => {
 };
 
 // 기관인증코드 변경
-const ChgOrgUrlCd = () => {
+const chgOrgUrlCd = () => {
 	let Val = OrgParm.value.urlCd;
 
-	if (!ValidNotBlank(Val, '기관인증코드', txtUrlCd.value)) return;
-	if (!ValidMaxLen(Val, 0, 20, txtUrlCd.value)) return;
+	if (!validNotBlank(Val, '기관인증코드', txtUrlCd.value)) return;
+	if (!validMaxLen(Val, 0, 20, txtUrlCd.value)) return;
 	if (
-		!ValidNotBlank(
+		!validNotBlank(
 			OrgParm.value.acuntLog.actinReasn,
 			'변경사유',
 			txtActinReasn.value,
@@ -203,7 +203,7 @@ watch(
 
 // Etc	**************************************
 
-const ValidMaxLen = (val, minLen, maxLen, obj) => {
+const validMaxLen = (val, minLen, maxLen, obj) => {
 	if (val.length < minLen || val.length > maxLen) {
 		vAlert(`${minLen}~${maxLen}자 사이로 입력해주세요.`);
 		if (obj != null) {
@@ -214,7 +214,7 @@ const ValidMaxLen = (val, minLen, maxLen, obj) => {
 	return true;
 };
 
-const ValidNotBlank = (val, tit, obj) => {
+const validNotBlank = (val, tit, obj) => {
 	val = typeof val != 'string' ? val.toString() : val;
 	var Val = val.replace(/\s/g, '');
 	if (Val.length == 0) {

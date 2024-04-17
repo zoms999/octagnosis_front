@@ -1090,7 +1090,7 @@ body {
 
   .Tbl1 thead th {
     padding: 0.6rem 0.3rem;
-    border: none;
+    border: 1px solid #cacaca;
     background-color: #418b89;
     color:#ffffff;
     font-size:1.1rem;
@@ -1098,7 +1098,7 @@ body {
   
 	.Tbl1 thead td {
     padding: 0.6rem 0.3rem;
-    border: none;
+    border: 1px solid #cacaca;
     background-color: #418b89;
     color:#ffffff;
     font-size:1.1rem;
@@ -1119,7 +1119,7 @@ body {
 		font-size: 1rem;
 		text-align: center;
 		line-height: 1.85rem;
-		border: 0px solid #cacaca;
+		border: 1px solid #cacaca;
 		color: rgb(50,50,50);
 		background-color: transparent;
 		vertical-align: middle;

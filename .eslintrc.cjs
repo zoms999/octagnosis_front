@@ -28,5 +28,11 @@ module.exports = {
 				endOfLine: 'auto',
 			},
 		],
+		'vue/no-mutating-props': [
+			'error',
+			{
+				shallowOnly: false,
+			},
+		],
 	},
 };

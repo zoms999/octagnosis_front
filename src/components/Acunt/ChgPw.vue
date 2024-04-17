@@ -35,7 +35,7 @@
 		</div>
 	</div>
 	<div class="modal-footer">
-		<button type="button" class="btn btn-primary" @click="ChgPw">
+		<button type="button" class="btn btn-primary" @click="chgPw">
 			<template v-if="Procs.ChgPw.loading">
 				<span
 					class="spinner-grow spinner-grow-sm"
@@ -107,7 +107,7 @@ const { vAlert, vSuccess } = useAlert();
 // Axios	***********************************
 
 const Procs = ref({
-	ChgPw: { path: '/api/Acunt/ChgPw', loading: false },
+	ChgPw: { path: '/api/Acunt/chgPw', loading: false },
 });
 
 const { execUrl, reqUrl } = useAxios(
@@ -141,13 +141,13 @@ const { execUrl, reqUrl } = useAxios(
 
 // 비밀번호 변경	*****************************
 
-const ChgPw = () => {
+const chgPw = () => {
 	if (AcuntParm.value.pw != AcuntParm.value.pwConfirm) {
 		vAlert('비밀번호가 일치하지 않습니다.');
 		return;
 	}
 	if (
-		!ValidNotBlank(
+		!validNotBlank(
 			AcuntParm.value.acuntLog.actinReasn,
 			'변경이유',
 			txtActinReasn.value,
@@ -155,8 +155,8 @@ const ChgPw = () => {
 	) {
 		return;
 	}
-	if (!ValidMaxLen(AcuntParm.value.pw, 6, 20, txtPw.value)) return;
-	if (!ValidMaxLen(AcuntParm.value.pwConfirm, 6, 20, txtPwConfirm.value))
+	if (!validMaxLen(AcuntParm.value.pw, 6, 20, txtPw.value)) return;
+	if (!validMaxLen(AcuntParm.value.pwConfirm, 6, 20, txtPwConfirm.value))
 		return;
 
 	Procs.value.ChgPw.loading = true;
@@ -165,7 +165,7 @@ const ChgPw = () => {
 
 // Etc	**************************************
 
-const ValidNotBlank = (val, tit, obj) => {
+const validNotBlank = (val, tit, obj) => {
 	val = typeof val != 'string' ? val.toString() : val;
 	var Val = val.replace(/\s/g, '');
 	if (Val.length == 0) {
@@ -178,7 +178,7 @@ const ValidNotBlank = (val, tit, obj) => {
 	return true;
 };
 
-const ValidMaxLen = (val, minLen, maxLen, obj) => {
+const validMaxLen = (val, minLen, maxLen, obj) => {
 	if (val.length < minLen || val.length > maxLen) {
 		vAlert(`${minLen}~${maxLen}자 사이로 입력해주세요.`);
 		if (obj != null) {
