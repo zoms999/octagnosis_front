@@ -537,26 +537,26 @@
 	<!--	사용기한 	------------------------------->
 	<Teleport to="#modal">
 		<AppModalV1 v-model="Modal.AcuntExpirDt" title="사용기한 변경" width="500">
-			<ChgExpireDt
+			<AcuntChgExpireDt
 				v-model="Modal.AcuntExpirDt"
 				:AcuntId="Acunt.acuntId"
 				ActinType="C00202"
 				ActinFunc="관리자-기관계정 사용기한 수정"
 				@SetExpireDt="setExpireDt"
-			></ChgExpireDt>
+			></AcuntChgExpireDt>
 		</AppModalV1>
 	</Teleport>
 
-	<!--	비밀번호 변경 코드	------------------------------->
+	<!--	비밀번호 변경 ------------------------------->
 	<Teleport to="#modal">
 		<AppModalV1 v-model="Modal.AcuntPw" title="비밀번호 변경" width="500">
-			<ChgPw
+			<AcuntChgPw
 				v-model="Modal.AcuntPw"
 				:AcuntId="Acunt.acuntId"
 				ActinType="C00203"
 				ActinFunc="관리자-기관계정 비밀번호 변경"
 				@SetPw="SetPw"
-			></ChgPw>
+			></AcuntChgPw>
 		</AppModalV1>
 	</Teleport>
 
@@ -616,8 +616,8 @@ import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 
 import ChgUrlCd from '@/components/Org/ChgUrlCd.vue';
-import ChgExpireDt from '@/components/Acunt/ChgExpirDt.vue';
-import ChgPw from '@/components/Acunt/ChgPw.vue';
+import AcuntChgExpireDt from '@/components/Acunt/AcuntChgExpirDt.vue';
+import AcuntChgPw from '@/components/Acunt/AcuntChgPw.vue';
 import AcuntLogList from '@/components/Acunt/AcuntLogList.vue';
 import AcuntLoginLogList from '@/components/Acunt/AcuntLoginLogList.vue';
 

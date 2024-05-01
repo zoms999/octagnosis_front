@@ -74,7 +74,7 @@ const Props = defineProps({
 	ActinFunc: { type: String },
 });
 
-const Emits = defineEmits(['update:modelValue', 'setExpireDt']);
+const Emits = defineEmits(['update:modelValue']);
 
 // Data *************************************
 

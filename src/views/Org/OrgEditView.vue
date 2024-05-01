@@ -113,7 +113,7 @@ const Acunt = ref({
 // Axios	***********************************
 
 const Procs = ref({
-	GetOrg: { path: '/api/Org/GetOrg', loading: false },
+	getOrg: { path: '/api/Org/getOrg', loading: false },
 });
 
 const { data, error, loading, execute, execUrl, reqUrl } = useAxios(
@@ -125,7 +125,7 @@ const { data, error, loading, execute, execUrl, reqUrl } = useAxios(
 		immediate: false,
 		onSuccess: () => {
 			switch (reqUrl.value) {
-				case '/api/Org/GetOrg':
+				case '/api/Org/getOrg':
 					Org.value = data.value.Org;
 					Acunt.value = data.value.Acunt;
 					break;

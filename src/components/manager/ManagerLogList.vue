@@ -6,13 +6,11 @@
 			<div class="col-3">
 				<select class="form-select" v-model="ActinType">
 					<option value=""></option>
-					<option value="C00201">기관인증코드변경</option>
-					<option value="C00202">기관계정 사용기간 변경</option>
-					<option value="C00203">기관계정 비밀번호 변경</option>
+					<option value="C00301">비밀번호 변경</option>
 				</select>
 			</div>
 			<div class="col-1">
-				<button class="btn btn-primary" @click="GetAcuntLogList">
+				<button class="btn btn-primary" @click="GetMngrLogList">
 					<template v-if="loading">
 						<span
 							class="spinner-grow spinner-grow-sm"
@@ -44,7 +42,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="(item, idx) in AcuntLogList" :key="item.LogId">
+				<tr v-for="(item, idx) in MngrLogList" :key="item.LogId">
 					<td>{{ VirNum - idx }}</td>
 					<td>{{ item.MngrNm }}</td>
 					<td>{{ dayjs(item.ActinDt).format('YYYY-MM-DD HH:mm:ss') }}</td>
@@ -77,7 +75,7 @@
 					:TotCnt="TotCnt"
 					:RowCntInPage="Parm.paging.rowCntInPage"
 					:PageCntInBlock="Parm.paging.pageCntInBlock"
-					@Page="GetAcuntLogList"
+					@Page="GetMngrLogList"
 				></AppPagination>
 			</div>
 		</div>
@@ -95,7 +93,7 @@ const dayjs = inject('dayjs');
 // Props / Emit  ****************************
 
 const Props = defineProps({
-	AcuntId: { type: Number },
+	MngrId: { type: Number },
 });
 
 // Data *************************************
@@ -105,7 +103,7 @@ const CurPage = ref(1);
 const CurBlock = ref(1);
 const VirNum = ref(1);
 
-const AcuntLogList = ref([]);
+const MngrLogList = ref([]);
 const ActinType = ref('');
 
 // Axios	***********************************
@@ -121,7 +119,7 @@ const ActinType = ref('');
 const Parm = ref({
 	srchStr: '',
 	actinType: ActinType,
-	acuntId: Props.AcuntId,
+	mngrId: Props.MngrId,
 	paging: {
 		page: 1,
 		block: 1,
@@ -134,13 +132,13 @@ const Parm = ref({
 });
 
 const { data, error, loading, execute } = useAxios(
-	'/api/AcuntLog/getAcuntLogList',
+	'/api/MngrLog/getMngrLogList',
 	{ method: 'post' },
 	{
 		immediate: false,
 		onSuccess: () => {
 			TotCnt.value = data.value.TotCnt;
-			AcuntLogList.value = data.value.List;
+			MngrLogList.value = data.value.List;
 			VirNum.value =
 				TotCnt.value -
 				(Parm.value.paging.page - 1) * Parm.value.paging.rowCntInPage;
@@ -152,7 +150,7 @@ const { data, error, loading, execute } = useAxios(
 	},
 );
 
-const GetAcuntLogList = async page => {
+const GetMngrLogList = async page => {
 	page = typeof page === 'object' || page == null ? 1 : page;
 	CurBlock.value = Math.ceil(page / Parm.value.paging.pageCntInBlock);
 	CurPage.value = page;
@@ -161,10 +159,10 @@ const GetAcuntLogList = async page => {
 	execute(Parm.value);
 };
 
-GetAcuntLogList(1);
+GetMngrLogList(1);
 
 const chageRowCntInPage = () => {
-	GetAcuntLogList(1);
+	GetMngrLogList(1);
 };
 </script>
 

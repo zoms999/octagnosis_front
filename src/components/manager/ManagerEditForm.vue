@@ -56,6 +56,7 @@
 								class="form-control"
 								:value="pw"
 								@input="$emit('update:pw', $event.target.value)"
+								readonly="readonly"
 							/>
 							<slot name="actionsPw"> </slot>
 						</div>
@@ -480,12 +481,17 @@
 				</template>
 			</AppModal>
 		</Teleport>
+
+		<!--	변경로그	------------------------------->
 		<Teleport to="#modal">
-			<AppModal v-model="authChangeLogShow" title="변경로그">
+			<AppModal
+				v-model="authChangeLogShow"
+				title="변경로그"
+				width="1000"
+				:footer="false"
+			>
 				<template #default>
-					<p>제목 :</p>
-					<p>내용 :</p>
-					<p>등록일 :</p>
+					<ManagerLogList :MngrId="mngrId"></ManagerLogList>
 				</template>
 				<template #actions>
 					<button type="button" class="btn btn-secondary" @click="closeModal">
@@ -494,6 +500,7 @@
 				</template>
 			</AppModal>
 		</Teleport>
+
 		<Teleport to="#modal">
 			<AppModal v-model="resultHisLogShow" title="결과지로그">
 				<template #default>
@@ -516,6 +523,8 @@ import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAlert } from '@/hooks/useAlert';
 import axios from 'axios';
+
+import ManagerLogList from '@/components/manager/ManagerLogList.vue';
 
 defineOptions({
 	inheritAttrs: false,

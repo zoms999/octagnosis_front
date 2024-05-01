@@ -41,29 +41,29 @@
 		</template>
 	</PersonalEditForm>
 
-	<!--	비밀번호 변경 코드	------------------------------->
+	<!--	비밀번호 변경	------------------------------->
 	<Teleport to="#modal">
 		<AppModalV1 v-model="show" title="비밀번호 변경" width="500">
-			<ChgPw
+			<AcuntChgPw
 				v-model="show"
 				:AcuntId="personal.AcuntId"
 				ActinType="C00205"
 				ActinFunc="관리자-개인계정 비밀번호 변경"
 				@SetPw="setPw"
-			></ChgPw>
+			></AcuntChgPw>
 		</AppModalV1>
 	</Teleport>
 
 	<!--	사용기한 	------------------------------->
 	<Teleport to="#modal">
 		<AppModalV1 v-model="showExpirDt" title="사용기한 변경" width="500">
-			<ChgExpireDt
+			<AcuntChgExpireDt
 				v-model="showExpirDt"
 				:AcuntId="personal.AcuntId"
 				ActinType="C00204"
 				ActinFunc="관리자-개인계정 사용기한 수정"
 				@SetExpireDt="setExpireDt"
-			></ChgExpireDt>
+			></AcuntChgExpireDt>
 		</AppModalV1>
 	</Teleport>
 
@@ -204,8 +204,8 @@ import { storeToRefs } from 'pinia';
 import axios from 'axios';
 import { useAlertStore } from '@/stores/alert';
 
-import ChgPw from '@/components/Acunt/ChgPw.vue';
-import ChgExpireDt from '@/components/Acunt/ChgExpirDt.vue';
+import AcuntChgPw from '@/components/Acunt/AcuntChgPw.vue';
+import AcuntChgExpireDt from '@/components/Acunt/AcuntChgExpirDt.vue';
 import AcuntLogList from '@/components/Acunt/AcuntLogList.vue';
 import AcuntLoginLogList from '@/components/Acunt/AcuntLoginLogList.vue';
 
@@ -216,7 +216,6 @@ const router = useRouter();
 const route = useRoute();
 const persnId = route.params.persnId;
 const personal = ref([]);
-const expirDt = ref('');
 
 console.log('goEditPage -- > ' + persnId);
 
