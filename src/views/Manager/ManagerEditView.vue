@@ -1,10 +1,12 @@
 <template>
+	<div class="TitPage">
+		<div>매니저관리 <span>></span><span> 수정</span></div>
+		<div></div>
+	</div>
+
 	<AppLoading v-if="loading" />
 	<AppError v-else-if="error" :message="error.message" />
-
 	<div v-else>
-		<h2>게시글 수정</h2>
-		<hr class="my-4" />
 		<AppError v-if="editError" :message="editError.message" />
 		<ManagerEditForm
 			v-model:useYn="form.useYn"
