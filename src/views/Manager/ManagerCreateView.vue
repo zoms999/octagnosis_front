@@ -23,13 +23,6 @@
 		<template #actions>
 			<div></div>
 			<div>
-				<button
-					type="button"
-					class="btn btn-outline-dark me-2"
-					@click="goListPage"
-				>
-					목록
-				</button>
 				<button class="btn btn-primary" @click="submitForm" :disabled="loading">
 					<template v-if="loading">
 						<span
@@ -40,6 +33,9 @@
 						<span class="visually-hidden">Loading...</span>
 					</template>
 					<template v-else> 저장 </template>
+				</button>
+				<button type="button" class="btn btn-primary ms-2" @click="goListPage">
+					목록
 				</button>
 			</div>
 		</template>

@@ -7,7 +7,7 @@
 					수정
 				</button>
 				<button class="btn btn-primary ms-2" @click="$emit('GoBack')">
-					목록으로
+					목록
 				</button>
 
 				<slot name="actionsLog"> </slot>

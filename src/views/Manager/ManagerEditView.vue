@@ -22,6 +22,11 @@
 			v-model:authRsltView="form.authRsltView"
 			v-model:authLogView="form.authLogView"
 			v-model:authStati="form.authStati"
+			v-model:zip="form.zip"
+			v-model:lotNumAddr1="form.lotNumAddr1"
+			v-model:lotNumAddr2="form.lotNumAddr2"
+			v-model:stretAddr1="form.stretAddr1"
+			v-model:stretAddr2="form.stretAddr2"
 			@submit.prevent="edit"
 		>
 			<template #actionsPw>
@@ -32,13 +37,6 @@
 			<template #actions>
 				<div></div>
 				<div>
-					<button
-						type="button"
-						class="btn btn-outline-danger me-2"
-						@click="goListPage"
-					>
-						취소
-					</button>
 					<button
 						type="button"
 						class="btn btn-primary"
@@ -54,6 +52,13 @@
 							<span class="visually-hidden">Loading...</span>
 						</template>
 						<template v-else> 수정 </template>
+					</button>
+					<button
+						type="button"
+						class="btn btn-primary ms-2"
+						@click="goListPage"
+					>
+						목록
 					</button>
 				</div>
 			</template>

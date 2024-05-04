@@ -91,7 +91,12 @@
 					<div class="col-1 lbl"><i></i>우편번호</div>
 					<div class="col-3">
 						<div class="input-group">
-							<input type="text" class="form-control" />
+							<input
+								type="text"
+								class="form-control"
+								:value="zip"
+								@input="$emit('update:zip', $event.target.value)"
+							/>
 							<button class="btn btn-primary IconBtn">
 								<span class="material-icons"> search </span>
 							</button>
@@ -101,19 +106,39 @@
 				<div class="row">
 					<div class="col-1 lbl">도로명 주소</div>
 					<div class="col-5">
-						<input type="text" class="form-control" />
+						<input
+							type="text"
+							class="form-control"
+							:value="stretAddr1"
+							@input="$emit('update:stretAddr1', $event.target.value)"
+						/>
 					</div>
 					<div class="col-1 lbl">지번 주소</div>
 					<div class="col-5">
-						<input type="text" class="form-control" />
+						<input
+							type="text"
+							class="form-control"
+							:value="lotNumAddr1"
+							@input="$emit('update:lotNumAddr1', $event.target.value)"
+						/>
 					</div>
 					<div class="col-1 lbl">상세 주소</div>
 					<div class="col-5">
-						<input type="text" class="form-control" />
+						<input
+							type="text"
+							class="form-control"
+							:value="stretAddr2"
+							@input="$emit('update:stretAddr2', $event.target.value)"
+						/>
 					</div>
 					<div class="col-1 lbl">추가 주소</div>
 					<div class="col-5">
-						<input type="text" class="form-control" />
+						<input
+							type="text"
+							class="form-control"
+							:value="lotNumAddr2"
+							@input="$emit('update:lotNumAddr2', $event.target.value)"
+						/>
 					</div>
 				</div>
 			</div>
@@ -545,6 +570,11 @@ const member = defineProps({
 	authRsltView: Number,
 	authLogView: Number,
 	authStati: Number,
+	zip: String,
+	lotNumAddr1: String,
+	lotNumAddr2: String,
+	stretAddr1: String,
+	stretAddr2: String,
 });
 defineEmits([
 	'update:useYn',
@@ -560,6 +590,11 @@ defineEmits([
 	'update:authRsltView',
 	'update:authLogView',
 	'update:authStati',
+	'update:zip',
+	'update:lotNumAddr1',
+	'update:lotNumAddr2',
+	'update:stretAddr1',
+	'update:stretAddr2',
 ]);
 console.log('member.email' + member.email);
 

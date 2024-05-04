@@ -34,7 +34,7 @@
 				<template v-else> 수정 </template>
 			</button>
 			<button class="btn btn-primary ms-2" @click="$emit('GoBack')">
-				목록으로
+				목록
 			</button>
 			<button
 				v-if="ProcType == 'E'"
@@ -630,8 +630,6 @@ const Props = defineProps({
 	ObjOrgTurn: { type: Object },
 	OrgId: { type: Number },
 });
-
-console.log('OrgId :  ', Props.OrgId);
 
 //const Emit = defineEmits(['cretOrg']);
 
