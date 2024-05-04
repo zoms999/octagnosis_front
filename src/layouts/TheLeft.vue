@@ -41,7 +41,7 @@ MenuList.value = [
 		MenuId: '2',
 		MenuNm: '기업정보',
 		Lvl: 1,
-		Src: 'CompyMain',
+		Src: 'Compy',
 		ActiveYn: false,
 	},
 	{

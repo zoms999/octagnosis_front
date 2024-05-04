@@ -114,6 +114,8 @@
 						@input="$emit('update:addr2', $event.target.value)"
 					/>
 				</div>
+			</div>
+			<div class="row">
 				<div class="col-1 lbl">추가 주소</div>
 				<div class="col-5">
 					<input

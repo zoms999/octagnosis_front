@@ -180,11 +180,13 @@
 					/>
 				</div>
 				<div class="col-1 lbl">상세 주소</div>
-				<div class="col-11">
+				<div class="col-5">
 					<input type="text" class="form-control" v-model="personal.Addr2" />
 				</div>
+			</div>
+			<div class="row">
 				<div class="col-1 lbl">추가 주소</div>
-				<div class="col-11">
+				<div class="col-5">
 					<input type="text" class="form-control" v-model="personal.Addr3" />
 				</div>
 			</div>

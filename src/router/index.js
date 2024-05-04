@@ -10,7 +10,7 @@ import OrgCretView from '@/views/Org/OrgCretView.vue';
 import OrgEditView from '@/views/Org/OrgEditView.vue';
 import PersonalListView from '@/views/Personal/PersonalListView.vue';
 import PersonalEditView from '@/views/Personal/PersonalEditView.vue';
-import CompyMainView from '@/views/Compy/CompyMainView.vue';
+import CompyView from '@/views/Compy/CompyView.vue';
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -83,9 +83,9 @@ const router = createRouter({
 		},
 
 		{
-			path: '/Compy/CompyMain',
-			name: 'CompyMain',
-			component: CompyMainView,
+			path: '/Compy/Compy',
+			name: 'Compy',
+			component: CompyView,
 			// props: route => ({ id: parseInt(route.params.id) }),
 		},
 

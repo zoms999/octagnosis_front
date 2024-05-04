@@ -398,7 +398,7 @@
 				/>
 			</div>
 			<div class="col-1 lbl">상세 주소</div>
-			<div class="col-11">
+			<div class="col-5">
 				<input
 					type="text"
 					ref="txtAddr3"
@@ -406,8 +406,10 @@
 					v-model="Org.addr2"
 				/>
 			</div>
+		</div>
+		<div class="row">
 			<div class="col-1 lbl">추가 주소</div>
-			<div class="col-11">
+			<div class="col-5">
 				<input
 					type="text"
 					ref="txtAddrLotNum"
