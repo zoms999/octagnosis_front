@@ -383,36 +383,36 @@
 			<div class="col-5">
 				<input
 					type="text"
-					ref="txtRoadAddr1"
+					ref="txtAddr2"
 					class="form-control"
-					v-model="Org.roadAddr1"
+					v-model="Org.addrStret"
 				/>
 			</div>
 			<div class="col-1 lbl">지번 주소</div>
 			<div class="col-5">
 				<input
 					type="text"
-					ref="txtRoadAddr2"
+					ref="txtAddrStret"
 					class="form-control"
-					v-model="Org.roadAddr2"
+					v-model="Org.addrLotNum"
 				/>
 			</div>
 			<div class="col-1 lbl">상세 주소</div>
-			<div class="col-5">
+			<div class="col-11">
 				<input
 					type="text"
-					ref="txtStretAddr1"
+					ref="txtAddr3"
 					class="form-control"
-					v-model="Org.stretAddr1"
+					v-model="Org.addr2"
 				/>
 			</div>
 			<div class="col-1 lbl">추가 주소</div>
-			<div class="col-5">
+			<div class="col-11">
 				<input
 					type="text"
-					ref="txtStretAddr2"
+					ref="txtAddrLotNum"
 					class="form-control"
-					v-model="Org.stretAddr2"
+					v-model="Org.addr3"
 				/>
 			</div>
 		</div>
@@ -608,10 +608,10 @@
 </template>
 
 <script setup>
+import { defineProps, watch, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAlert } from '@/hooks/useAlert';
 import { useAxios } from '@/hooks/useAxios';
-import { defineProps, watch, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 

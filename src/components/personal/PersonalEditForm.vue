@@ -168,7 +168,7 @@
 					<input
 						type="text"
 						class="form-control"
-						v-model="personal.LotNumAddr1"
+						v-model="personal.AddrStret"
 					/>
 				</div>
 				<div class="col-1 lbl">지번 주소</div>
@@ -176,24 +176,16 @@
 					<input
 						type="text"
 						class="form-control"
-						v-model="personal.StretAddr1"
+						v-model="personal.AddrLotNum"
 					/>
 				</div>
 				<div class="col-1 lbl">상세 주소</div>
-				<div class="col-5">
-					<input
-						type="text"
-						class="form-control"
-						v-model="personal.LotNumAddr2"
-					/>
+				<div class="col-11">
+					<input type="text" class="form-control" v-model="personal.Addr2" />
 				</div>
 				<div class="col-1 lbl">추가 주소</div>
-				<div class="col-5">
-					<input
-						type="text"
-						class="form-control"
-						v-model="personal.StretAddr2"
-					/>
+				<div class="col-11">
+					<input type="text" class="form-control" v-model="personal.Addr3" />
 				</div>
 			</div>
 		</div>

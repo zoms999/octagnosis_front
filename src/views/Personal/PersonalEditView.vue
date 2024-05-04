@@ -307,15 +307,15 @@ const savePersonal = () => {
 	// 	vAlert('우편번호를 입력해주세요.');
 	// 	return;
 	// }
-	// if (!personal.value.LotNumAddr1) {
+	// if (!personal.value.AddrStret) {
 	// 	vAlert('도로명 주소를 입력해주세요.');
 	// 	return;
 	// }
-	// if (!personal.value.LotNumAddr2) {
+	// if (!personal.value.AddrLotNum) {
 	// 	vAlert('지번 주소를 입력해주세요.');
 	// 	return;
 	// }
-	// if (!personal.value.StretAddr1) {
+	// if (!personal.value.Addr2) {
 	// 	vAlert('상세 주소를 입력해주세요.');
 	// 	return;
 	// }
@@ -357,10 +357,10 @@ const savePersonal = () => {
 		tel: personal.value.Tel,
 		email: personal.value.Email,
 		zip: personal.value.Zip,
-		lotNumAddr1: personal.value.LotNumAddr1,
-		lotNumAddr2: personal.value.LotNumAddr2,
-		stretAddr1: personal.value.StretAddr1,
-		stretAddr2: personal.value.StretAddr2,
+		addrStret: personal.value.AddrStret,
+		addrLotNum: personal.value.AddrLotNum,
+		addr2: personal.value.Addr2,
+		addr3: personal.value.Addr3,
 		educt: personal.value.Educt,
 		scholNm: personal.value.ScholNm,
 		scholMajor: personal.value.ScholMajor,

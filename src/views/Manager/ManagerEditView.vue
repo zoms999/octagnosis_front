@@ -23,10 +23,10 @@
 			v-model:authLogView="form.authLogView"
 			v-model:authStati="form.authStati"
 			v-model:zip="form.zip"
-			v-model:lotNumAddr1="form.lotNumAddr1"
-			v-model:lotNumAddr2="form.lotNumAddr2"
-			v-model:stretAddr1="form.stretAddr1"
-			v-model:stretAddr2="form.stretAddr2"
+			v-model:addrStret="form.addrStret"
+			v-model:addrLotNum="form.addrLotNum"
+			v-model:addr2="form.addr2"
+			v-model:addr3="form.addr3"
 			@submit.prevent="edit"
 		>
 			<template #actionsPw>

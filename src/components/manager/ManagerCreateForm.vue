@@ -89,19 +89,39 @@
 			<div class="row">
 				<div class="col-1 lbl">도로명 주소</div>
 				<div class="col-5">
-					<input type="text" class="form-control" />
+					<input
+						type="text"
+						class="form-control"
+						:value="addrStret"
+						@input="$emit('update:addrStret', $event.target.value)"
+					/>
 				</div>
 				<div class="col-1 lbl">지번 주소</div>
 				<div class="col-5">
-					<input type="text" class="form-control" />
+					<input
+						type="text"
+						class="form-control"
+						:value="addrLotNum"
+						@input="$emit('update:addrLotNum', $event.target.value)"
+					/>
 				</div>
 				<div class="col-1 lbl">상세 주소</div>
 				<div class="col-5">
-					<input type="text" class="form-control" />
+					<input
+						type="text"
+						class="form-control"
+						:value="addr2"
+						@input="$emit('update:addr2', $event.target.value)"
+					/>
 				</div>
 				<div class="col-1 lbl">추가 주소</div>
 				<div class="col-5">
-					<input type="text" class="form-control" />
+					<input
+						type="text"
+						class="form-control"
+						:value="addr3"
+						@input="$emit('update:addr3', $event.target.value)"
+					/>
 				</div>
 			</div>
 		</div>
@@ -430,6 +450,11 @@ const props = defineProps({
 	insDt: {
 		type: [String, Date, Number],
 	},
+	zip: String,
+	addrStret: String,
+	addrLotNum: String,
+	addr2: String,
+	addr3: String,
 });
 defineEmits([
 	'update:useYn',
@@ -445,6 +470,11 @@ defineEmits([
 	'update:authRsltView',
 	'update:authLogView',
 	'update:authStati',
+	'update:zip',
+	'update:addrStret',
+	'update:addrLotNum',
+	'update:addr2',
+	'update:addr3',
 ]);
 </script>
 

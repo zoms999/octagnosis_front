@@ -109,8 +109,8 @@
 						<input
 							type="text"
 							class="form-control"
-							:value="stretAddr1"
-							@input="$emit('update:stretAddr1', $event.target.value)"
+							:value="addrStret"
+							@input="$emit('update:addrStret', $event.target.value)"
 						/>
 					</div>
 					<div class="col-1 lbl">지번 주소</div>
@@ -118,8 +118,8 @@
 						<input
 							type="text"
 							class="form-control"
-							:value="lotNumAddr1"
-							@input="$emit('update:lotNumAddr1', $event.target.value)"
+							:value="addrLotNum"
+							@input="$emit('update:addrLotNum', $event.target.value)"
 						/>
 					</div>
 					<div class="col-1 lbl">상세 주소</div>
@@ -127,8 +127,8 @@
 						<input
 							type="text"
 							class="form-control"
-							:value="stretAddr2"
-							@input="$emit('update:stretAddr2', $event.target.value)"
+							:value="addr2"
+							@input="$emit('update:addr2', $event.target.value)"
 						/>
 					</div>
 					<div class="col-1 lbl">추가 주소</div>
@@ -136,8 +136,8 @@
 						<input
 							type="text"
 							class="form-control"
-							:value="lotNumAddr2"
-							@input="$emit('update:lotNumAddr2', $event.target.value)"
+							:value="addr3"
+							@input="$emit('update:addr3', $event.target.value)"
 						/>
 					</div>
 				</div>
@@ -571,10 +571,10 @@ const member = defineProps({
 	authLogView: Number,
 	authStati: Number,
 	zip: String,
-	lotNumAddr1: String,
-	lotNumAddr2: String,
-	stretAddr1: String,
-	stretAddr2: String,
+	addrStret: String,
+	addrLotNum: String,
+	addr2: String,
+	addr3: String,
 });
 defineEmits([
 	'update:useYn',
@@ -591,10 +591,10 @@ defineEmits([
 	'update:authLogView',
 	'update:authStati',
 	'update:zip',
-	'update:lotNumAddr1',
-	'update:lotNumAddr2',
-	'update:stretAddr1',
-	'update:stretAddr2',
+	'update:addrStret',
+	'update:addrLotNum',
+	'update:addr2',
+	'update:addr3',
 ]);
 console.log('member.email' + member.email);
 
