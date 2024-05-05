@@ -11,6 +11,7 @@ import OrgEditView from '@/views/Org/OrgEditView.vue';
 import PersonalListView from '@/views/Personal/PersonalListView.vue';
 import PersonalEditView from '@/views/Personal/PersonalEditView.vue';
 import CompyView from '@/views/Compy/CompyView.vue';
+import TestMain from '@/views/Test/TestMainView.vue';
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -99,6 +100,12 @@ const router = createRouter({
 			path: '/personal/:persnId/edit',
 			name: 'PersonalEdit',
 			component: PersonalEditView,
+			//props: route => ({ persnId: parseInt(route.params.persnId) }),
+		},
+		{
+			path: '/Test/TestMain',
+			name: 'TestMain',
+			component: TestMain,
 			//props: route => ({ persnId: parseInt(route.params.persnId) }),
 		},
 	],

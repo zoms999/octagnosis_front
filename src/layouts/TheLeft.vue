@@ -58,7 +58,13 @@ MenuList.value = [
 	{ MenuId: '8', MenuNm: '검사결과', Lvl: 1, Src: '', ActiveYn: false },
 	{ MenuId: '9', MenuNm: '기관용', Lvl: 2, Src: '', ActiveYn: false },
 	{ MenuId: '10', MenuNm: '개인용', Lvl: 2, Src: '', ActiveYn: false },
-	{ MenuId: '11', MenuNm: '문항관리', Lvl: 1, Src: '', ActiveYn: false },
+	{
+		MenuId: '11',
+		MenuNm: '검사문항',
+		Lvl: 1,
+		Src: 'TestMain',
+		ActiveYn: false,
+	},
 ];
 
 /********************************/
