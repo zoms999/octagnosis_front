@@ -18,17 +18,18 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
-import OrgForm from '@/components/Org/OrgForm.vue';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { useAxios } from '@/hooks/useAxios';
 import { useAlert } from '@/hooks/useAlert';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
 
+import OrgForm from '@/components/Org/OrgForm.vue';
+
 // Props / Emit  ****************************
 
-// Data *************************************
+// Model / Data *****************************
 
 const router = useRouter();
 const { vAlert, vSuccess } = useAlert();

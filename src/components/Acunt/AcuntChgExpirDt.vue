@@ -66,7 +66,7 @@ const Props = defineProps({
 
 const Emits = defineEmits(['update:modelValue', 'setExpireDt']);
 
-// Data *************************************
+// Model / Data *****************************
 
 const AcuntParm = ref({
 	acuntId: Props.AcuntId,
@@ -107,7 +107,7 @@ const { execUrl, reqUrl } = useAxios(
 				case Procs.value.ChgExpirDt.path:
 					Procs.value.ChgExpirDt.loading = false;
 					vSuccess('사용기한이 변경되었습니다.');
-					Emits('SetExpireDt', AcuntParm.value.expirDt);
+					Emits('setExpireDt', AcuntParm.value.expirDt);
 					Emits('update:modelValue');
 					break;
 				default:

@@ -233,7 +233,7 @@ import { useAuthStore } from '@/stores/auth';
 
 // Props / Emit  ****************************
 
-// Data *************************************
+// Model / Data *****************************
 
 const { userMngrId } = storeToRefs(useAuthStore());
 

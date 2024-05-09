@@ -30,7 +30,7 @@ import OrgForm from '@/components/Org/OrgForm.vue';
 
 //console.log('111OrgId :  ', route.query.orgId);
 
-// Data *************************************
+// Model / Data *****************************
 
 const router = useRouter();
 const route = useRoute();

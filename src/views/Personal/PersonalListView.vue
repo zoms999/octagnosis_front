@@ -104,7 +104,6 @@
 			</template>
 		</AppModal>
 	</Teleport>
-	<button class="btn btn-primary" @click="openModal">모달오픈</button>
 </template>
 
 <script setup>

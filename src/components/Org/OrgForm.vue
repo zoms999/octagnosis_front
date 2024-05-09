@@ -544,7 +544,7 @@
 				:AcuntId="Acunt.acuntId"
 				ActinType="C00202"
 				ActinFunc="관리자-기관계정 사용기한 수정"
-				@SetExpireDt="setExpireDt"
+				@setExpireDt="setExpireDt"
 			></AcuntChgExpireDt>
 		</AppModalV1>
 	</Teleport>
@@ -557,7 +557,7 @@
 				:AcuntId="Acunt.acuntId"
 				ActinType="C00203"
 				ActinFunc="관리자-기관계정 비밀번호 변경"
-				@SetPw="SetPw"
+				@setPw="setPw"
 			></AcuntChgPw>
 		</AppModalV1>
 	</Teleport>
@@ -635,7 +635,7 @@ const Props = defineProps({
 
 //const Emit = defineEmits(['cretOrg']);
 
-// Data *************************************
+// Model / Data *****************************
 
 const { userMngrId } = storeToRefs(useAuthStore());
 
@@ -665,6 +665,8 @@ const { vAlert, vSuccess } = useAlert();
 Org.value = { ...Props.ObjOrg };
 Acunt.value = { ...Props.ObjAcunt };
 OrgTurn.value = { ...Props.ObjOrgTurn };
+
+// Html ref  ********************************
 
 const txtUrlCd = ref(null);
 const txtAcuntId = ref(null);
@@ -789,29 +791,29 @@ const Modal = ref({
 	AcuntLog: false,
 });
 
-const ShowHide = (type, showHide) => {
+const ShowHide = (type, showYn) => {
 	switch (type) {
 		case 'OrgUrlCd':
-			Modal.value.OrgUrlCd = showHide;
+			Modal.value.OrgUrlCd = showYn;
 			break;
 		case 'AcuntExpirDt':
-			Modal.value.AcuntExpirDt = showHide;
+			Modal.value.AcuntExpirDt = showYn;
 			AcuntLog.value.actinReasn = '';
 			Acunt.value.expirDtNew = '';
 			Acunt.value.valid = false;
 			break;
 		case 'AcuntPw':
-			Modal.value.AcuntPw = showHide;
+			Modal.value.AcuntPw = showYn;
 			Acunt.value.pwNew = '';
 			Acunt.value.pwNewConfirm = '';
 			Acunt.value.valid = false;
 			AcuntLog.value.actinReasn = '';
 			break;
 		case 'AcuntLog':
-			Modal.value.AcuntLog = showHide;
+			Modal.value.AcuntLog = showYn;
 			break;
 		case 'AcuntLoginLog':
-			Modal.value.AcuntLoginLog = showHide;
+			Modal.value.AcuntLoginLog = showYn;
 			break;
 	}
 };
@@ -921,7 +923,7 @@ watch(
 	},
 );
 
-// 우편번호	**********************************
+// 우편번호
 
 // Method	************************************
 
@@ -1077,7 +1079,7 @@ const setExpireDt = expireDt => {
 };
 
 // 비밀번호 수정
-const SetPw = pw => {
+const setPw = pw => {
 	Acunt.value.Pw = pw;
 };
 

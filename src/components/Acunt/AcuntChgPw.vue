@@ -76,7 +76,7 @@ const Props = defineProps({
 
 const Emits = defineEmits(['update:modelValue']);
 
-// Data *************************************
+// Model / Data *****************************
 
 const AcuntParm = ref({
 	acuntId: Props.AcuntId,
@@ -120,7 +120,7 @@ const { execUrl, reqUrl } = useAxios(
 				case Procs.value.ChgPw.path:
 					Procs.value.ChgPw.loading = false;
 					vSuccess('비밀번호가 변경되었습니다.');
-					Emits('SetPw', AcuntParm.value.pw);
+					Emits('setPw', AcuntParm.value.pw);
 					Emits('update:modelValue');
 					break;
 				default:

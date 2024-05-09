@@ -79,7 +79,7 @@ const props = defineProps({
 
 const emits = defineEmits(['update:modelValue', 'setExpireDt']);
 
-// Data *************************************
+// Model / Data *****************************
 
 const OrgParm = ref({
 	orgId: props.OrgId,

@@ -67,7 +67,7 @@ const Props = defineProps({
 	AcuntId: { type: Number },
 });
 
-// Data *************************************
+// Model / Data *****************************
 
 const TotCnt = ref(0);
 const CurPage = ref(1);

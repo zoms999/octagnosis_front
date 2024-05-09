@@ -80,7 +80,7 @@ const Props = defineProps({
 
 const Emits = defineEmits(['reload']);
 
-// Data *************************************
+// Model / Data *****************************
 
 const OrgTurn = ref({
 	orgId: Props.OrgId,
