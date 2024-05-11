@@ -331,7 +331,7 @@
 						</div>
 					</div>
 
-					<div class="col-1 lbl">검사결과(기관&개인)</div>
+					<div class="col-1 lblT">검사결과<br />(기관&개인)</div>
 					<div class="col-3 d-flex">
 						<div
 							class="btn-group"

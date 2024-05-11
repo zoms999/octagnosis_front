@@ -287,7 +287,7 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-1 lbl">세금계산서<br />(이메일)</div>
+			<div class="col-1 lblT">세금계산서<br />(이메일)</div>
 			<div class="col-3">
 				<input
 					type="text"

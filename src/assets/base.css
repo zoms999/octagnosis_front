@@ -1143,6 +1143,7 @@ body {
   .ItemBox .lbl {
     text-align: right;
     line-height: 1rem;;
+    padding:10px 0 0 0;
   }
   .ItemBox .lbl > i {
     width: 6px;
@@ -1153,6 +1154,36 @@ body {
     background-color: #ff6666;
     display: inline-block;
   }  
+  .ItemBox .lblT {
+    text-align: right;
+    line-height: 1rem;;
+    padding:0px 0 0 0;
+  }
+  .ItemBox .lblT > i {
+    width: 6px;
+    height: 6px;
+    margin:0 5px 0 0;
+    border-radius: 4px 4px 4px 4px;
+    border: 1px solid #ff6666;
+    background-color: #ff6666;
+    display: inline-block;
+  }  
+  .ItemBox .lblL {
+    text-align: left;
+    line-height: 1rem;;
+    padding:10px 0 0 0;
+  }
+  .ItemBox .lblL > i {
+    width: 6px;
+    height: 6px;
+    margin:0 10px 0 0;
+    border-radius: 4px 4px 4px 4px;
+    border: 1px solid #ff6666;
+    background-color: #ff6666;
+    display: inline-block;
+  }  
+
+
 
 .IconBtn {
   height:38px !important;

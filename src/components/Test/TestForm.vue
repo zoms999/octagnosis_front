@@ -73,7 +73,7 @@ import { onMounted } from 'vue';
 
 // Props / Emit  ****************************
 
-var Emits = defineEmits(['getTestList']);
+var Emits = defineEmits(['update:modelValue', 'getTestList']);
 
 var ModalParm = defineModel('ModalParm');
 var ParmTest = defineModel('Test');

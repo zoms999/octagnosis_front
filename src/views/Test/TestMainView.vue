@@ -17,15 +17,20 @@
 							{{ item.testNm }}
 						</option>
 					</select>
-					<button type="button" class="btn btn-primary" @click="ShowTest('C')">
-						검사등록
+					<button
+						type="button"
+						class="btn btn-primary"
+						:disabled="NotSelectTest"
+						@click="ShowTest('E')"
+					>
+						검사수정
 					</button>
 					<button
 						type="button"
 						class="btn btn-primary ms-1"
-						@click="ShowTest('E')"
+						@click="ShowTest('C')"
 					>
-						검사수정
+						검사등록
 					</button>
 				</div>
 			</div>
@@ -44,7 +49,7 @@
 	</div>
 	<div>
 		<table
-			class="table table-bordered Tbl1"
+			class="table table-bordered Tbl11"
 			id="dataTable"
 			width="100%"
 			cellspacing="0"
@@ -62,10 +67,10 @@
 
 					<th class="w50">번호</th>
 					<th>내용</th>
-					<th class="w80">속성1</th>
-					<th class="w80">속성1</th>
-					<th class="w50">보기</th>
-					<th class="w50">-</th>
+					<th class="w100">문항유형</th>
+					<th class="w100">문항속성1</th>
+					<th class="w100">문항속성2</th>
+					<th class="w60">-</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -74,23 +79,53 @@
 					<td>{{ item.questPageNm }}</td>
 					<td>{{ item.questPageTypeNm }}</td>
 					<td>
-						<button type="button" class="btn btn-primary btn-sm fs080">
-							<span class="material-icons"> playlist_add </span>
-						</button>
 						<button
 							type="button"
-							class="btn btn-primary btn-sm fs080 ms-1"
+							class="btn btn-primary btn-sm fs080"
 							@click.stop="ShowQuestPage('E', item.questPageId)"
 						>
 							<span class="material-icons"> mode_edit </span>
 						</button>
+						<button
+							type="button"
+							class="btn btn-primary btn-sm ms-2 fs080"
+							@click.stop="ShowQuest('C', item.questPageId, 0)"
+						>
+							<span class="material-icons"> playlist_add </span>
+						</button>
 					</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td colspan="6" style="padding: 0 !important">
+						<div
+							class="d-flex QuestList"
+							v-for="item1 in item.questList"
+							:key="item1.questId"
+						>
+							<div class>
+								{{ item1.questNo }}
+							</div>
+							<div class="flex-fill">
+								{{ item1.questCont1 }}
+							</div>
+							<div>
+								{{ item1.questTypeNm }}
+							</div>
+							<div>
+								{{ item1.questAttrCd1Nm }}
+							</div>
+							<div>
+								{{ item1.questAttrCd2Nm }}
+							</div>
+							<div>
+								<button
+									type="button"
+									class="btn btn-primary btn-sm fs080"
+									@click.stop="ShowQuest('E', item.questPageId, item1.questId)"
+								>
+									<span class="material-icons"> mode_edit </span>
+								</button>
+							</div>
+						</div>
+					</td>
 				</tr>
 			</tbody>
 			<tfoot></tfoot>
@@ -101,6 +136,7 @@
 	<Teleport to="#modal">
 		<AppModalV1 v-model="Modal.Test.showYn" title="검사" width="500">
 			<TestForm
+				v-model="Modal.Test.showYn"
 				v-model:ModalParm="Modal.Test"
 				v-model:Test="Test"
 				@getTestList="getTestList"
@@ -112,9 +148,21 @@
 	<Teleport to="#modal">
 		<AppModalV1 v-model="Modal.QuestPage.showYn" title="검사지" width="800">
 			<QuestPageForm
+				v-model="Modal.QuestPage.showYn"
 				v-model:ModalParm="Modal.QuestPage"
 				@getQuestPageList="getQuestPageList"
 			></QuestPageForm>
+		</AppModalV1>
+	</Teleport>
+
+	<!--	검사문항 ------------------------------->
+	<Teleport to="#modal">
+		<AppModalV1 v-model="Modal.Quest.showYn" title="검사문항" width="1100">
+			<QuestForm
+				v-model="Modal.Quest.showYn"
+				v-model:ModalParm="Modal.Quest"
+				@getQuestList="getQuestList"
+			></QuestForm>
 		</AppModalV1>
 	</Teleport>
 </template>
@@ -129,6 +177,7 @@ import { useAuthStore } from '@/stores/auth';
 
 import TestForm from '@/components/Test/TestForm.vue';
 import QuestPageForm from '@/components/Test/QuestPageForm.vue';
+import QuestForm from '@/components/Test/QuestForm.vue';
 
 // Props / Emit  ****************************
 
@@ -140,12 +189,14 @@ const { vAlert, vSuccess } = useAlert();
 const TestList = ref([]);
 const Test = ref({});
 const QuestPageList = ref([]);
+const QuestList = ref([]);
 
 const NotSelectTest = ref(true);
 
 const QuestParm = ref({
 	testId: 0,
 	questPageId: 0,
+	oldQuestPageId: 0,
 });
 
 // Html ref  ********************************
@@ -160,6 +211,7 @@ const Procs = ref({
 		path: '/api/Quest/QuestPage/getQuestPageList',
 		loading: false,
 	},
+	getQuestList: { path: '/api/Quest/Quest/getQuestList', loading: false },
 });
 
 const { data, execUrl, reqUrl } = useAxios(
@@ -176,6 +228,27 @@ const { data, execUrl, reqUrl } = useAxios(
 				case Procs.value.getQuestPageList.path:
 					Procs.value.getQuestPageList.loading = false;
 					QuestPageList.value = data.value.QuestPageList;
+					break;
+				case Procs.value.getQuestList.path:
+					Procs.value.getQuestList.loading = false;
+
+					var QuestId = data.value.QuestId;
+					var QuestPage = QuestPageList.value.find(
+						o => o.questPageId == QuestId,
+					);
+
+					QuestPage.questList = data.value.QuestList;
+
+					// 변경 전 검사지의 문항 바인딩
+					var OldQuestId = data.value.OldQuestId;
+					if (QuestId != OldQuestId && OldQuestId != 0) {
+						var OldQuestPage = QuestPageList.value.find(
+							o => o.questPageId == OldQuestId,
+						);
+
+						OldQuestPage.questList = data.value.OldQuestList;
+					}
+
 					break;
 				default:
 					break;
@@ -204,7 +277,13 @@ onMounted(() => {
 const Modal = ref({
 	Test: { showYn: false, procType: 'C' },
 	QuestPage: { showYn: false, procType: 'C', testId: 0, questPageId: 0 },
-	Quest: { showYn: false, procType: 'C', testId: 0, questPageId: 0 },
+	Quest: {
+		showYn: false,
+		procType: 'C',
+		testId: 0,
+		questPageId: 0,
+		questId: 0,
+	},
 });
 
 const ShowHide = (type, showYn) => {
@@ -237,6 +316,15 @@ const ShowQuestPage = (procType, questPageId) => {
 	ShowHide('QuestPage', true);
 };
 
+const ShowQuest = (procType, questPageId, questId) => {
+	Modal.value.Quest.procType = procType;
+	Modal.value.Quest.testId = selTest.value.value;
+	Modal.value.Quest.questPageId = questPageId;
+	Modal.value.Quest.questId = questId;
+
+	ShowHide('Quest', true);
+};
+
 // Watch *************************************
 
 // Method	************************************
@@ -257,14 +345,23 @@ const setTest = () => {
 	}
 };
 
+// 검사지 조회
 const getQuestPageList = () => {
+	Modal.value.QuestPage.showYn = false;
 	execUrl(Procs.value.getQuestPageList.path, QuestParm.value);
 };
 
-const getQuestList = () => {
-	Modal.value.QuestPage.showYn = false;
+// 검사지 문항 조회
+const getQuestList = questPageId => {
+	Modal.value.Quest.showYn = false;
 
-	execUrl(Procs.value.getTestList.path);
+	QuestParm.value.questPageId = questPageId;
+	// 문항의 검사지가 변경되었으면 변경되기전의 검사지의 문항도 조회
+	QuestParm.value.oldQuestPageId =
+		questPageId != Modal.value.Quest.questPageId
+			? Modal.value.Quest.questPageId
+			: 0;
+	execUrl(Procs.value.getQuestList.path, QuestParm.value);
 };
 
 // Etc	**************************************
@@ -272,21 +369,18 @@ const getQuestList = () => {
 
 <style>
 .th1 {
-	height: 30px !important;
 	padding: 1px;
 }
 .th1 th {
-	height: 30px !important;
 	padding: 1px !important;
 	font-size: 1rem;
 	background-color: rgb(120, 120, 120) !important;
 }
 .th2 {
-	height: 35px !important;
 	padding: 1px;
 }
 .th2 th {
-	height: 35px !important;
+	height: 40px !important;
 	padding: 1px !important;
 	font-size: 1rem;
 }
@@ -295,5 +389,86 @@ const getQuestList = () => {
 }
 .seprator1 {
 	border-right: 2px solid #ffffff !important;
+}
+
+.QuestList {
+	border-bottom: 1px solid #cacaca;
+	margin: 0px !important;
+	padding: 3px;
+}
+.QuestList > div:nth-child(1) {
+	width: 50px;
+	text-align: center;
+	border: 0px solid red;
+	padding: 4px 0 0 0;
+}
+.QuestList > div:nth-child(2) {
+	padding: 4px 5px 0 5px;
+	text-align: left;
+}
+.QuestList > div:nth-child(3) {
+	width: 100px;
+	padding: 4px 0 0 0;
+}
+.QuestList > div:nth-child(4) {
+	width: 100px;
+	padding: 4px 0 0 0;
+}
+.QuestList > div:nth-child(5) {
+	width: 100px;
+	padding: 4px 0 0 0;
+}
+.QuestList > div:nth-child(6) {
+	width: 60px;
+	padding: 2px;
+}
+
+.Tbl11 {
+	border-top: 1px solid #ffffff;
+	border-left: 1px solid #ffffff;
+	border-right: 1px solid #ffffff;
+	border-bottom: 1px solid #ffffff;
+	border-collapse: collapse !important;
+	margin: 10px 0px 10px 0px !important;
+}
+
+.Tbl11 thead tr {
+	padding: 1rem 1rem;
+	text-align: center;
+}
+
+.Tbl11 thead th {
+	padding: 0.6rem 0.3rem;
+	border: 1px solid #cacaca;
+	background-color: #418b89;
+	color: #ffffff;
+	font-size: 1.1rem;
+}
+
+.Tbl11 thead td {
+	padding: 0.6rem 0.3rem;
+	border: 1px solid #cacaca;
+	background-color: #418b89;
+	color: #ffffff;
+	font-size: 1.1rem;
+}
+
+.Tbl11 tbody tr {
+	border: 1px solid #cacaca;
+}
+
+.Tbl11 tbody tr:hover {
+	background-color: #f1f1f1;
+}
+
+.Tbl11 tbody td {
+	padding: 3px;
+	font-size: 1rem;
+	text-align: center;
+	line-height: 1.85rem;
+	border: 1px solid #cacaca;
+	color: rgb(50, 50, 50);
+	background-color: transparent;
+	vertical-align: middle;
 }
 </style>

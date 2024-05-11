@@ -89,7 +89,7 @@ import { onMounted } from 'vue';
 
 // Props / Emit  ****************************
 
-var Emits = defineEmits(['getQuestList']);
+var Emits = defineEmits(['update:modelValue', 'getQuestList']);
 
 var ModalParm = defineModel('ModalParm');
 
@@ -157,12 +157,12 @@ const { data, execUrl, reqUrl } = useAxios(
 				case Procs.value.saveQuestPage.path:
 					Procs.value.saveQuestPage.loading = false;
 					vSuccess('저장되었습니다.');
-					Emits('getQuestList');
+					Emits('getQuestPageList');
 					break;
 				case Procs.value.delQuestPage.path:
 					Procs.value.delQuestPage.loading = false;
 					vSuccess('삭제되었습니다.');
-					Emits('getQuestList');
+					Emits('getQuestPageList');
 					break;
 				case Procs.value.getQuestPage.path:
 					Procs.value.getQuestPage.loading = false;
