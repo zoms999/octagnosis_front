@@ -319,7 +319,7 @@ const props = defineProps({
 const selectJobs = ref('');
 
 watch(
-	() => props.personal.Job,
+	() => props.personal?.Job,
 	newValue => {
 		selectJobs.value = newValue;
 	},
@@ -348,7 +348,7 @@ const formattedBirthDate = computed(() => {
 });
 
 watch(
-	() => props.personal.ExpirDt,
+	() => props.personal?.ExpirDt,
 	newValue => {
 		const val = newValue.replace(/[^0-9]/g, '');
 

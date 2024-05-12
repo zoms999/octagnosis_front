@@ -69,11 +69,11 @@
 					class="Poit"
 				>
 					<td>{{ item.persnId }}</td>
-					<td>{{ item.persnUserId }}</td>
+					<td>{{ item.acuntId }}</td>
 					<td>{{ item.persnNm }}</td>
 					<td>{{ item.phone }}</td>
 					<td>{{ dayjs(item.InsDt).format('YYYY-MM-DD') }}</td>
-					<td>{{ item.ExpirationDate }}</td>
+					<td>{{ dayjs(item.expirDt).format('YYYY-MM-DD') }}</td>
 					<td>보기</td>
 				</tr>
 			</tbody>
