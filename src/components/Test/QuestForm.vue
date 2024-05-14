@@ -109,8 +109,8 @@
 			</div>
 		</div>
 		<div class="container ItemBox" v-if="ModalParm.procType == 'E'">
-			<div class="row" v-if="ModalParm.procType == 'C'">
-				<div class="col-12 lblL"><i></i>문항내용 추가</div>
+			<div class="row">
+				<div class="col-12 lblL"><i></i>문항내용 추가1</div>
 				<div class="col-12">
 					<textarea
 						type="text"
@@ -186,31 +186,70 @@
 	</div>
 	<div v-if="ModalParm.procType == 'E'">
 		<hr />
-		<div class="container ItemBox">
-			<div class="row">
-				<div class="col-6">문항 이미지</div>
-				<div class="col-6 text-end">
-					<butto type="button" class="btn btn-primary btn-sm">
-						<span class="material-icons pt-1"> add_circle </span>
-					</butto>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-3"></div>
+		<div class="Tit1 ms-3">
+			<div>문항 이미지</div>
+			<div>
+				<butto
+					type="button"
+					class="btn btn-primary btn-sm"
+					@click="ShowImg('C')"
+				>
+					<span class="material-icons pt-1"> add_circle </span>
+				</butto>
 			</div>
 		</div>
+
 		<div class="container ItemBox">
 			<div class="row">
-				<div class="col-6">문항 보기</div>
-				<div class="col-6 text-end">
-					<butto type="button" class="btn btn-primary btn-sm">
-						<span class="material-icons pt-1"> add_circle </span>
-					</butto>
+				<div class="col-3" v-for="item in QuestImgList" :key="item.imgId">
+					<div><img :src="getQuestImg" /></div>
+					<div>{{ getCdNm(item.imgType) }}</div>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-3"></div>
+		</div>
+
+		<div class="Tit1 ms-3">
+			<div>문항 보기</div>
+			<div>
+				<butto
+					type="button"
+					class="btn btn-primary btn-sm"
+					@click="ShowItem('C')"
+				>
+					<span class="material-icons pt-1"> add_circle </span>
+				</butto>
 			</div>
+		</div>
+
+		<div class="mx-4">
+			<table class="table table-bordered Tbl1" cellspacing="0">
+				<thead>
+					<tr class="th2">
+						<th class="w50">순번</th>
+						<th class="">보기</th>
+						<th class="w80">보기유형</th>
+						<th class="w60">가중치</th>
+						<th class="w60">-</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="item in QuestItemList" :key="item.itemId">
+						<td class="text-center">{{ item.seq }}</td>
+						<td class="text-start">{{ item.conts }}</td>
+						<td class="">{{ getCdNm(item.itemType) }}</td>
+						<td class="">{{ item.weigt }}</td>
+						<td>
+							<button
+								type="button"
+								class="btn btn-primary btn-sm fs080"
+								@click.stop="ShowItem('E', item.itemId)"
+							>
+								<span class="material-icons"> mode_edit </span>
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
 	<div class="modal-footer">
@@ -222,15 +261,48 @@
 			닫기
 		</button>
 	</div>
+	<!--	문항 보기------------------------------->
+	<Teleport to="#modal">
+		<AppModalV1
+			v-model="Modal.Item.showYn"
+			title="문항보기"
+			width="800"
+			depth="2"
+		>
+			<QuestItem
+				v-model="Modal.Item.showYn"
+				v-model:ModalParm="Modal.Item"
+				@getQuestItemList="getQuestItemList"
+			></QuestItem>
+		</AppModalV1>
+	</Teleport>
+
+	<!--	문항 이미지------------------------------->
+	<Teleport to="#modal">
+		<AppModalV1
+			v-model="Modal.Img.showYn"
+			title="문항이미지"
+			width="700"
+			depth="2"
+		>
+			<QuestImg
+				v-model="Modal.Item.showYn"
+				v-model:ModalParm="Modal.Img"
+				@getQuestImgList="getQuestImgList"
+			></QuestImg>
+		</AppModalV1>
+	</Teleport>
 </template>
 
 <script setup>
-import { watch, ref } from 'vue';
+import { watch, ref, onMounted } from 'vue';
 import { useAlert } from '@/hooks/useAlert';
 import { useAxios } from '@/hooks/useAxios';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
-import { onMounted } from 'vue';
+
+import QuestItem from '@/components/Test/QuestItem.vue';
+import QuestImg from '@/components/Test/QuestImg.vue';
 
 // Props / Emit  ****************************
 
@@ -239,6 +311,22 @@ var Emits = defineEmits(['update:modelValue', 'getQuestList']);
 var ModalParm = defineModel('ModalParm');
 
 // alert(ModalParm.value.procType);
+
+// Hook	 *************************************
+
+onMounted(() => {
+	Quest.value.testId = ModalParm.value.testId;
+	Quest.value.questPageId = ModalParm.value.questPageId;
+
+	QuestParm.value.testId = ModalParm.value.testId;
+	QuestParm.value.questPageId = ModalParm.value.questPageId;
+
+	if (ModalParm.value.procType == 'E') {
+		Quest.value.questId = ModalParm.value.questId;
+		QuestParm.value.questId = ModalParm.value.questId;
+	}
+	getQuest();
+});
 
 // Model / Data *****************************
 
@@ -256,9 +344,9 @@ const Quest = ref({
 	questType: '',
 	questAttrCd1: '',
 	questAttrCd2: '',
-	waitSec: '0',
-	itemColCnt: '1',
-	imgColCnt: '1',
+	waitSec: 0,
+	itemColCnt: 1,
+	imgColCnt: 1,
 	useYn: 'Y',
 	insId: userMngrId.value,
 	uptId: userMngrId.value,
@@ -273,22 +361,8 @@ const QuestParm = ref({
 
 const QuestPageList = ref([]);
 const QuestAttrList = ref([]);
-
-// Hook	 *************************************
-
-onMounted(() => {
-	Quest.value.testId = ModalParm.value.testId;
-	Quest.value.questPageId = ModalParm.value.questPageId;
-
-	QuestParm.value.testId = ModalParm.value.testId;
-	QuestParm.value.questPageId = ModalParm.value.questPageId;
-
-	if (ModalParm.value.procType == 'E') {
-		Quest.value.questId = ModalParm.value.questId;
-		QuestParm.value.questId = ModalParm.value.questId;
-	}
-	getQuest();
-});
+const QuestItemList = ref([]);
+const QuestImgList = ref([]);
 
 // Html ref  ********************************
 
@@ -307,6 +381,10 @@ const Procs = ref({
 	getQuest: { path: '/api/Quest/Quest/getQuest', loading: false },
 	saveQuest: { path: '/api/Quest/Quest/saveQuest', loading: false },
 	delQuest: { path: '/api/Quest/Quest/delQuest', loading: false },
+	getQuestItemList: {
+		path: '/api/Quest/Quest/getQuestItemList',
+		loading: false,
+	},
 });
 
 const { data, execUrl, reqUrl } = useAxios(
@@ -325,18 +403,24 @@ const { data, execUrl, reqUrl } = useAxios(
 					ModalParm.value.procType = 'E';
 					Emits('getQuestList', Quest.value.questPageId);
 					break;
+
 				case Procs.value.delQuest.path:
 					Procs.value.delQuest.loading = false;
 					vSuccess('삭제되었습니다.');
 					Emits('getQuestList', Quest.value.questPageId);
 					break;
+
 				case Procs.value.getQuest.path:
 					Procs.value.getQuest.loading = false;
 					if (data.value.Quest != null) Quest.value = { ...data.value.Quest };
 					QuestPageList.value = data.value.QuestPageList;
 					QuestAttrList.value = data.value.QuestAttrList;
+					QuestItemList.value = data.value.QuestItemList;
+					break;
 
-					//Quest.value = { ...data.value };
+				case Procs.value.getQuestItemList.path:
+					Procs.value.getQuestItemList.loading = false;
+					QuestItemList.value = data.value.QuestItemList;
 					break;
 
 				default:
@@ -356,6 +440,50 @@ const { data, execUrl, reqUrl } = useAxios(
 );
 
 // Modal *************************************
+
+const Modal = ref({
+	Item: {
+		showYn: false,
+		procType: 'C',
+		questId: 0,
+		itemId: 0,
+		questItem: {},
+	},
+	Img: { showYn: false, procType: 'C', questId: 0, imgId: 0, questImg: {} },
+});
+
+const ShowHide = (type, showYn) => {
+	switch (type) {
+		case 'Item':
+			Modal.value.Item.showYn = showYn;
+			break;
+		case 'Img':
+			Modal.value.Img.showYn = showYn;
+			break;
+	}
+};
+
+const ShowItem = (procType, itemId) => {
+	Modal.value.Item.procType = procType;
+	Modal.value.Item.questId = Quest.value.questId;
+	Modal.value.Item.itemId = itemId;
+
+	Modal.value.Item.questItem = QuestItemList.value.find(
+		o => o.itemId == itemId,
+	);
+
+	ShowHide('Item', true);
+};
+
+const ShowImg = (procType, imgId) => {
+	Modal.value.Img.procType = procType;
+	Modal.value.Img.questId = Quest.value.questId;
+	Modal.value.Img.imgId = imgId;
+
+	Modal.value.Img.questImg = QuestImgList.value.find(o => o.imgId == imgId);
+
+	ShowHide('Img', true);
+};
 
 // Watch *************************************
 
@@ -382,7 +510,7 @@ watch(
 	newValue => {
 		if (newValue == '' || newValue == null) return;
 		const val = newValue.toString().replace(/[^0-9]/g, '');
-		Quest.value.itemColCnt = val == 0 ? '1' : val;
+		Quest.value.imgColCnt = val == 0 ? '1' : val;
 	},
 );
 
@@ -448,7 +576,37 @@ const delQuest = () => {
 	execUrl(Procs.value.delQuest.path, QuestParm.value);
 };
 
+const getQuestItemList = () => {
+	Modal.value.Item.showYn = false;
+	execUrl(Procs.value.getQuestItemList.path, QuestParm.value);
+};
+
+const getQuestImg = imgNm => {
+	var ImgNm = imgNm == '' ? 'none.png' : imgNm;
+	return `/public/img/QuestImg/${ImgNm}`;
+};
+
+const getQuestImgList = () => {
+	Modal.value.Img.showYn = false;
+	execUrl(Procs.value.getQuestImgList.path, QuestParm.value);
+};
+
 // Etc  **************************************
+
+const getCdNm = cd => {
+	switch (cd) {
+		case 'C00701':
+			return '글자';
+		case 'C00702':
+			return '이미지';
+		case 'C00801':
+			return '이미지 A';
+		case 'C00802':
+			return '이미지 B';
+		case 'C00803':
+			return '이미지 C';
+	}
+};
 
 const validNotBlank = (val, tit, obj) => {
 	val = typeof val != 'string' ? val.toString() : val;

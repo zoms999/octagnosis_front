@@ -353,7 +353,7 @@ const getQuestPageList = () => {
 
 // 검사지 문항 조회
 const getQuestList = questPageId => {
-	Modal.value.Quest.showYn = false;
+	//Modal.value.Quest.showYn = false;
 
 	QuestParm.value.questPageId = questPageId;
 	// 문항의 검사지가 변경되었으면 변경되기전의 검사지의 문항도 조회
