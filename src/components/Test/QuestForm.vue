@@ -201,8 +201,14 @@
 
 		<div class="container ItemBox">
 			<div class="row">
-				<div class="col-3" v-for="item in QuestImgList" :key="item.imgId">
-					<div><img :src="getQuestImg" /></div>
+				<div
+					class="col-3 text-center"
+					v-for="item in QuestImgList"
+					:key="item.imgId"
+				>
+					<div class="Poit" @click.stop="ShowImg('E', item.imgId)">
+						<img :src="getQuestImg(item.imgNm)" class="QuestImg" />
+					</div>
 					<div>{{ getCdNm(item.imgType) }}</div>
 				</div>
 			</div>
@@ -286,7 +292,7 @@
 			depth="2"
 		>
 			<QuestImg
-				v-model="Modal.Item.showYn"
+				v-model="Modal.Img.showYn"
 				v-model:ModalParm="Modal.Img"
 				@getQuestImgList="getQuestImgList"
 			></QuestImg>
@@ -385,6 +391,10 @@ const Procs = ref({
 		path: '/api/Quest/Quest/getQuestItemList',
 		loading: false,
 	},
+	getQuestImgList: {
+		path: '/api/Quest/Quest/getQuestImgList',
+		loading: false,
+	},
 });
 
 const { data, execUrl, reqUrl } = useAxios(
@@ -416,11 +426,16 @@ const { data, execUrl, reqUrl } = useAxios(
 					QuestPageList.value = data.value.QuestPageList;
 					QuestAttrList.value = data.value.QuestAttrList;
 					QuestItemList.value = data.value.QuestItemList;
+					QuestImgList.value = data.value.QuestImgList;
 					break;
 
 				case Procs.value.getQuestItemList.path:
 					Procs.value.getQuestItemList.loading = false;
 					QuestItemList.value = data.value.QuestItemList;
+					break;
+				case Procs.value.getQuestImgList.path:
+					Procs.value.getQuestImgList.loading = false;
+					QuestImgList.value = data.value.QuestImgList;
 					break;
 
 				default:
@@ -635,4 +650,9 @@ const validNotSelect = (val, tit, obj) => {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.QuestImg {
+	width: 200px;
+	height: auto;
+}
+</style>
