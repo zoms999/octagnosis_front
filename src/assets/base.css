@@ -1185,10 +1185,22 @@ body {
 
 
 
-.IconBtn {
-  height:38px !important;
-}
-
+  .IconBtn {
+    height:38px !important;
+  }
+  .IconBtnA {
+    display: inline-block;
+    width:35px;
+    height:35px;
+    text-align: center;
+    padding:5px 5px 2px 6px;
+    margin:3px 3px 3px 3px ;
+    border-radius: 17px;
+    color:#ffffff;
+    background-color: #196ef7;
+    cursor:pointer;
+  }
+    
 
 .ActionBtn {
   display: flex; justify-content: space-between; align-items: center;
@@ -1208,3 +1220,6 @@ body {
     font-size:1.0rem;
     margin:0 10px 0 0;
   }
+
+
+

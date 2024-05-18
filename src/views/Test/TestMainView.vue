@@ -7,6 +7,7 @@
 		<div class="row">
 			<div class="col-4">
 				<div class="input-group">
+					<span class="input-group-text">검사지</span>
 					<select class="form-select fs120" ref="selTest" :onChange="setTest">
 						<option value=""></option>
 						<option
@@ -34,8 +35,8 @@
 					</button>
 				</div>
 			</div>
-			<div class="col-2"></div>
-			<div class="col-6 text-end">
+			<div class="col-5"></div>
+			<div class="col-3 text-end">
 				<button
 					type="button"
 					class="btn btn-primary ms-2"
@@ -70,7 +71,7 @@
 					<th class="w100">문항유형</th>
 					<th class="w100">문항속성1</th>
 					<th class="w100">문항속성2</th>
-					<th class="w60">-</th>
+					<th class="w50">-</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -79,20 +80,18 @@
 					<td>{{ item.questPageNm }}</td>
 					<td>{{ item.questPageTypeNm }}</td>
 					<td>
-						<button
-							type="button"
-							class="btn btn-primary btn-sm fs080"
+						<div
+							class="IconBtnA"
 							@click.stop="ShowQuestPage('E', item.questPageId)"
 						>
 							<span class="material-icons"> mode_edit </span>
-						</button>
-						<button
-							type="button"
-							class="btn btn-primary btn-sm ms-2 fs080"
+						</div>
+						<div
+							class="IconBtnA"
 							@click.stop="ShowQuest('C', item.questPageId, 0)"
 						>
 							<span class="material-icons"> playlist_add </span>
-						</button>
+						</div>
 					</td>
 					<td colspan="6" style="padding: 0 !important">
 						<div
@@ -100,29 +99,26 @@
 							v-for="item1 in item.questList"
 							:key="item1.questId"
 						>
-							<div class>
-								{{ item1.questNo }}
-							</div>
-							<div class="flex-fill">
+							<div class="w50">{{ item1.questNo }} / {{ item1.questId }}</div>
+							<div class="flex-fill w200 text-truncate">
 								{{ item1.questCont1 }}
 							</div>
-							<div>
+							<div class="w100">
 								{{ item1.questTypeNm }}
 							</div>
-							<div>
+							<div class="w100">
 								{{ item1.questAttrCd1Nm }}
 							</div>
-							<div>
+							<div class="w100">
 								{{ item1.questAttrCd2Nm }}
 							</div>
-							<div>
-								<button
-									type="button"
-									class="btn btn-primary btn-sm fs080"
+							<div class="w50">
+								<div
+									class="IconBtnA"
 									@click.stop="ShowQuest('E', item.questPageId, item1.questId)"
 								>
 									<span class="material-icons"> mode_edit </span>
-								</button>
+								</div>
 							</div>
 						</div>
 					</td>
@@ -130,6 +126,8 @@
 			</tbody>
 			<tfoot></tfoot>
 		</table>
+		<div class="NotSelect" v-if="NotSelectTest">검사지를 선택하세요.</div>
+		<br /><br /><br />
 	</div>
 
 	<!--	검사 ------------------------------->
@@ -353,7 +351,7 @@ const getQuestPageList = () => {
 
 // 검사지 문항 조회
 const getQuestList = questPageId => {
-	//Modal.value.Quest.showYn = false;
+	Modal.value.Quest.showYn = false;
 
 	QuestParm.value.questPageId = questPageId;
 	// 문항의 검사지가 변경되었으면 변경되기전의 검사지의 문항도 조회
@@ -470,5 +468,11 @@ const getQuestList = questPageId => {
 	color: rgb(50, 50, 50);
 	background-color: transparent;
 	vertical-align: middle;
+}
+
+.NotSelect {
+	padding: 100px;
+	text-align: center;
+	color: #aaaaaa;
 }
 </style>

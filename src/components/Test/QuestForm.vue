@@ -189,13 +189,9 @@
 		<div class="Tit1 ms-3">
 			<div>문항 이미지</div>
 			<div>
-				<butto
-					type="button"
-					class="btn btn-primary btn-sm"
-					@click="ShowImg('C')"
-				>
-					<span class="material-icons pt-1"> add_circle </span>
-				</butto>
+				<div class="IconBtnA" @click="ShowImg('C')">
+					<span class="material-icons"> add </span>
+				</div>
 			</div>
 		</div>
 
@@ -217,13 +213,9 @@
 		<div class="Tit1 ms-3">
 			<div>문항 보기</div>
 			<div>
-				<butto
-					type="button"
-					class="btn btn-primary btn-sm"
-					@click="ShowItem('C')"
-				>
-					<span class="material-icons pt-1"> add_circle </span>
-				</butto>
+				<div class="IconBtnA" @click="ShowItem('C')">
+					<span class="material-icons">add</span>
+				</div>
 			</div>
 		</div>
 
@@ -245,13 +237,9 @@
 						<td class="">{{ getCdNm(item.itemType) }}</td>
 						<td class="">{{ item.weigt }}</td>
 						<td>
-							<button
-								type="button"
-								class="btn btn-primary btn-sm fs080"
-								@click.stop="ShowItem('E', item.itemId)"
-							>
+							<div class="IconBtnA" @click.stop="ShowItem('E', item.itemId)">
 								<span class="material-icons"> mode_edit </span>
-							</button>
+							</div>
 						</td>
 					</tr>
 				</tbody>
@@ -347,9 +335,9 @@ const Quest = ref({
 	questCont1: '',
 	questCont2: '',
 	questCont3: '',
-	questType: '',
-	questAttrCd1: '',
-	questAttrCd2: '',
+	questType: 'C00501',
+	questAttrCd1: 'IMG001',
+	questAttrCd2: 'IMG004',
 	waitSec: 0,
 	itemColCnt: 1,
 	imgColCnt: 1,
@@ -548,6 +536,7 @@ const saveQuest = () => {
 	if (!validNotBlank(Quest.value.questNo, '문항번호', txtQuestNo.value)) return;
 	if (!validNotSelect(Quest.value.questPageId, '검사지', selQuestPageId.value))
 		return;
+	/*
 	if (!validNotSelect(Quest.value.questType, '문항유형', selQuestType.value))
 		return;
 	if (
@@ -566,6 +555,7 @@ const saveQuest = () => {
 		)
 	)
 		return;
+		*/
 	if (!validNotBlank(Quest.value.questCont1, '문항내용', txtQuestCont1.value))
 		return;
 	if (
