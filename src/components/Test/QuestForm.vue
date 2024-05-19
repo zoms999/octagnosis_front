@@ -233,7 +233,14 @@
 				<tbody>
 					<tr v-for="item in QuestItemList" :key="item.itemId">
 						<td class="text-center">{{ item.seq }}</td>
-						<td class="text-start">{{ item.conts }}</td>
+						<td class="text-start">
+							<span v-if="item.itemType == 'C00701'">{{ item.conts }}</span>
+							<img
+								v-if="item.itemType == 'C00702'"
+								:src="getQuestItemImg(item.imgNm)"
+								class="QuestItemImg"
+							/>
+						</td>
 						<td class="">{{ getCdNm(item.itemType) }}</td>
 						<td class="">{{ item.weigt }}</td>
 						<td>
@@ -596,6 +603,11 @@ const getQuestImgList = () => {
 	execUrl(Procs.value.getQuestImgList.path, QuestParm.value);
 };
 
+const getQuestItemImg = imgNm => {
+	var ImgNm = imgNm == '' ? 'none.png' : imgNm;
+	return `/public/img/QuestItem/${ImgNm}`;
+};
+
 // Etc  **************************************
 
 const getCdNm = cd => {
@@ -644,5 +656,8 @@ const validNotSelect = (val, tit, obj) => {
 .QuestImg {
 	width: 200px;
 	height: auto;
+}
+.QuestItemImg {
+	width: 80px;
 }
 </style>

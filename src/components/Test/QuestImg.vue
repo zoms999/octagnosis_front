@@ -136,10 +136,10 @@ const { vAlert, vSuccess } = useAlert();
 const QuestImg = ref({
 	questId: 0,
 	imgId: 0,
-	imgType: '',
+	imgType: 'C00801',
 	conts: '',
 	imgNm: '',
-	seq: 0,
+	seq: 1,
 	insId: userMngrId.value,
 	uptId: userMngrId.value,
 });

@@ -99,7 +99,7 @@
 							v-for="item1 in item.questList"
 							:key="item1.questId"
 						>
-							<div class="w50">{{ item1.questNo }} / {{ item1.questId }}</div>
+							<div class="w50">{{ item1.questNo }}</div>
 							<div class="flex-fill w200 text-truncate">
 								{{ item1.questCont1 }}
 							</div>
