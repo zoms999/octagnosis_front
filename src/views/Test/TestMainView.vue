@@ -62,9 +62,9 @@
 				</tr>
 				<tr class="th2">
 					<th class="w50">순번</th>
-					<th class="w200">검사지명</th>
+					<th class="w150">검사지명</th>
 					<th class="w140">유형</th>
-					<th class="w110 seprator1">-</th>
+					<th class="w160 seprator1">-</th>
 
 					<th class="w50">번호</th>
 					<th>내용</th>
@@ -77,9 +77,18 @@
 			<tbody>
 				<tr v-for="(item, idx) in QuestPageList" :key="item.questPageId">
 					<td>{{ item.questPageSeq }}</td>
-					<td>{{ item.questPageNm }}</td>
+					<td>
+						{{ item.questPageNm }}
+					</td>
 					<td>{{ item.questPageTypeNm }}</td>
 					<td>
+						<div
+							class="IconBtnA"
+							@click="ShowQuestPageMain(item.questPageId)"
+							S
+						>
+							<span class="material-icons"> article </span>
+						</div>
 						<div
 							class="IconBtnA"
 							@click.stop="ShowQuestPage('E', item.questPageId)"
@@ -163,6 +172,21 @@
 			></QuestForm>
 		</AppModalV1>
 	</Teleport>
+
+	<!--	검사지 샘플 ------------------------------->
+	<Teleport to="#modal">
+		<AppModalV1
+			v-model="Modal.QuestPageMain.showYn"
+			title="검사지"
+			width="1400"
+		>
+			<QuestPageMain
+				v-model="Modal.QuestPageMain.showYn"
+				v-model:ModalParm="Modal.QuestPageMain"
+				v-model:Test="Test"
+			></QuestPageMain>
+		</AppModalV1>
+	</Teleport>
 </template>
 
 <script setup>
@@ -176,6 +200,7 @@ import { useAuthStore } from '@/stores/auth';
 import TestForm from '@/components/Test/TestForm.vue';
 import QuestPageForm from '@/components/Test/QuestPageForm.vue';
 import QuestForm from '@/components/Test/QuestForm.vue';
+import QuestPageMain from '@/views/Test/QuestPageMainView.vue';
 
 // Props / Emit  ****************************
 
@@ -201,7 +226,7 @@ const QuestParm = ref({
 
 const selTest = ref(null);
 
-// Axios / Route	***********************************
+// Axios / Route	***************************
 
 const Procs = ref({
 	getTestList: { path: '/api/Quest/Test/getTestList', loading: false },
@@ -264,13 +289,13 @@ const { data, execUrl, reqUrl } = useAxios(
 	},
 );
 
-// Hook	 *************************************
+// Hook	 ************************************
 
 onMounted(() => {
 	getTestList();
 });
 
-// Modal *************************************
+// Modal ************************************
 
 const Modal = ref({
 	Test: { showYn: false, procType: 'C' },
@@ -282,6 +307,7 @@ const Modal = ref({
 		questPageId: 0,
 		questId: 0,
 	},
+	QuestPageMain: { showYn: false, testId: 0, questPageId: 0 },
 });
 
 const ShowHide = (type, showYn) => {
@@ -294,6 +320,9 @@ const ShowHide = (type, showYn) => {
 			break;
 		case 'Quest':
 			Modal.value.Quest.showYn = showYn;
+			break;
+		case 'QuestPageMain':
+			Modal.value.QuestPageMain.showYn = showYn;
 			break;
 	}
 };
@@ -323,9 +352,16 @@ const ShowQuest = (procType, questPageId, questId) => {
 	ShowHide('Quest', true);
 };
 
-// Watch *************************************
+const ShowQuestPageMain = questPageId => {
+	Modal.value.QuestPageMain.testId = selTest.value.value;
+	Modal.value.QuestPageMain.questPageId = questPageId;
 
-// Method	************************************
+	ShowHide('QuestPageMain', true);
+};
+
+// Watch ************************************
+
+// Method	***********************************
 
 const getTestList = () => {
 	Modal.value.Test.showYn = false;
