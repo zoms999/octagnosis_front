@@ -18,11 +18,15 @@
 						ref="selQuestPageType"
 						v-model="QuestPage.questPageType"
 					>
-						<option value="C00401" selected="selected">단일질의 객관식</option>
-						<option value="C00402">다중질의 객관식</option>
-						<option value="C00403">이미지형 객관식 1</option>
-						<option value="C00404">이미지형 객관식 2</option>
-						<option value="C00405">자유형</option>
+						<option value="C00401" selected="selected">단일질의 A</option>
+						<option value="C00407">단일질의 B</option>
+						<option value="C00402">다중질의 A</option>
+						<option value="C00403">단일질의 이미지 A</option>
+						<option value="C00404">단일질의 이미지 B</option>
+						<option value="C00408">단일질의 이미지 C</option>
+						<option value="C00405">단일질의 시간제한 A</option>
+						<option value="C00406">단일질의 시간제한 1</option>
+						<option value="C00409">단일질의 시간제한 2</option>
 					</select>
 				</div>
 			</div>

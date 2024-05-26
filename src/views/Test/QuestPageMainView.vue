@@ -23,13 +23,71 @@
 	</div>
 
 	<div class="quest">
-		<QuestPageA
+		<MultiQuestItemA
 			v-if="QuestPage.questPageType == 'C00402'"
 			v-model:QuestPage="QuestPage"
 			v-model:QuestList="QuestList"
 			v-model:QuestItemList="QuestItemList"
 			v-model:QuestImgList="QuestImgList"
-		></QuestPageA>
+		></MultiQuestItemA>
+
+		<OneQuestItemA
+			v-if="QuestPage.questPageType == 'C00401'"
+			v-model:QuestPage="QuestPage"
+			v-model:QuestList="QuestList"
+			v-model:QuestItemList="QuestItemList"
+			v-model:QuestImgList="QuestImgList"
+		></OneQuestItemA>
+		<OneQuestItemB
+			v-if="QuestPage.questPageType == 'C00407'"
+			v-model:QuestPage="QuestPage"
+			v-model:QuestList="QuestList"
+			v-model:QuestItemList="QuestItemList"
+			v-model:QuestImgList="QuestImgList"
+		></OneQuestItemB>
+		<OneQuestImgA
+			v-if="QuestPage.questPageType == 'C00403'"
+			v-model:QuestPage="QuestPage"
+			v-model:QuestList="QuestList"
+			v-model:QuestItemList="QuestItemList"
+			v-model:QuestImgList="QuestImgList"
+		></OneQuestImgA>
+		<OneQuestImgB
+			v-if="QuestPage.questPageType == 'C00404'"
+			v-model:QuestPage="QuestPage"
+			v-model:QuestList="QuestList"
+			v-model:QuestItemList="QuestItemList"
+			v-model:QuestImgList="QuestImgList"
+		></OneQuestImgB>
+		<OneQuestImgC
+			v-if="QuestPage.questPageType == 'C00408'"
+			v-model:QuestPage="QuestPage"
+			v-model:QuestList="QuestList"
+			v-model:QuestItemList="QuestItemList"
+			v-model:QuestImgList="QuestImgList"
+		></OneQuestImgC>
+		<OneQuestImgTimeA
+			v-if="QuestPage.questPageType == 'C00405'"
+			v-model:QuestPage="QuestPage"
+			v-model:QuestList="QuestList"
+			v-model:QuestItemList="QuestItemList"
+			v-model:QuestImgList="QuestImgList"
+		></OneQuestImgTimeA>
+
+		<FreeTypeTime1
+			v-if="QuestPage.questPageType == 'C00406'"
+			v-model:QuestPage="QuestPage"
+			v-model:QuestList="QuestList"
+			v-model:QuestItemList="QuestItemList"
+			v-model:QuestImgList="QuestImgList"
+		></FreeTypeTime1>
+		<FreeTypeTime2
+			v-if="QuestPage.questPageType == 'C00409'"
+			v-model:QuestPage="QuestPage"
+			v-model:QuestList="QuestList"
+			v-model:QuestItemList="QuestItemList"
+			v-model:QuestImgList="QuestImgList"
+		></FreeTypeTime2>
 	</div>
 	<div class="bottom d-flex justify-content-center">
 		<div class="btnNext d-flex" @click="saveAns">
@@ -45,9 +103,18 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onBeforeMount, onMounted, ref } from 'vue';
 
-import QuestPageA from '@/components/Test/QuestPageA.vue';
+import MultiQuestItemA from '@/components/Test/QuestPage/MultiQuestItemA.vue';
+import OneQuestItemA from '@/components/Test/QuestPage/OneQuestItemA.vue';
+import OneQuestItemB from '@/components/Test/QuestPage/OneQuestItemB.vue';
+import OneQuestImgA from '@/components/Test/QuestPage/OneQuestImgA.vue';
+import OneQuestImgB from '@/components/Test/QuestPage/OneQuestImgB.vue';
+import OneQuestImgC from '@/components/Test/QuestPage/OneQuestImgC.vue';
+import OneQuestImgTimeA from '@/components/Test/QuestPage/OneQuestImgTimeA.vue';
+
+import FreeTypeTime1 from '@/components/Test/QuestPage/FreeType/Time1.vue';
+import FreeTypeTime2 from '@/components/Test/QuestPage/FreeType/Time2.vue';
 
 // Props / Emit  ****************************
 
@@ -57,9 +124,11 @@ var ModalParm = defineModel('ModalParm');
 
 // Hook	 *************************************
 
-onMounted(() => {
+onBeforeMount(() => {
 	getQuestPageForTest();
 });
+
+onMounted(() => {});
 
 // Model / Data *****************************
 
@@ -102,11 +171,16 @@ const { data, execUrl, reqUrl } = useAxios(
 
 					// Quest 에 답변값 "val" 추가
 					QuestList.value.forEach(quest => {
-						quest.val = 0;
+						quest.val1 = 0;
+						quest.val2 = 0;
 					});
 					// QuestItem 에 선택값 "selected" 추가
 					QuestItemList.value.forEach(item => {
 						item.selected = false;
+					});
+					// QuestItem 에 선택값 "selected" 추가
+					QuestImgList.value.forEach(item => {
+						item.showYn = true;
 					});
 
 					break;
@@ -144,10 +218,19 @@ const getQuestPageForTest = () => {
 const saveAns = () => {
 	var NotChkYn = false;
 	for (var i = 0; i < QuestList.value.length; i++) {
-		if (QuestList.value[i].val == 0) {
-			alert(QuestList.value[i].questNo + '번 문항을 선택하세요.');
-			NotChkYn = true;
-			break;
+		if (QuestList.value[i].questId == 25) {
+			// 25번 문항은 선택값이 2개
+			if (QuestList.value[i].val1 == 0 || QuestList.value[i].val2 == 0) {
+				alert(QuestList.value[i].questNo + '번 문항을 선택하세요.');
+				NotChkYn = true;
+				break;
+			}
+		} else {
+			if (QuestList.value[i].val1 == 0) {
+				alert(QuestList.value[i].questNo + '번 문항을 선택하세요.');
+				NotChkYn = true;
+				break;
+			}
 		}
 	}
 	if (NotChkYn) {
@@ -170,7 +253,7 @@ const saveAns = () => {
 	margin: auto;
 }
 .bottom {
-	padding: 20px;
+	padding: 10px 20px 20px 20px;
 	text-align: right;
 	font-size: 1.5rem;
 	cursor: pointer;

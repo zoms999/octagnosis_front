@@ -62,9 +62,9 @@
 				</tr>
 				<tr class="th2">
 					<th class="w50">순번</th>
-					<th class="w150">검사지명</th>
-					<th class="w140">유형</th>
-					<th class="w160 seprator1">-</th>
+					<th class="w130">검사지명</th>
+					<th class="w160">유형</th>
+					<th class="w150 seprator1">-</th>
 
 					<th class="w50">번호</th>
 					<th>내용</th>

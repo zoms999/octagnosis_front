@@ -1,9 +1,7 @@
 <template>
 	<div class="test-form">
 		<div class="questPageNm">
-			<span class="badge text-bg-secondary fs120">{{
-				QuestPage.questPageNm
-			}}</span>
+			<span class="badge text-bg-secondary">{{ QuestPage.questPageNm }}</span>
 		</div>
 		<div
 			class="d-flex questBox"
@@ -14,8 +12,11 @@
 				<div class="num">{{ item.questNo }}</div>
 			</div>
 			<div class="flex-fill">
-				<div class="quest">
-					{{ item.questCont1 }}
+				<div class="quest1">
+					<span v-html="item.questCont1"></span>
+				</div>
+				<div class="quest2">
+					<span v-html="item.questCont2"></span>
 				</div>
 				<div class="items d-flex flex-wrap">
 					<div
@@ -29,7 +30,14 @@
 							:class="{ itemChecked: questItem.selected }"
 							@click="setQuestVal(item.questId, questItem.itemId)"
 						>
-							{{ questItem.conts }}
+							<span v-if="questItem.itemType == 'C00701'" class="itemCont">{{
+								questItem.conts
+							}}</span>
+							<img
+								v-if="questItem.itemType == 'C00702'"
+								:src="getQuestItemImg(questItem.imgNm)"
+								class="QuestItemImg"
+							/>
 						</div>
 					</div>
 				</div>
@@ -65,12 +73,17 @@ const getQuestItemList = questId => {
 
 const setQuestVal = (questId, itemId) => {
 	const Quest = QuestList.value.find(o => o.questId == questId);
-	Quest.val = itemId;
+	Quest.val1 = itemId;
 	const ItemList = QuestItemList.value.filter(o => o.questId == questId);
 
 	ItemList.forEach(item => {
 		item.selected = item.itemId == itemId ? true : false;
 	});
+};
+
+const getQuestItemImg = imgNm => {
+	var ImgNm = imgNm == '' ? 'none.png' : imgNm;
+	return `/public/img/QuestItem/${ImgNm}`;
 };
 
 // Etc  *************************************
@@ -85,14 +98,17 @@ const setQuestVal = (questId, itemId) => {
 }
 
 .questPageNm {
-	font-size: 1.2rem;
 	margin-bottom: 30px;
+}
+.questPageNm span {
+	font-size: 1.3rem;
+	padding: 10px;
 }
 .num {
 	width: 50px;
 	height: 50px;
 	border-radius: 25px;
-	background-color: #cfd4da;
+	background-color: rgb(180, 180, 180);
 	text-align: center;
 	vertical-align: middle;
 	color: #ffffff;
@@ -100,28 +116,43 @@ const setQuestVal = (questId, itemId) => {
 	font-size: 1.3rem;
 	margin: 0 10px 0 0;
 }
-.quest {
+.quest1 {
 	font-size: 1.2rem;
 }
+.quest2 {
+	font-size: 1.2rem;
+	margin: 0px 0 20px 0;
+}
+
 .items {
-	margin: 10px 0 0 0;
+	margin: 20px 0 0 0;
 }
 .items .itemBox {
 	margin: 5px 0px 0 0px;
-	text-align: center;
+	text-align: left;
 }
 .items .itemBox .item {
 	width: 85%;
 	border-radius: 25px;
 	background-color: #f0f3f5;
-	padding: 10px 10px 10px 10px;
-	text-align: center;
-	font-size: 1.1rem;
+	padding: 10px 10px 10px 20px;
+	text-align: left;
+	font-size: 1.2rem;
 	cursor: pointer;
 	display: inline-block;
 }
 .itemChecked {
 	background-color: #3d7aed !important;
 	color: #ffffff;
+}
+.QuestItemImg {
+	width: 90%;
+	max-width: 300px !important;
+
+	margin: 10px 0 10px 0;
+	border-radius: 10px;
+}
+.itemCont {
+	margin: 10px 0 0 0;
 }
 </style>
