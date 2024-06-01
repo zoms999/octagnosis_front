@@ -12,7 +12,8 @@
 						type="text"
 						class="form-control"
 						v-model="Parm.srchStr"
-						placeholder="기관명/대표/담당자(정)"
+						placeholder="기관명/대표/담당자(정)/회차코드"
+						@keyup.enter="getOrgList(1)"
 					/>
 					<button class="btn btn-primary w80" @click="getOrgList(1)">
 						<template v-if="loading">
@@ -59,16 +60,16 @@
 		>
 			<thead>
 				<tr>
-					<th>No</th>
+					<th class="w70">No</th>
 					<th>기관명</th>
 					<th>연락처1</th>
 					<th>대표자</th>
 					<th>담당자(정)</th>
-					<th>등록일자</th>
-					<th>사용기한</th>
-					<th>회차</th>
-					<th>요청</th>
-					<th>사용</th>
+					<th class="w140">등록일자</th>
+					<th class="w140">사용기한</th>
+					<th class="w120">회차</th>
+					<th class="w70">요청</th>
+					<th class="w70">사용</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -86,11 +87,21 @@
 					<td>{{ dayjs(item.RegDt).format('YYYY-MM-DD') }}</td>
 					<td>{{ dayjs(item.ExpirDt).format('YYYY-MM-DD') }}</td>
 					<td>
-						<buton
-							class="btn btn-primary btn-sm w40"
-							@click.stop="ShowHide('OrgTurn', true, item.OrgId)"
-							>{{ item.TurnNum }}</buton
-						>
+						<div class="input-group">
+							<buton
+								class="btn btn-primary btn-sm w40"
+								@click.stop="ShowHide('OrgTurn', true, item.OrgId)"
+								>{{ item.TurnNum }}</buton
+							>
+							<span
+								class="input-group-text fs080 w60"
+								:class="{
+									'text-primary': item.TurnUseYn == 'Y',
+									'text-body-tertiary': item.TurnUseYn == 'N',
+								}"
+								>{{ item.TurnUseYn == 'Y' ? 'OPEN' : 'CLOSE' }}</span
+							>
+						</div>
 					</td>
 					<td>{{ item.TurnReqCnt }}</td>
 					<td>{{ item.TurnUseCnt }}</td>

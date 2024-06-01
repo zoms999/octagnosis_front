@@ -1,14 +1,20 @@
 <template>
 	<div class="SrchBox">
 		<div class="row g-1 borderd">
-			<div class="col-2">
+			<div class="col-6">
 				<select class="form-select" v-model="SelectedTurnId">
 					<option
 						v-for="item in OrgTurnList"
 						:key="item.TurnId"
 						:value="item.TurnId"
 					>
-						{{ item.TurnNum }} 회차
+						{{ item.TurnNum }} 회차 /
+						{{
+							item.insDt
+								.substr(0, 8)
+								.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3')
+						}}
+						/ {{ item.TurnConnCd }}
 					</option>
 				</select>
 			</div>
@@ -50,7 +56,9 @@
 					>
 				</div>
 			</div>
-			<div class="col-7 text-end">
+		</div>
+		<div class="row mt-1">
+			<div class="col-12 text-end">
 				<button type="button" class="btn btn-primary" @click="ShowTurnConnCd()">
 					<div class="d-flex">
 						<span class="me-2">회차코드</span>
