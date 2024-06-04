@@ -31,6 +31,7 @@ router.beforeEach((to, from, next) => {
 	}
 });
 </script>
+
 <style scoped>
 .LayoutLeft {
 	position: absolute;

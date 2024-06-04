@@ -65,6 +65,13 @@ MenuList.value = [
 		Src: 'TestMain',
 		ActiveYn: false,
 	},
+	{
+		MenuId: '12',
+		MenuNm: '검사상품',
+		Lvl: 1,
+		Src: 'ProdtMain',
+		ActiveYn: false,
+	},
 ];
 
 /********************************/

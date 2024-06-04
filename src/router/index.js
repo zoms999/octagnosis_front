@@ -12,6 +12,7 @@ import PersonalListView from '@/views/Personal/PersonalListView.vue';
 import PersonalEditView from '@/views/Personal/PersonalEditView.vue';
 import CompyView from '@/views/Compy/CompyView.vue';
 import TestMain from '@/views/Test/TestMainView.vue';
+import ProdtMain from '@/views/Prodt/ProdtMainView.vue';
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -106,6 +107,12 @@ const router = createRouter({
 			path: '/Test/TestMain',
 			name: 'TestMain',
 			component: TestMain,
+			//props: route => ({ persnId: parseInt(route.params.persnId) }),
+		},
+		{
+			path: '/Prodt/ProdtMain',
+			name: 'ProdtMain',
+			component: ProdtMain,
 			//props: route => ({ persnId: parseInt(route.params.persnId) }),
 		},
 	],
