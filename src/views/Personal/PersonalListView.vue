@@ -11,10 +11,13 @@
 					<input
 						type="text"
 						class="form-control"
-						id="SrchStr"
-						placeholder="기관명/대표/담당자"
+						v-model="params.srchStr"
+						placeholder="이름/전화번호/소속기관"
+						@keyup.enter="getPersonalList(1)"
 					/>
-					<button class="btn btn-primary w80">검색</button>
+					<button class="btn btn-primary w80" @click="getPersonalList(1)">
+						검색
+					</button>
 				</div>
 			</div>
 		</div>
@@ -56,7 +59,8 @@
 					<th>아이디</th>
 					<th>이름</th>
 					<th>휴대폰</th>
-					<th>등록자</th>
+					<th>소속기관</th>
+					<th>등록일</th>
 					<th>만기일자</th>
 					<th>검사</th>
 				</tr>
@@ -64,7 +68,7 @@
 			<tbody>
 				<tr
 					v-for="item in PersonalList"
-					:key="item.PersnId"
+					:key="item.persnId"
 					@click="goEditPage('PersonalEdit', item.persnId)"
 					class="Poit"
 				>
@@ -72,7 +76,8 @@
 					<td>{{ item.acuntId }}</td>
 					<td>{{ item.persnNm }}</td>
 					<td>{{ item.phone }}</td>
-					<td>{{ dayjs(item.InsDt).format('YYYY-MM-DD') }}</td>
+					<td>{{ item.compyNm }}</td>
+					<td>{{ dayjs(item.insDt).format('YYYY-MM-DD') }}</td>
 					<td>{{ dayjs(item.expirDt).format('YYYY-MM-DD') }}</td>
 					<td>보기</td>
 				</tr>
@@ -86,7 +91,7 @@
 			:TotCnt="TotCnt"
 			:RowCntInPage="params.paging.rowCntInPage"
 			:PageCntInBlock="params.paging.pageCntInBlock"
-			@Page="GetPersonalList"
+			@Page="getPersonalList"
 		></AppPagination>
 	</template>
 
@@ -145,6 +150,7 @@ const CurPage = ref(1);
 const CurBlock = ref(1);
 
 // Axios	**********************************************
+
 const { response, data, error, loading, execute, execUrl, reqUrl } = useAxios(
 	'',
 	{
@@ -165,17 +171,17 @@ const { response, data, error, loading, execute, execUrl, reqUrl } = useAxios(
 	},
 );
 
-const GetPersonalList = async page => {
+const getPersonalList = async page => {
 	page = typeof no === 'object' && page !== null ? 1 : page;
 	CurBlock.value = Math.ceil(page / params.value.paging.pageCntInBlock);
 	CurPage.value = page;
 	params.value.paging.page = page;
 	params.value.paging.startRow = (page - 1) * params.value.paging.rowCntInPage;
-	console.log('GetPersonalList');
+
 	execUrl('/api/personal/personalList', params.value);
 };
 
-GetPersonalList(1);
+getPersonalList(1);
 
 const show = ref(false);
 const openModal = () => {
