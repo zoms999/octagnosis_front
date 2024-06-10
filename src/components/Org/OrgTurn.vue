@@ -10,6 +10,16 @@
 					v-model="OrgTurn.turnReqCnt"
 				/>
 			</div>
+			<div class="col-12">사용기한</div>
+			<div class="col-12">
+				<VueDatePicker
+					v-model="OrgTurn.validEndDt"
+					locale="ko"
+					:format="formatDate"
+					:enable-time-picker="false"
+				>
+				</VueDatePicker>
+			</div>
 			<div class="col-12">회차 코드</div>
 			<div class="col-12">
 				<div class="input-group">
@@ -90,6 +100,7 @@ const OrgTurn = ref({
 	turnReqCnt: '',
 	turnUseCnt: '0',
 	turnConnCd: '',
+	validEndDt: '',
 	insId: userMngrId,
 	insDt: '',
 	uptId: '',
@@ -199,6 +210,11 @@ const cretOrgTurn = () => {
 		return;
 	}
 
+	OrgTurn.value.validEndDt = formatDate(OrgTurn.value.validEndDt).replace(
+		/-/g,
+		'',
+	);
+
 	Procs.value.cretOrgTurn.loading = true;
 	execUrl(Procs.value.cretOrgTurn.path, OrgTurn.value);
 };
@@ -227,6 +243,22 @@ const validNotBlank = (val, tit, obj) => {
 		return false;
 	}
 	return true;
+};
+
+const formatDate = date => {
+	const year = date.getFullYear();
+	const month = date.getMonth() + 1;
+	const day = date.getDate();
+
+	// 날짜 앞에 0을 붙여야 하는 경우
+	if (month || day < 10) {
+		const zeroDay = ('00' + day).slice(-2);
+		const zeroMonth = ('00' + month).slice(-2);
+
+		return `${year}-${zeroMonth}-${zeroDay}`;
+	} else {
+		return `${year}-${month}-${day}`;
+	}
 };
 </script>
 
