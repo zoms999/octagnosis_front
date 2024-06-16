@@ -72,6 +72,13 @@ MenuList.value = [
 		Src: 'ProdtMain',
 		ActiveYn: false,
 	},
+	{
+		MenuId: '13',
+		MenuNm: '결제관리',
+		Lvl: 1,
+		Src: 'PayMent',
+		ActiveYn: false,
+	},
 ];
 
 /********************************/
