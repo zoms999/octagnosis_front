@@ -104,6 +104,8 @@
 
 <script setup>
 import { onBeforeMount, onMounted, ref } from 'vue';
+import { useAlert } from '@/hooks/useAlert';
+import { useAxios } from '@/hooks/useAxios';
 
 import MultiQuestItemA from '@/components/Test/QuestPage/MultiQuestItemA.vue';
 import OneQuestItemA from '@/components/Test/QuestPage/OneQuestItemA.vue';
@@ -133,8 +135,6 @@ onMounted(() => {});
 // Model / Data *****************************
 
 const { vAlert, vSuccess } = useAlert();
-import { useAlert } from '@/hooks/useAlert';
-import { useAxios } from '@/hooks/useAxios';
 
 const TestList = ref([]);
 const QuestPage = ref({});
