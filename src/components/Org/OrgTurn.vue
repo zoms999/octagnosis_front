@@ -96,6 +96,7 @@ const OrgTurn = ref({
 	orgId: Props.OrgId,
 	turnId: '',
 	useYn: 'Y',
+	prodtId: '6',
 	turnNum: '1',
 	turnReqCnt: '',
 	turnUseCnt: '0',
