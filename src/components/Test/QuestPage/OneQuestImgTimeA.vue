@@ -27,7 +27,7 @@
 				</div>
 
 				<!-- 이미지 -->
-				<div class="imgs d-flex flex-wrap justify-content-center">
+				<div class="imgs d-flex flex-wrap">
 					<div
 						class="imgBox"
 						v-for="questImg in getQuestImgList(item.questId)"
