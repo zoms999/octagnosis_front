@@ -22,7 +22,7 @@
 						:key="questImg.imgId"
 						:style="`width:${Math.round(100 / item.imgColCnt, 2) - 0.2}% !important`"
 					>
-						<img :src="`/public/img/QuestImg/${questImg.imgNm}`" class="img" />
+						<img :src="`${imageSrc}/QuestImg/${questImg.imgNm}`" class="img" />
 					</div>
 				</div>
 				<div class="quest2">
@@ -52,6 +52,7 @@
 
 <script setup>
 // Props / Emit  ****************************
+import { computed } from 'vue';
 
 var QuestPage = defineModel('QuestPage');
 var QuestList = defineModel('QuestList');
@@ -59,6 +60,11 @@ var QuestItemList = defineModel('QuestItemList');
 var QuestImgList = defineModel('QuestImgList');
 
 // Hook  ************************************
+const imageSrc = computed(() => {
+	const basePath = import.meta.env.VITE_IMG_BASE_PATH;
+	console.log('basePath', basePath);
+	return `${basePath}`;
+});
 
 // Model / Data  ****************************
 
