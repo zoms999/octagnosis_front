@@ -35,7 +35,7 @@
 						:style="`width:${Math.round(100 / item.imgColCnt, 2) - 0.5}% !important`"
 						:class="{ imgHide: questImg.showYn == false }"
 					>
-						<img :src="`/public/img/QuestImg/${questImg.imgNm}`" class="img" />
+						<img :src="`${imageSrc}/QuestImg/${questImg.imgNm}`" class="img" />
 					</div>
 				</div>
 				<div class="quest2">
@@ -69,7 +69,7 @@
 
 <script setup>
 import { onBeforeMount, onMounted, ref } from 'vue';
-
+import { computed } from 'vue';
 // Props / Emit  ****************************
 
 var QuestPage = defineModel('QuestPage');
@@ -78,6 +78,11 @@ var QuestItemList = defineModel('QuestItemList');
 var QuestImgList = defineModel('QuestImgList');
 
 // Hook  ************************************
+const imageSrc = computed(() => {
+	const basePath = import.meta.env.VITE_IMG_BASE_PATH;
+	console.log('basePath', basePath);
+	return `${basePath}`;
+});
 
 onBeforeMount(() => {
 	WaitSec.value = QuestList.value[0].waitSec;

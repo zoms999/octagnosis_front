@@ -224,7 +224,7 @@ watch(
 	() => QuestImg.value.imgNm,
 	newValue => {
 		var ImgNm = newValue == '' ? 'none.png' : newValue;
-		ImgPath.value = `/public/img/QuestImg/${ImgNm}`;
+		ImgPath.value = `${import.meta.env.VITE_IMG_BASE_PATH}/QuestImg/${ImgNm}`;
 	},
 );
 
