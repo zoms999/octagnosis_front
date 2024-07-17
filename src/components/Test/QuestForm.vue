@@ -50,7 +50,6 @@
 						v-model="Quest.questType"
 					>
 						<option value="C00501" selected="selected">이미지</option>
-						<option value="C00502">재능</option>
 						<option value="C00503">사고력</option>
 						<option value="C00504">성향</option>
 					</select>
@@ -64,7 +63,7 @@
 					>
 						<option value=""></option>
 						<option
-							v-for="item in QuestAttrList"
+							v-for="item in QuestAttrList1"
 							:key="item.questAttrCd"
 							:value="item.questAttrCd"
 							:selected="item.questAttrCd == Quest.questAttrCd1"
@@ -84,7 +83,7 @@
 					>
 						<option value=""></option>
 						<option
-							v-for="item in QuestAttrList"
+							v-for="item in QuestAttrList2"
 							:key="item.questAttrCd"
 							:value="item.questAttrCd"
 							:selected="item.questAttrCd == Quest.questAttrCd2"
@@ -365,6 +364,9 @@ const QuestAttrList = ref([]);
 const QuestItemList = ref([]);
 const QuestImgList = ref([]);
 
+const QuestAttrList1 = ref([]);
+const QuestAttrList2 = ref([]);
+
 // Html ref  ********************************
 
 const txtQuestNo = ref(null);
@@ -422,6 +424,14 @@ const { data, execUrl, reqUrl } = useAxios(
 					QuestAttrList.value = data.value.QuestAttrList;
 					QuestItemList.value = data.value.QuestItemList;
 					QuestImgList.value = data.value.QuestImgList;
+
+					QuestAttrList1.value = QuestAttrList.value.filter(
+						o => o.questType != 'C00502',
+					);
+					QuestAttrList2.value = QuestAttrList.value.filter(
+						o => o.questType == 'C00502',
+					);
+
 					break;
 
 				case Procs.value.getQuestItemList.path:

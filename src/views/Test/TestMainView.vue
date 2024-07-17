@@ -70,7 +70,7 @@
 					<th>내용</th>
 					<th class="w100">문항유형</th>
 					<th class="w100">문항속성1</th>
-					<th class="w100">문항속성2</th>
+					<th class="w120">문항속성2</th>
 					<th class="w50">-</th>
 				</tr>
 			</thead>
@@ -118,7 +118,7 @@
 							<div class="w100">
 								{{ item1.questAttrCd1Nm }}
 							</div>
-							<div class="w100">
+							<div class="w120">
 								{{ item1.questAttrCd2Nm }}
 							</div>
 							<div class="w50">
