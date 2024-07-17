@@ -22,7 +22,7 @@
 						<option value="C00702">이미지</option>
 					</select>
 				</div>
-				<div class="col-3 lbl">가중치</div>
+				<div class="col-3 lbl">점수</div>
 				<div class="col-2">
 					<input
 						type="text"

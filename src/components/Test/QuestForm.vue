@@ -75,7 +75,7 @@
 						</option>
 					</select>
 				</div>
-				<div class="col-1 lbl"><i></i>문항속성2</div>
+				<div class="col-1 lbl">문항속성2</div>
 				<div class="col-3">
 					<select
 						class="form-select"
@@ -226,7 +226,7 @@
 						<th class="w50">순번</th>
 						<th class="">보기</th>
 						<th class="w80">보기유형</th>
-						<th class="w60">가중치</th>
+						<th class="w60">점수</th>
 						<th class="w60">-</th>
 					</tr>
 				</thead>
@@ -543,7 +543,6 @@ const saveQuest = () => {
 	if (!validNotBlank(Quest.value.questNo, '문항번호', txtQuestNo.value)) return;
 	if (!validNotSelect(Quest.value.questPageId, '검사지', selQuestPageId.value))
 		return;
-	/*
 	if (!validNotSelect(Quest.value.questType, '문항유형', selQuestType.value))
 		return;
 	if (
@@ -554,6 +553,7 @@ const saveQuest = () => {
 		)
 	)
 		return;
+	/*
 	if (
 		!validNotSelect(
 			Quest.value.questAttrCd2,
