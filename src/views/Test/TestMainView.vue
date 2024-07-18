@@ -69,8 +69,8 @@
 					<th class="w50">번호</th>
 					<th>내용</th>
 					<th class="w100">문항유형</th>
-					<th class="w100">문항속성1</th>
-					<th class="w120">문항속성2</th>
+					<th class="w100">문항유형속성</th>
+					<th class="w120">재능속성</th>
 					<th class="w50">-</th>
 				</tr>
 			</thead>

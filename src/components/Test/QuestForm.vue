@@ -43,7 +43,7 @@
 			</div>
 			<div class="row">
 				<div class="col-1 lbl"><i></i>문항유형</div>
-				<div class="col-3">
+				<div class="col-2">
 					<select
 						class="form-select"
 						ref="selQuestType"
@@ -54,7 +54,7 @@
 						<option value="C00504">성향</option>
 					</select>
 				</div>
-				<div class="col-1 lbl"><i></i>문항속성1</div>
+				<div class="col-2 lbl"><i></i>문항유형속성</div>
 				<div class="col-3">
 					<select
 						class="form-select"
@@ -74,7 +74,7 @@
 						</option>
 					</select>
 				</div>
-				<div class="col-1 lbl">문항속성2</div>
+				<div class="col-1 lbl">재능속성</div>
 				<div class="col-3">
 					<select
 						class="form-select"
