@@ -1,6 +1,6 @@
 <template>
 	<div class="TitPage">
-		<div>기관 <span>></span><span> 수정</span></div>
+		<div>계정관리 > 기관 <span>></span><span> 수정</span></div>
 		<div></div>
 	</div>
 	<OrgForm

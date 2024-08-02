@@ -1,55 +1,56 @@
 <template>
 	<div class="TitPage">
-		<div>계정관리 > 기관</div>
+		<div>검사결과 > 기관용 > 결과보기</div>
 		<div></div>
+	</div>
+	<div class="ActionBtn">
+		<div></div>
+		<div>
+			<!--
+			<button
+				type="button"
+				class="btn btn-primary"
+				@click="submitForm"
+				:disabled="editLoading"
+			>
+				<template v-if="editLoading">
+					<span
+						class="spinner-grow spinner-grow-sm"
+						role="status"
+						aria-hidden="true"
+					></span>
+					<span class="visually-hidden">Loading...</span>
+				</template>
+				<template v-else> 수정 </template>
+			</button>
+			-->
+			<button type="button" class="btn btn-primary ms-2" @click="goListPage">
+				목록
+			</button>
+		</div>
 	</div>
 	<div class="SrchBox">
 		<div class="row">
-			<div class="col-8"></div>
-			<div class="col-4 text-end">
-				<div class="input-group w100p">
-					<input
-						type="text"
-						class="form-control"
-						v-model="Parm.srchStr"
-						placeholder="기관명/대표/담당자(정)/회차코드"
-						@keyup.enter="getOrgList(1)"
-					/>
-					<button class="btn btn-primary w80" @click="getOrgList(1)">
-						<template v-if="loading">
-							<span
-								class="spinner-grow spinner-grow-sm"
-								role="status"
-								aria-hidden="true"
-							></span>
-							<span class="visually-hidden">Loading...</span>
-						</template>
-						<template v-else> 검색 </template>
-					</button>
-				</div>
+			<div class="col-12">
+				<ul class="nav nav-tabs">
+					<li
+						class="nav-item mx-1"
+						v-for="(item, idx) in RsltItems"
+						:key="item.id"
+					>
+						<a
+							class="nav-link"
+							:class="{ active: item.activeYn == 'Y' }"
+							aria-current="page"
+							href="#"
+							@click="goTab(item)"
+							>{{ item.tit }}</a
+						>
+					</li>
+				</ul>
 			</div>
 		</div>
 	</div>
-	<div class="FunBox">
-		<div>
-			<div class="w100">Total : {{ TotCnt }}</div>
-			<div>
-				<select
-					class="form-select"
-					v-model="Parm.paging.rowCntInPage"
-					@change="chageRowCntInPage"
-				>
-					<option value="5">5 줄</option>
-					<option value="10" selected="selected">10 줄</option>
-					<option value="20">20 줄</option>
-					<option value="30">30 줄</option>
-					<option value="50">50 줄</option>
-				</select>
-			</div>
-		</div>
-		<button class="btn btn-primary" @click="Go('OrgCret', {})">추가</button>
-	</div>
-
 	<AppError v-if="error" :message="error.message"></AppError>
 	<template v-else>
 		<table
@@ -109,40 +110,7 @@
 			</tbody>
 			<tfoot></tfoot>
 		</table>
-		<div class="mt-3">
-			<AppPagination
-				:CurPage="CurPage"
-				:CurBlock="CurBlock"
-				:TotCnt="TotCnt"
-				:RowCntInPage="Parm.paging.rowCntInPage"
-				:PageCntInBlock="Parm.paging.pageCntInBlock"
-				@Page="getOrgList"
-			></AppPagination>
-		</div>
 	</template>
-
-	<!--	기관회차	------------------------------->
-	<Teleport to="#modal">
-		<AppModal
-			v-model="Modal.OrgTurn"
-			title="기관 회차"
-			width="1100"
-			:footer="false"
-		>
-			<template #default>
-				<OrgTurnList :OrgId="OrgId"></OrgTurnList>
-			</template>
-			<template #actions>
-				<button
-					type="button"
-					class="btn btn-secondary"
-					@click="ShowHide('OrgTurn', false)"
-				>
-					닫기
-				</button>
-			</template>
-		</AppModal>
-	</Teleport>
 </template>
 
 <script setup>
@@ -150,8 +118,6 @@ import { useAxios } from '@/hooks/useAxios';
 import { ref, inject } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAlert } from '@/hooks/useAlert';
-
-import OrgTurnList from '@/components/Org/OrgTurnList.vue';
 
 const { vAlert, vSuccess } = useAlert();
 const dayjs = inject('dayjs');
@@ -161,6 +127,20 @@ const dayjs = inject('dayjs');
 // Model / Data *****************************
 
 const OrgId = ref(0);
+
+const RsltItems = [
+	{ id: '1', cate1: 'Y', cate2: 'Y', activeYn: 'Y', tit: '개인정보' },
+	{ id: '2', cate1: 'Y', cate2: 'Y', activeYn: 'N', tit: '성향진단' },
+	{ id: '3', cate1: 'Y', cate2: 'Y', activeYn: 'N', tit: '성향분석' },
+	{ id: '4', cate1: 'Y', cate2: 'Y', activeYn: 'N', tit: '사고력' },
+	{ id: '5', cate1: 'Y', cate2: 'Y', activeYn: 'N', tit: '성향적합직업학과' },
+	{ id: '6', cate1: 'Y', cate2: 'Y', activeYn: 'N', tit: '역량진단' },
+	{ id: '7', cate1: 'Y', cate2: 'Y', activeYn: 'N', tit: '역량적합직업학과' },
+	{ id: '8', cate1: 'Y', cate2: 'Y', activeYn: 'N', tit: '학습' },
+	{ id: '9', cate1: 'Y', cate2: 'Y', activeYn: 'N', tit: '교과목' },
+	{ id: '10', cate1: 'Y', cate2: 'Y', activeYn: 'N', tit: '직무' },
+	{ id: '11', cate1: 'Y', cate2: 'Y', activeYn: 'N', tit: '선호도' },
+];
 
 // Axios	***********************************
 
@@ -220,11 +200,21 @@ const Go = (nm, q) => {
 
 // Method	************************************
 
+const goTab = item => {
+	RsltItems.forEach(o => {
+		if (o.id == item.id) {
+			o.activeYn = 'Y';
+			// 탭변경
+		} else {
+			o.activeYn = 'N';
+		}
+	});
+};
+
 // List	************************
 
 const Parm = ref({
 	srchStr: '',
-	orgId: '',
 	paging: {
 		page: 1,
 		block: 1,
