@@ -18,7 +18,7 @@ export default defineConfig({
 			dts: true,
 		}),
 	],
-	mode: 'production',
+	mode: 'development',
 	resolve: {
 		alias: {
 			'@': fileURLToPath(new URL('./src', import.meta.url)),

@@ -1,129 +1,138 @@
 <template>
 	<div class="TitPage">
-		<div>검사결과 > 기관용</div>
-		<div></div>
-	</div>
-	<div class="SrchBox">
-		<div class="row">
-			<div class="col-9">
-				<div class="d-flex justify-content-start">
-					<div class="minw100">
-						<h5 class="pt-1 ps-2 text text-primary">{{ Org.CompyNm }}</h5>
-					</div>
-					<div class="ms-3">
-						<select class="form-select w220" v-model="SelectedTurnId">
-							<option
-								v-for="item in OrgTurnList"
-								:key="item.TurnId"
-								:value="item.TurnId"
-							>
-								{{ item.TurnNum }} 회차 /
-								{{
-									item.insDt
-										.substr(0, 8)
-										.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3')
-								}}
-							</option>
-						</select>
-					</div>
-				</div>
-			</div>
-			<div class="col-3 text-end">
-				<div class="input-group w100p">
-					<input
-						type="text"
-						class="form-control"
-						ref="txtSrchStr"
-						v-model="Parm.srchStr"
-						placeholder="기관명"
-						@keyup.enter="getOrgList()"
-					/>
-					<button class="btn btn-primary w80" @click="getOrgList()">
-						<template v-if="loading">
-							<span
-								class="spinner-grow spinner-grow-sm"
-								role="status"
-								aria-hidden="true"
-							></span>
-							<span class="visually-hidden">Loading...</span>
-						</template>
-						<template v-else> 검색 </template>
-					</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="FunBox">
 		<div>
-			<div class="w100">Total : {{ TotCnt }}</div>
-			<div>
-				<select
-					class="form-select"
-					v-model="Parm.paging.rowCntInPage"
-					@change="chageRowCntInPage"
-				>
-					<option value="5">5 줄</option>
-					<option value="10" selected="selected">10 줄</option>
-					<option value="20">20 줄</option>
-					<option value="30">30 줄</option>
-					<option value="50">50 줄</option>
-				</select>
-			</div>
+			검사결과 > 기관용 <span>{{ pnlPath }}</span>
 		</div>
+		<div></div>
 	</div>
 
 	<AppError v-if="error" :message="error.message"></AppError>
 	<template v-else>
-		<table
-			class="table table-bordered Tbl1"
-			id="dataTable"
-			width="100%"
-			cellspacing="0"
-		>
-			<thead>
-				<tr>
-					<th class="w80">No</th>
-					<th>이름</th>
-					<th>아이디</th>
-					<th>연락처</th>
-					<th class="w180">시작일자</th>
-					<th class="w180">완료일자</th>
-					<th class="w160">결과</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-for="(item, idx) in TestRsltList" :key="item.orgId" class="Poit">
-					<td>{{ VirNum - idx }}</td>
-					<td>{{ item.PersnNm }}</td>
-					<td>{{ item.AcuntId }}</td>
-					<td>{{ item.Phone }}</td>
-					<td>{{ dayjs(item.StartDt).format('YYYY-MM-DD') }}</td>
-					<td>{{ dayjs(item.EndDt).format('YYYY-MM-DD') }}</td>
-					<td>
-						<div v-if="item.DoneYn == 'Y'">
-							<buton
-								class="btn btn-primary btn-sm w80"
-								@click.stop="
-									Go('TestRsltView', { AnsPrgrsId: item.AnsPrgrsId })
-								"
-								>결과보기</buton
-							>
+		<div v-if="Pnl.RsltList.show">
+			<div class="SrchBox">
+				<div class="row">
+					<div class="col-9">
+						<div class="d-flex justify-content-start">
+							<div class="minw100">
+								<h5 class="pt-1 ps-2 text text-primary">{{ Org.CompyNm }}</h5>
+							</div>
+							<div class="ms-3">
+								<select class="form-select w220" v-model="SelectedTurnId">
+									<option
+										v-for="item in OrgTurnList"
+										:key="item.TurnId"
+										:value="item.TurnId"
+									>
+										{{ item.TurnNum }} 회차 /
+										{{
+											item.insDt
+												.substr(0, 8)
+												.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3')
+										}}
+									</option>
+								</select>
+							</div>
 						</div>
-						<div v-else>진행중</div>
-					</td>
-				</tr>
-			</tbody>
-			<tfoot></tfoot>
-		</table>
-		<div class="mt-3">
-			<AppPagination
-				:CurPage="CurPage"
-				:CurBlock="CurBlock"
-				:TotCnt="TotCnt"
-				:RowCntInPage="Parm.paging.rowCntInPage"
-				:PageCntInBlock="Parm.paging.pageCntInBlock"
-				@Page="getTestRsltList"
-			></AppPagination>
+					</div>
+					<div class="col-3 text-end">
+						<div class="input-group w100p">
+							<input
+								type="text"
+								class="form-control"
+								ref="txtSrchStr"
+								v-model="Parm.srchStr"
+								placeholder="기관명"
+								@keyup.enter="getOrgList()"
+							/>
+							<button class="btn btn-primary w80" @click="getOrgList()">
+								<template v-if="loading">
+									<span
+										class="spinner-grow spinner-grow-sm"
+										role="status"
+										aria-hidden="true"
+									></span>
+									<span class="visually-hidden">Loading...</span>
+								</template>
+								<template v-else> 검색 </template>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="FunBox">
+				<div>
+					<div class="w100">Total : {{ TotCnt }}</div>
+					<div>
+						<select
+							class="form-select"
+							v-model="Parm.paging.rowCntInPage"
+							@change="chageRowCntInPage"
+						>
+							<option value="5">5 줄</option>
+							<option value="10" selected="selected">10 줄</option>
+							<option value="20">20 줄</option>
+							<option value="30">30 줄</option>
+							<option value="50">50 줄</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<table
+				class="table table-bordered Tbl1"
+				id="dataTable"
+				width="100%"
+				cellspacing="0"
+			>
+				<thead>
+					<tr>
+						<th class="w80">No</th>
+						<th>이름</th>
+						<th>아이디</th>
+						<th>연락처</th>
+						<th class="w180">시작일자</th>
+						<th class="w180">완료일자</th>
+						<th class="w160">결과</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr
+						v-for="(item, idx) in TestRsltList"
+						:key="item.orgId"
+						class="Poit"
+					>
+						<td>{{ VirNum - idx }}</td>
+						<td>{{ item.PersnNm }}</td>
+						<td>{{ item.AcuntId }}</td>
+						<td>{{ item.Phone }}</td>
+						<td>{{ dayjs(item.StartDt).format('YYYY-MM-DD') }}</td>
+						<td>{{ dayjs(item.EndDt).format('YYYY-MM-DD') }}</td>
+						<td>
+							<div v-if="item.DoneYn == 'Y'">
+								<buton
+									class="btn btn-primary btn-sm w80"
+									@click.stop="showPnl('RsltView', item)"
+									>결과보기</buton
+								>
+							</div>
+							<div v-else>진행중</div>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot></tfoot>
+			</table>
+			<div class="mt-3">
+				<AppPagination
+					:CurPage="CurPage"
+					:CurBlock="CurBlock"
+					:TotCnt="TotCnt"
+					:RowCntInPage="Parm.paging.rowCntInPage"
+					:PageCntInBlock="Parm.paging.pageCntInBlock"
+					@Page="getTestRsltList"
+				></AppPagination>
+			</div>
+		</div>
+		<div v-if="Pnl.RsltView.show">
+			<RsltMain :ListItem="ListItem" @showPnl="showPnl"></RsltMain>
 		</div>
 	</template>
 
@@ -154,10 +163,10 @@
 <script setup>
 import { useAxios } from '@/hooks/useAxios';
 import { ref, inject, watch } from 'vue';
-import { useRouter } from 'vue-router';
 import { useAlert } from '@/hooks/useAlert';
 
 import OrgListPop from '@/components/TestRslt/OrgList.vue';
+import RsltMain from '@/components/TestRslt/RsltMain.vue';
 
 // Props / Emit  ****************************
 
@@ -167,7 +176,8 @@ import OrgListPop from '@/components/TestRslt/OrgList.vue';
 
 const { vAlert, vSuccess } = useAlert();
 const dayjs = inject('dayjs');
-const router = useRouter();
+const pnlPath = ref('');
+const ListItem = ref('');
 
 const Parm = ref({
 	srchStr: '',
@@ -182,6 +192,11 @@ const Parm = ref({
 		sort: 'createdAt',
 		order: 'desc',
 	},
+});
+
+const Pnl = ref({
+	RsltList: { show: true },
+	RsltView: { show: false },
 });
 
 const TotCnt = ref(0);
@@ -293,10 +308,23 @@ watch(
 
 // Route	***********************************
 
-const Go = (nm, q) => {
+const showPnl = (pnlNm, item) => {
 	//router.push({ name: nm, params: p });
-	console.log(('q : ', q));
-	router.push({ name: nm, query: q });
+	switch (pnlNm) {
+		case 'RsltList':
+			Pnl.value.RsltList.show = true;
+			Pnl.value.RsltView.show = false;
+			pnlPath.value = '';
+
+			break;
+		case 'RsltView':
+			Pnl.value.RsltList.show = false;
+			Pnl.value.RsltView.show = true;
+			pnlPath.value = ' > 결과보기';
+
+			ListItem.value = item;
+			break;
+	}
 };
 
 // Method	************************************

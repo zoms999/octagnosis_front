@@ -224,7 +224,6 @@ const Go = (nm, q) => {
 
 const Parm = ref({
 	srchStr: '',
-	orgId: '',
 	paging: {
 		page: 1,
 		block: 1,
