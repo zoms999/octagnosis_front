@@ -127,7 +127,7 @@ const Parm = ref({
 });
 
 const RsltItems = ref([
-	{ id: '1', cate1: 'Y', cate2: 'Y', activeYn: 'N', tit: '개인정보' },
+	{ id: '1', cate1: 'Y', cate2: 'Y', activeYn: 'Y', tit: '개인정보' },
 	{ id: '2', cate1: 'Y', cate2: 'Y', activeYn: 'N', tit: '성향진단' },
 	{ id: '3', cate1: 'Y', cate2: 'Y', activeYn: 'N', tit: '성향분석' },
 	{ id: '4', cate1: 'Y', cate2: 'Y', activeYn: 'N', tit: '사고력' },
@@ -135,7 +135,7 @@ const RsltItems = ref([
 	{ id: '6', cate1: 'Y', cate2: 'Y', activeYn: 'N', tit: '역량진단' },
 	{ id: '7', cate1: 'Y', cate2: 'Y', activeYn: 'N', tit: '역량적합직업학과' },
 	{ id: '8', cate1: 'Y', cate2: 'Y', activeYn: 'N', tit: '학습' },
-	{ id: '9', cate1: 'Y', cate2: 'Y', activeYn: 'Y', tit: '교과목' },
+	{ id: '9', cate1: 'Y', cate2: 'Y', activeYn: 'N', tit: '교과목' },
 	{ id: '10', cate1: 'Y', cate2: 'Y', activeYn: 'N', tit: '직무' },
 	{ id: '11', cate1: 'Y', cate2: 'Y', activeYn: 'N', tit: '선호도' },
 ]);
