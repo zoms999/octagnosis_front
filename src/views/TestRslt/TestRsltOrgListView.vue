@@ -89,9 +89,10 @@
 						<th>이름</th>
 						<th>아이디</th>
 						<th>연락처</th>
+						<th>검사상품</th>
 						<th class="w180">시작일자</th>
 						<th class="w180">완료일자</th>
-						<th class="w160">결과</th>
+						<th class="w150">결과</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -104,8 +105,9 @@
 						<td>{{ item.PersnNm }}</td>
 						<td>{{ item.AcuntId }}</td>
 						<td>{{ item.Phone }}</td>
-						<td>{{ dayjs(item.StartDt).format('YYYY-MM-DD') }}</td>
-						<td>{{ dayjs(item.EndDt).format('YYYY-MM-DD') }}</td>
+						<td>{{ item.ProdtNm }}</td>
+						<td>{{ getDateFormat(item.StartDt) }}</td>
+						<td>{{ getDateFormat(item.EndDt) }}</td>
 						<td>
 							<div v-if="item.DoneYn == 'Y'">
 								<buton
@@ -361,6 +363,10 @@ const setOrg = item => {
 	Parm.value.orgId = item.OrgId;
 
 	execUrl(Procs.value.getOrgTurnList.path, Parm.value);
+};
+
+const getDateFormat = dt => {
+	return dt == '' ? '-' : dayjs(dt).format('YYYY-MM-DD');
 };
 
 // Etc  **************************************

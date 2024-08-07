@@ -14,7 +14,8 @@ import CompyView from '@/views/Compy/CompyView.vue';
 import TestMain from '@/views/Test/TestMainView.vue';
 import ProdtMain from '@/views/Prodt/ProdtMainView.vue';
 import PayMent from '@/views/PayMent/PayMent.vue';
-import TestRsltList from '@/views/TestRslt/TestRsltListView.vue';
+import TestRsltOrgList from '@/views/TestRslt/TestRsltOrgListView.vue';
+import TestRsltPayList from '@/views/TestRslt/TestRsltPayListView.vue';
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -124,9 +125,15 @@ const router = createRouter({
 			//props: route => ({ persnId: parseInt(route.params.persnId) }),
 		},
 		{
-			path: '/TestRslt/TestRsltList',
-			name: 'TestRsltList',
-			component: TestRsltList,
+			path: '/TestRslt/TestRsltOrgList',
+			name: 'TestRsltOrgList',
+			component: TestRsltOrgList,
+			// props: route => ({ id: parseInt(route.params.id) }),
+		},
+		{
+			path: '/TestRslt/TestRsltPayList',
+			name: 'TestRsltPayList',
+			component: TestRsltPayList,
 			// props: route => ({ id: parseInt(route.params.id) }),
 		},
 	],
