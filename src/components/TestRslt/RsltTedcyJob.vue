@@ -21,7 +21,7 @@
 					<div class="cont-wrap" v-for="(item, idx) in Rslt2" :key="idx">
 						<div class="tit-wrap">
 							<div class="tit-area">
-								<p class="label v1">추천 1</p>
+								<p class="label v1">추천 {{ idx+1 }}</p>
 								<p class="tit v4">{{ item.JobNm }}</p>
 							</div>
 						</div>
