@@ -92,7 +92,7 @@
 						<th>검사상품</th>
 						<th class="w180">시작일자</th>
 						<th class="w180">완료일자</th>
-						<th class="w150">결과</th>
+						<th class="w250">결과</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -115,6 +115,11 @@
 									@click.stop="showPnl('RsltView', item)"
 									>결과보기</buton
 								>
+								<buton
+									class="btn btn-primary btn-sm w80 ms-2"
+									@click.stop="showPnl('RsltAll', item)"
+									>Down</buton
+								>
 							</div>
 							<div v-else>진행중</div>
 						</td>
@@ -135,6 +140,9 @@
 		</div>
 		<div v-if="Pnl.RsltView.show">
 			<RsltMain :ListItem="ListItem" @showPnl="showPnl"></RsltMain>
+		</div>
+		<div v-if="Pnl.RsltAll.show">
+			<RsltAll :ListItem="ListItem" @showPnl="showPnl"></RsltAll>
 		</div>
 	</template>
 
@@ -169,6 +177,7 @@ import { useAlert } from '@/hooks/useAlert';
 
 import OrgListPop from '@/components/TestRslt/OrgList.vue';
 import RsltMain from '@/components/TestRslt/RsltMain.vue';
+import RsltAll from '@/components/TestRslt/RsltAll.vue';
 
 // Props / Emit  ****************************
 
@@ -199,6 +208,7 @@ const Parm = ref({
 const Pnl = ref({
 	RsltList: { show: true },
 	RsltView: { show: false },
+	RsltAll: { show: false },
 });
 
 const TotCnt = ref(0);
@@ -316,12 +326,23 @@ const showPnl = (pnlNm, item) => {
 		case 'RsltList':
 			Pnl.value.RsltList.show = true;
 			Pnl.value.RsltView.show = false;
+			Pnl.value.RsltAll.show = false;
 			pnlPath.value = '';
 
 			break;
 		case 'RsltView':
 			Pnl.value.RsltList.show = false;
 			Pnl.value.RsltView.show = true;
+			Pnl.value.RsltAll.show = false;
+			pnlPath.value = ' > 결과보기';
+
+			ListItem.value = item;
+			break;
+
+		case 'RsltAll':
+			Pnl.value.RsltList.show = false;
+			Pnl.value.RsltView.show = false;
+			Pnl.value.RsltAll.show = true;
 			pnlPath.value = ' > 결과보기';
 
 			ListItem.value = item;
