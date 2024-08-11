@@ -336,16 +336,37 @@ const formattedRegDt = computed(() => {
 	}
 });
 
-const formattedBirthDate = computed(() => {
-	// Check if personal.RegDt is defined and not empty
-	if (props.personal && props.personal.BirthDate) {
-		const birthDate = props.personal.BirthDate;
-		// Format the date as 'YYYY-MM-DD'
-		return `${birthDate.substring(0, 4)}-${birthDate.substring(4, 6)}-${birthDate.substring(6, 8)}`;
-	} else {
-		return '';
-	}
+const formattedBirthDate = computed({
+	get() {
+		if (props.personal && props.personal.BirthDate) {
+			const birthDateStr = props.personal.BirthDate;
+			const year = birthDateStr.substring(0, 4);
+			const month = birthDateStr.substring(4, 6);
+			const day = birthDateStr.substring(6, 8);
+			return new Date(`${year}-${month}-${day}`);
+		} else {
+			return null;
+		}
+	},
+	set(newDate) {
+		if (newDate instanceof Date && !isNaN(newDate)) {
+			const year = newDate.getFullYear();
+			const month = ('0' + (newDate.getMonth() + 1)).slice(-2);
+			const day = ('0' + newDate.getDate()).slice(-2);
+			props.personal.BirthDate = `${year}${month}${day}`;
+		} else {
+			props.personal.BirthDate = '';
+		}
+	},
 });
+
+const formatDate = date => {
+	const year = date.getFullYear();
+	const month = ('0' + (date.getMonth() + 1)).slice(-2);
+	const day = ('0' + date.getDate()).slice(-2);
+
+	return `${year}-${month}-${day}`;
+};
 
 watch(
 	() => props.personal?.ExpirDt,
@@ -362,21 +383,21 @@ watch(
 	},
 );
 
-const formatDate = date => {
-	const year = date.getFullYear();
-	const month = date.getMonth() + 1;
-	const day = date.getDate();
+// const formatDate = date => {
+// 	const year = date.getFullYear();
+// 	const month = date.getMonth() + 1;
+// 	const day = date.getDate();
 
-	// 날짜 앞에 0을 붙여야 하는 경우
-	if (month || day < 10) {
-		const zeroDay = ('00' + day).slice(-2);
-		const zeroMonth = ('00' + month).slice(-2);
+// 	// 날짜 앞에 0을 붙여야 하는 경우
+// 	if (month || day < 10) {
+// 		const zeroDay = ('00' + day).slice(-2);
+// 		const zeroMonth = ('00' + month).slice(-2);
 
-		return `${year}-${zeroMonth}-${zeroDay}`;
-	} else {
-		return `${year}-${month}-${day}`;
-	}
-};
+// 		return `${year}-${zeroMonth}-${zeroDay}`;
+// 	} else {
+// 		return `${year}-${month}-${day}`;
+// 	}
+// };
 
 const showPassword = ref(false);
 const passwordFieldType = ref('password');
