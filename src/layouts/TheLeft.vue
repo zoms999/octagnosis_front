@@ -54,7 +54,7 @@ MenuList.value = [
 	{ MenuId: '4', MenuNm: '계정관리', Lvl: 1, Src: '', ActiveYn: false },
 	{ MenuId: '5', MenuNm: '기관', Lvl: 2, Src: 'OrgList', ActiveYn: false },
 	{ MenuId: '6', MenuNm: '개인', Lvl: 2, Src: 'PersonalList', ActiveYn: false },
-	{ MenuId: '7', MenuNm: '문의글', Lvl: 1, Src: '', ActiveYn: false },
+	/*{ MenuId: '7', MenuNm: '문의글', Lvl: 1, Src: '', ActiveYn: false }, */
 	{ MenuId: '8', MenuNm: '검사결과', Lvl: 1, Src: '', ActiveYn: false },
 	{
 		MenuId: '9',

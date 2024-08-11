@@ -67,7 +67,91 @@
 	</div>
 </template>
 
-<script setup></script>
+<script setup>
+import { useAxios } from '@/hooks/useAxios';
+import { ref, onMounted } from 'vue';
+import { useAlert } from '@/hooks/useAlert';
+
+// Props / Emit  ****************************
+
+// Hook	 *************************************
+
+onMounted(() => {
+	getDashBoard;
+});
+
+// Model / Data *****************************
+
+const { vAlert, vSuccess } = useAlert();
+
+const Parm = ref({
+	srchStr: '',
+});
+
+// Html ref  ********************************
+
+// Axios / Route  ***************************
+
+const Procs = ref({
+	getDashBoard: { path: '/api/Test/getDashBoard', loading: false },
+});
+
+const { data, execUrl, reqUrl } = useAxios(
+	'',
+	{ method: 'post' },
+	{
+		immediate: false,
+		onSuccess: () => {
+			switch (reqUrl.value) {
+				case Procs.value.getDashBoard.path:
+					Procs.value.getDashBoard.loading = false;
+					//OrgList.value = data.value.OrgList;
+
+					break;
+			}
+		},
+		onError: err => {
+			vAlert(err.message);
+			// Procs의 모든 속성에 대해 반복문을 실행하여 loading 값을 true로 변경
+			for (const key in Procs.value) {
+				if (Object.hasOwnProperty.call(Procs.value, key)) {
+					Procs.value[key].loading = false;
+				}
+			}
+		},
+	},
+);
+
+// Modal ************************************
+
+// Watch *************************************
+
+// Method ************************************
+
+// Route	***********************************
+
+// Method	************************************
+
+// DashBoard
+const getDashBoard = () => {
+	execUrl(Procs.value.getDashBoard.path, Parm.value);
+};
+
+// Etc  **************************************
+
+const validNotBlank = (val, tit, obj) => {
+	val = typeof val != 'string' ? val.toString() : val;
+	var Val = val.replace(/\s/g, '');
+	if (Val.length == 0) {
+		vAlert(tit == null ? `입력해 주세요.` : `${tit}를(을) 입력해 주세요.`);
+		if (obj != null) {
+			obj.focus();
+		}
+		return false;
+	}
+	return true;
+};
+</script>
 
 <style scoped>
 .main {
