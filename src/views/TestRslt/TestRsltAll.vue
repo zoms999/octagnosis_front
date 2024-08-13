@@ -2,12 +2,16 @@
 	<div class="ActionBtn" :class="{ btnRemove: PrintingYn }">
 		<div></div>
 		<div>
-			<button type="button" class="btn btn-primary ms-2" @click="downPdf()">
-				PDF 다운로드
+			<button
+				type="button"
+				class="btn btn-primary ms-2"
+				@click="print1('printableArea')"
+			>
+				프린터
 			</button>
 		</div>
 	</div>
-	<div class="Box1">
+	<div class="Box1" id="printableArea">
 		<AppError v-if="error" :message="error.message"></AppError>
 		<template v-else>
 			<div
@@ -93,7 +97,7 @@
 
 <script setup>
 import { useAxios } from '@/hooks/useAxios';
-import { ref, inject, defineEmits, onMounted } from 'vue';
+import { ref, inject, onMounted, onBeforeUnmount } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useAlert } from '@/hooks/useAlert';
 import { useBase64Utils } from '@/plugins/base64.js';
@@ -205,6 +209,36 @@ const print = () => {
 };
 
 // Etc  *************************************
+
+let initBody = '';
+
+const print1 = id => {
+	const div = document.getElementById(id);
+
+	const beforePrint = () => {
+		initBody = document.body.innerHTML;
+		document.body.innerHTML = div.innerHTML;
+	};
+
+	const afterPrint = () => {
+		document.body.innerHTML = initBody;
+	};
+
+	window.onbeforeprint = beforePrint;
+	window.onafterprint = afterPrint;
+	window.print();
+};
+
+// Cleanup event listeners when component is destroyed
+onMounted(() => {
+	window.onbeforeprint = null;
+	window.onafterprint = null;
+});
+
+onBeforeUnmount(() => {
+	window.onbeforeprint = null;
+	window.onafterprint = null;
+});
 </script>
 
 <style scoped>
