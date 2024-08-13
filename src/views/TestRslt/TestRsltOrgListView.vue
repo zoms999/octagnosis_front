@@ -141,9 +141,6 @@
 		<div v-if="Pnl.RsltView.show">
 			<RsltMain :ListItem="ListItem" @showPnl="showPnl"></RsltMain>
 		</div>
-		<div v-if="Pnl.RsltAll.show">
-			<RsltAll :ListItem="ListItem" @showPnl="showPnl"></RsltAll>
-		</div>
 	</template>
 
 	<!--	기관조회	------------------------------->
@@ -177,7 +174,6 @@ import { useAlert } from '@/hooks/useAlert';
 
 import OrgListPop from '@/components/TestRslt/OrgList.vue';
 import RsltMain from '@/components/TestRslt/RsltMain.vue';
-import RsltAll from '@/components/TestRslt/RsltAll.vue';
 
 // Props / Emit  ****************************
 

@@ -250,8 +250,8 @@ const showPnl = (pnlNm, item) => {
 			Pnl.value.RsltView.show = false;
 
 			ListItem.value = item;
-
 			popupTestRslt(item);
+
 			break;
 	}
 };

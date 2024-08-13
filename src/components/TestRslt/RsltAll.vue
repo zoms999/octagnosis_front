@@ -171,10 +171,6 @@ onMounted(() => {
 
 // Model / Data  ****************************
 
-const Parm = ref({
-	srchStr: '',
-});
-
 const RsltItems = ref([
 	{ id: '1', activeYn: 'Y', tit: '개인정보' },
 	{ id: '2', activeYn: 'Y', tit: '성향진단' },
@@ -190,10 +186,6 @@ const RsltItems = ref([
 ]);
 
 const ShowRsltItems = ref([]);
-
-const Modal = ref({
-	OrgTurn: false,
-});
 
 // Html ref  ********************************
 
