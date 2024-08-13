@@ -102,17 +102,17 @@ import { useRouter, useRoute } from 'vue-router';
 import { useAlert } from '@/hooks/useAlert';
 import { useBase64Utils } from '@/plugins/base64.js';
 
-import UserInfo from '@/components/TestRslt/UserInfo.vue';
-import RsltTedcy1 from '@/components/TestRslt/RsltTedcy1.vue';
-import RsltTedcy2 from '@/components/TestRslt/RsltTedcy2.vue';
-import RsltThink from '@/components/TestRslt/RsltThink.vue';
-import RsltTedcyJob from '@/components/TestRslt/RsltTedcyJob.vue';
-import RsltAbility from '@/components/TestRslt/RsltAbility.vue';
-import RsltAbilityJob from '@/components/TestRslt/RsltAbilityJob.vue';
-import RsltStudy from '@/components/TestRslt/RsltStudy.vue';
-import RsltSubjt from '@/components/TestRslt/RsltSubjt.vue';
-import RsltJobDuty from '@/components/TestRslt/RsltJobDuty.vue';
-import RsltPrefer from '@/components/TestRslt/RsltPrefer.vue';
+import UserInfo from '@/components/TestRslt/print/UserInfo.vue';
+import RsltTedcy1 from '@/components/TestRslt/print/RsltTedcy1.vue';
+import RsltTedcy2 from '@/components/TestRslt/print/RsltTedcy2.vue';
+import RsltThink from '@/components/TestRslt/print/RsltThink.vue';
+import RsltTedcyJob from '@/components/TestRslt/print/RsltTedcyJob.vue';
+import RsltAbility from '@/components/TestRslt/print/RsltAbility.vue';
+import RsltAbilityJob from '@/components/TestRslt/print/RsltAbilityJob.vue';
+import RsltStudy from '@/components/TestRslt/print/RsltStudy.vue';
+import RsltSubjt from '@/components/TestRslt/print/RsltSubjt.vue';
+import RsltJobDuty from '@/components/TestRslt/print/RsltJobDuty.vue';
+import RsltPrefer from '@/components/TestRslt/print/RsltPrefer.vue';
 
 const { vAlert, vSuccess } = useAlert();
 const dayjs = inject('dayjs');
@@ -165,7 +165,7 @@ const RsltItems = ref([
 const ShowRsltItems = ref([]);
 
 const ListItem = ref({});
-const PrintingYn = ref(false);
+const PrintingYn = ref(true);
 
 // Html ref  ********************************
 

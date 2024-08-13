@@ -103,7 +103,7 @@
 								<buton
 									class="btn btn-primary btn-sm w80 ms-2"
 									@click.stop="popupTestRslt(item)"
-									>Down</buton
+									>PRINT</buton
 								>
 							</div>
 							<div v-else>진행중</div>
@@ -291,6 +291,7 @@ const popupTestRslt = item => {
 		PersnNm: item.PersnNm,
 		AnsPrgrsId: item.AnsPrgrsId,
 		ProdtId: item.ProdtId,
+		PersnId: item.PersnId,
 	};
 	const parm = encodeBase64(JSON.stringify(Parm));
 	let uri = `TestRsltAll?p=${parm}`;

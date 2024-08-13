@@ -115,10 +115,17 @@
 									@click.stop="showPnl('RsltView', item)"
 									>결과보기</buton
 								>
+								<!--
 								<buton
 									class="btn btn-primary btn-sm w80 ms-2"
 									@click.stop="showPnl('RsltAll', item)"
 									>Down</buton
+								>
+								-->
+								<buton
+									class="btn btn-primary btn-sm w80 ms-2"
+									@click.stop="popupTestRslt(item)"
+									>PRINT</buton
 								>
 							</div>
 							<div v-else>진행중</div>
@@ -171,6 +178,7 @@
 import { useAxios } from '@/hooks/useAxios';
 import { ref, inject, watch } from 'vue';
 import { useAlert } from '@/hooks/useAlert';
+import { useBase64Utils } from '@/plugins/base64.js';
 
 import OrgListPop from '@/components/TestRslt/OrgList.vue';
 import RsltMain from '@/components/TestRslt/RsltMain.vue';
@@ -185,6 +193,7 @@ const { vAlert, vSuccess } = useAlert();
 const dayjs = inject('dayjs');
 const pnlPath = ref('');
 const ListItem = ref('');
+const { encodeBase64 } = useBase64Utils();
 
 const Parm = ref({
 	srchStr: '',
@@ -222,6 +231,7 @@ const CurOrgTurn = ref({});
 // Html ref  ********************************
 
 const txtSrchStr = ref(null);
+var windowRef = null;
 
 // Axios / Route  ***************************
 
@@ -387,13 +397,14 @@ const getDateFormat = dt => {
 };
 
 const popupTestRslt = item => {
-	var Parm = {
-		ProdtId: item.ProdtId,
+	const Parm = {
+		PersnNm: item.PersnNm,
 		AnsPrgrsId: item.AnsPrgrsId,
+		ProdtId: item.ProdtId,
+		PersnId: item.PersnId,
 	};
-
 	const parm = encodeBase64(JSON.stringify(Parm));
-	let uri = `TestRsltMain?p=${parm}`;
+	let uri = `TestRsltAll?p=${parm}`;
 
 	//localhost:5200/QuestMain?TestId=1&QuestPageId=2
 
@@ -417,18 +428,19 @@ const popupTestRslt = item => {
 		width +
 		', height=' +
 		height +
-		', resizable=no,status=no';
+		', resizable=yes,status=no,scrollbars=yes';
 
 	// 1. 윈도우 팝업 띄우기
 	windowRef = window.open(uri, '', attr);
-
+	//	window.open(uri, '', attr);
+	/**
 	if (!windowRef && windowRef.closed) {
 		//windowRef.addEventListener('beforeunload', this.evtClose);
 	} else {
 		windowRef.focus();
 	}
+		 */
 };
-
 // Etc  **************************************
 
 const validNotBlank = (val, tit, obj) => {
