@@ -16,6 +16,7 @@ import ProdtMain from '@/views/Prodt/ProdtMainView.vue';
 import PayMent from '@/views/PayMent/PayMent.vue';
 import TestRsltOrgList from '@/views/TestRslt/TestRsltOrgListView.vue';
 import TestRsltPayList from '@/views/TestRslt/TestRsltPayListView.vue';
+import TestRsltAll from '@/views/TestRslt/TestRsltAll.vue';
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -137,9 +138,9 @@ const router = createRouter({
 			// props: route => ({ id: parseInt(route.params.id) }),
 		},
 		{
-			path: '/TestRslt/RsltAll',
-			name: 'RsltAll',
-			component: TestRsltPayList,
+			path: '/TestRslt/TestRsltAll',
+			name: 'TestRsltAll',
+			component: TestRsltAll,
 			// props: route => ({ id: parseInt(route.params.id) }),
 		},
 	],

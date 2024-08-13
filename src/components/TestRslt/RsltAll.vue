@@ -117,9 +117,8 @@
 <script setup>
 import { useAxios } from '@/hooks/useAxios';
 import { ref, inject, defineEmits, onMounted } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { useAlert } from '@/hooks/useAlert';
-import { useBase64Utils } from '@/plugins/base64.js';
 
 import UserInfo from '@/components/TestRslt/UserInfo.vue';
 import RsltTedcy1 from '@/components/TestRslt/RsltTedcy1.vue';
@@ -136,22 +135,20 @@ import RsltPrefer from '@/components/TestRslt/RsltPrefer.vue';
 const { vAlert, vSuccess } = useAlert();
 const dayjs = inject('dayjs');
 const router = useRouter();
-const { decodeBase64 } = useBase64Utils();
-const route = useRoute();
 
 // Props / Emit  ****************************
 
-const ListItem = ref({});
+const Props = defineProps({
+	ListItem: { type: Object },
+});
 
 const Emit = defineEmits(['showPnl']);
 
 // Hook  ************************************
 
 onMounted(() => {
-	ListItem.value = JSON.parse(decodeBase64(route.query.p));
-
-	console.log('Props.ListItem.ProdtId', ListItem.value.ProdtId);
-	switch (ListItem.value.ProdtId) {
+	console.log('Props.ListItem.ProdtId', Props.ListItem.ProdtId);
+	switch (Props.ListItem.ProdtId) {
 		case 6:
 		case 7:
 		case 8:
@@ -171,6 +168,10 @@ onMounted(() => {
 
 // Model / Data  ****************************
 
+const Parm = ref({
+	srchStr: '',
+});
+
 const RsltItems = ref([
 	{ id: '1', activeYn: 'Y', tit: '개인정보' },
 	{ id: '2', activeYn: 'Y', tit: '성향진단' },
@@ -186,6 +187,10 @@ const RsltItems = ref([
 ]);
 
 const ShowRsltItems = ref([]);
+
+const Modal = ref({
+	OrgTurn: false,
+});
 
 // Html ref  ********************************
 

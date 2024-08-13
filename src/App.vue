@@ -5,7 +5,7 @@
 	<div v-if="TopYn" class="LayoutTop">
 		<TheTop></TheTop>
 	</div>
-	<div class="LayoutMain">
+	<div class="LayoutMain" :class="{ LayoutMainPosition: !TopYn }">
 		<RouterView></RouterView>
 	</div>
 	<AppAlert></AppAlert>
@@ -27,11 +27,7 @@ const TopYn = ref(true);
 const BottomYn = ref(true);
 
 router.beforeEach((to, from, next) => {
-	if (
-		to.name == 'questMain' ||
-		to.name == 'quest' ||
-		to.name == 'TestRsltMain'
-	) {
+	if (to.name == 'TestRsltAll') {
 		TopYn.value = false;
 		BottomYn.value = false;
 	}
@@ -76,5 +72,14 @@ router.beforeEach((to, from, next) => {
 	padding: 0 20px 0 0;
 	min-width: 1000px;
 	overflow: auto;
+}
+.LayoutMainPosition {
+	position: relative !important;
+	left: 0px !important;
+	top: 0px !important;
+	width: 100% !important;
+	height: 100% !important;
+	max-width: 1000px;
+	margin: auto auto;
 }
 </style>

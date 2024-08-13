@@ -93,9 +93,16 @@
 									@click.stop="showPnl('RsltView', item)"
 									>결과보기</buton
 								>
+								<!--
 								<buton
 									class="btn btn-primary btn-sm w80 ms-2"
 									@click.stop="showPnl('RsltAll', item)"
+									>Down</buton
+								>
+								-->
+								<buton
+									class="btn btn-primary btn-sm w80 ms-2"
+									@click.stop="popupTestRslt(item)"
 									>Down</buton
 								>
 							</div>
@@ -235,12 +242,14 @@ const showPnl = (pnlNm, item) => {
 		case 'RsltList':
 			Pnl.value.RsltList.show = true;
 			Pnl.value.RsltView.show = false;
+			Pnl.value.RsltAll.show = false;
 			pnlPath.value = '';
 
 			break;
 		case 'RsltView':
 			Pnl.value.RsltList.show = false;
 			Pnl.value.RsltView.show = true;
+			Pnl.value.RsltAll.show = false;
 			pnlPath.value = ' > 결과보기';
 
 			ListItem.value = item;
@@ -248,10 +257,10 @@ const showPnl = (pnlNm, item) => {
 		case 'RsltAll':
 			Pnl.value.RsltList.show = false;
 			Pnl.value.RsltView.show = false;
+			Pnl.value.RsltAll.show = true;
+			pnlPath.value = ' > 결과보기';
 
 			ListItem.value = item;
-			popupTestRslt(item);
-
 			break;
 	}
 };
@@ -278,8 +287,13 @@ const getDateFormat = dt => {
 };
 
 const popupTestRslt = item => {
-	const parm = encodeBase64(JSON.stringify(item));
-	let uri = `RsltAll?p=${parm}`;
+	const Parm = {
+		PersnNm: item.PersnNm,
+		AnsPrgrsId: item.AnsPrgrsId,
+		ProdtId: item.ProdtId,
+	};
+	const parm = encodeBase64(JSON.stringify(Parm));
+	let uri = `TestRsltAll?p=${parm}`;
 
 	//localhost:5200/QuestMain?TestId=1&QuestPageId=2
 
@@ -303,16 +317,18 @@ const popupTestRslt = item => {
 		width +
 		', height=' +
 		height +
-		', resizable=no,status=no';
+		', resizable=yes,status=no,scrollbars=yes';
 
 	// 1. 윈도우 팝업 띄우기
 	windowRef = window.open(uri, '', attr);
-
+	//	window.open(uri, '', attr);
+	/**
 	if (!windowRef && windowRef.closed) {
 		//windowRef.addEventListener('beforeunload', this.evtClose);
 	} else {
 		windowRef.focus();
 	}
+		 */
 };
 
 // Etc  **************************************
