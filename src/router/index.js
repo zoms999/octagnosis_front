@@ -136,6 +136,12 @@ const router = createRouter({
 			component: TestRsltPayList,
 			// props: route => ({ id: parseInt(route.params.id) }),
 		},
+		{
+			path: '/TestRslt/RsltAll',
+			name: 'RsltAll',
+			component: TestRsltPayList,
+			// props: route => ({ id: parseInt(route.params.id) }),
+		},
 	],
 });
 

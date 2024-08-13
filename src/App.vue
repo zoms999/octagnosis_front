@@ -1,8 +1,8 @@
 <template>
-	<div v-if="isAuthenticated" class="LayoutLeft">
+	<div v-if="isAuthenticated && TopYn" class="LayoutLeft">
 		<TheLeft></TheLeft>
 	</div>
-	<div class="LayoutTop">
+	<div v-if="TopYn" class="LayoutTop">
 		<TheTop></TheTop>
 	</div>
 	<div class="LayoutMain">
@@ -15,6 +15,7 @@
 import TheLeft from './layouts/TheLeft.vue';
 import TheTop from './layouts/TheTop.vue';
 
+import { ref } from 'vue';
 import { RouterView, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { storeToRefs } from 'pinia';
@@ -22,8 +23,19 @@ import { storeToRefs } from 'pinia';
 const router = useRouter();
 const store = useAuthStore();
 const { isAuthenticated } = storeToRefs(store);
+const TopYn = ref(true);
+const BottomYn = ref(true);
 
 router.beforeEach((to, from, next) => {
+	if (
+		to.name == 'questMain' ||
+		to.name == 'quest' ||
+		to.name == 'TestRsltMain'
+	) {
+		TopYn.value = false;
+		BottomYn.value = false;
+	}
+
 	if (!isAuthenticated.value && to.name !== 'login') {
 		next({ name: 'login' });
 	} else {

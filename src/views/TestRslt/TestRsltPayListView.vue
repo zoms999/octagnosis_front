@@ -129,6 +129,7 @@
 import { useAxios } from '@/hooks/useAxios';
 import { ref, inject, onMounted } from 'vue';
 import { useAlert } from '@/hooks/useAlert';
+import { useBase64Utils } from '@/plugins/base64.js';
 
 import RsltMain from '@/components/TestRslt/RsltMain.vue';
 import RsltAll from '@/components/TestRslt/RsltAll.vue';
@@ -147,6 +148,7 @@ const { vAlert, vSuccess } = useAlert();
 const dayjs = inject('dayjs');
 const pnlPath = ref('');
 const ListItem = ref('');
+const { encodeBase64 } = useBase64Utils();
 
 const Parm = ref({
 	srchStr: '',
@@ -174,6 +176,8 @@ const CurPage = ref(1);
 const CurBlock = ref(1);
 const TestRsltPayList = ref([]);
 const VirNum = ref(1);
+
+var windowRef = null;
 
 // Html ref  ********************************
 
@@ -231,14 +235,12 @@ const showPnl = (pnlNm, item) => {
 		case 'RsltList':
 			Pnl.value.RsltList.show = true;
 			Pnl.value.RsltView.show = false;
-			Pnl.value.RsltAll.show = false;
 			pnlPath.value = '';
 
 			break;
 		case 'RsltView':
 			Pnl.value.RsltList.show = false;
 			Pnl.value.RsltView.show = true;
-			Pnl.value.RsltAll.show = false;
 			pnlPath.value = ' > 결과보기';
 
 			ListItem.value = item;
@@ -246,10 +248,10 @@ const showPnl = (pnlNm, item) => {
 		case 'RsltAll':
 			Pnl.value.RsltList.show = false;
 			Pnl.value.RsltView.show = false;
-			Pnl.value.RsltAll.show = true;
-			pnlPath.value = ' > 결과보기';
 
 			ListItem.value = item;
+
+			popupTestRslt(item);
 			break;
 	}
 };
@@ -273,6 +275,44 @@ const getTestRsltPayList = async page => {
 
 const getDateFormat = dt => {
 	return dt == '' ? '-' : dayjs(dt).format('YYYY-MM-DD');
+};
+
+const popupTestRslt = item => {
+	const parm = encodeBase64(JSON.stringify(item));
+	let uri = `RsltAll?p=${parm}`;
+
+	//localhost:5200/QuestMain?TestId=1&QuestPageId=2
+
+	if (windowRef != null && !windowRef.closed) {
+		windowRef.focus();
+		return;
+	}
+
+	const width = screen.width;
+	const height = screen.height;
+
+	let left = screen.width ? (screen.width - width) / 2 : 0;
+	let top = screen.height ? (screen.height - height) / 2 : 0;
+
+	let attr =
+		'top=' +
+		top +
+		', left=' +
+		left +
+		', width=' +
+		width +
+		', height=' +
+		height +
+		', resizable=no,status=no';
+
+	// 1. 윈도우 팝업 띄우기
+	windowRef = window.open(uri, '', attr);
+
+	if (!windowRef && windowRef.closed) {
+		//windowRef.addEventListener('beforeunload', this.evtClose);
+	} else {
+		windowRef.focus();
+	}
 };
 
 // Etc  **************************************
