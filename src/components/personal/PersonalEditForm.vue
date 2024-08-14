@@ -155,8 +155,13 @@
 				<div class="col-1 lbl"><i></i>우편번호</div>
 				<div class="col-3">
 					<div class="input-group">
-						<input type="text" class="form-control" />
-						<button class="btn btn-primary IconBtn">
+						<input
+							type="text"
+							class="form-control"
+							v-model="personal.Zip"
+							disabled="disabled"
+						/>
+						<button class="btn btn-primary IconBtn" @click="popupAddr">
 							<span class="material-icons"> search </span>
 						</button>
 					</div>
@@ -169,6 +174,7 @@
 						type="text"
 						class="form-control"
 						v-model="personal.AddrStret"
+						disabled="disabled"
 					/>
 				</div>
 				<div class="col-1 lbl">지번 주소</div>
@@ -177,17 +183,28 @@
 						type="text"
 						class="form-control"
 						v-model="personal.AddrLotNum"
+						disabled="disabled"
 					/>
 				</div>
 				<div class="col-1 lbl">상세 주소</div>
 				<div class="col-5">
-					<input type="text" class="form-control" v-model="personal.Addr2" />
+					<input
+						type="text"
+						class="form-control"
+						v-model="personal.Addr2"
+						disabled="disabled"
+					/>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-1 lbl">추가 주소</div>
 				<div class="col-5">
-					<input type="text" class="form-control" v-model="personal.Addr3" />
+					<input
+						type="text"
+						class="form-control"
+						v-model="personal.Addr3"
+						ref="txtAddr3"
+					/>
 				</div>
 			</div>
 		</div>
@@ -310,13 +327,21 @@
 </template>
 
 <script setup>
-import { ref, watch, computed } from 'vue';
+import { ref, watch, computed, onMounted } from 'vue';
+
+onMounted(() => {
+	const script = document.createElement('script');
+	script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+	script.async = true;
+	document.body.appendChild(script);
+});
 
 const props = defineProps({
 	personal: Object,
 });
 
 const selectJobs = ref('');
+const txtAddr3 = ref();
 
 watch(
 	() => props.personal?.Job,
@@ -419,6 +444,23 @@ const authChangeLogModal = () => {
 const closeModal = () => {
 	connectionLogShow.value = false;
 	authChangeLogShow.value = false;
+};
+
+// 우편번호
+const popupAddr = () => {
+	new daum.Postcode({
+		oncomplete: function (data) {
+			props.personal.zip = data.zonecode;
+			props.personal.addrStret = data.roadAddress;
+			props.personal.addrLotNum = data.jibunAddress;
+			props.personal.addr2 = data.buildingName;
+			txtAddr3.value.focus();
+
+			//alert(data);
+			// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+			// 예제를 참고하여 다양한 활용법을 확인해 보세요.
+		},
+	}).open();
 };
 </script>
 

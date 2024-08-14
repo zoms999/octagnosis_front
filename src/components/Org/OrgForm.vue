@@ -371,8 +371,9 @@
 						ref="txtZip"
 						class="form-control"
 						v-model="Org.zip"
+						disabled="disabled"
 					/>
-					<button class="btn btn-primary IconBtn">
+					<button class="btn btn-primary IconBtn" @click="popupAddr">
 						<span class="material-icons"> search </span>
 					</button>
 				</div>
@@ -383,27 +384,30 @@
 			<div class="col-5">
 				<input
 					type="text"
-					ref="txtAddr2"
+					ref="txtAddrStret"
 					class="form-control"
 					v-model="Org.addrStret"
+					disabled="disabled"
 				/>
 			</div>
 			<div class="col-1 lbl">지번 주소</div>
 			<div class="col-5">
 				<input
 					type="text"
-					ref="txtAddrStret"
+					ref="txtAddrLotNum"
 					class="form-control"
 					v-model="Org.addrLotNum"
+					disabled="disabled"
 				/>
 			</div>
 			<div class="col-1 lbl">상세 주소</div>
 			<div class="col-5">
 				<input
 					type="text"
-					ref="txtAddr3"
+					ref="txtAddr2"
 					class="form-control"
 					v-model="Org.addr2"
+					disabled="disabled"
 				/>
 			</div>
 		</div>
@@ -412,7 +416,7 @@
 			<div class="col-5">
 				<input
 					type="text"
-					ref="txtAddrLotNum"
+					ref="txtAddr3"
 					class="form-control"
 					v-model="Org.addr3"
 				/>
@@ -610,7 +614,7 @@
 </template>
 
 <script setup>
-import { defineProps, watch, ref } from 'vue';
+import { defineProps, watch, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAlert } from '@/hooks/useAlert';
 import { useAxios } from '@/hooks/useAxios';
@@ -622,6 +626,13 @@ import AcuntChgExpireDt from '@/components/Acunt/AcuntChgExpirDt.vue';
 import AcuntChgPw from '@/components/Acunt/AcuntChgPw.vue';
 import AcuntLogList from '@/components/Acunt/AcuntLogList.vue';
 import AcuntLoginLogList from '@/components/Acunt/AcuntLoginLogList.vue';
+
+onMounted(() => {
+	const script = document.createElement('script');
+	script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+	script.async = true;
+	document.body.appendChild(script);
+});
 
 // Props / Emit  ****************************
 
@@ -679,6 +690,10 @@ const txtCeoNm = ref(null);
 const txtBizNum = ref(null);
 const txtTel1 = ref(null);
 const txtZip = ref(null);
+const txtAddrStret = ref(null);
+const txtAddrLotNum = ref(null);
+const txtAddr2 = ref(null);
+const txtAddr3 = ref(null);
 const txtMngerNm1 = ref(null);
 const txtMngerTeam1 = ref(null);
 const txtMngerPosit1 = ref(null);
@@ -924,6 +939,21 @@ watch(
 );
 
 // 우편번호
+const popupAddr = () => {
+	new daum.Postcode({
+		oncomplete: function (data) {
+			Org.value.zip = data.zonecode;
+			Org.value.addrStret = data.roadAddress;
+			Org.value.addrLotNum = data.jibunAddress;
+			Org.value.addr2 = data.buildingName;
+			txtAddr3.value.focus();
+
+			//alert(data);
+			// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+			// 예제를 참고하여 다양한 활용법을 확인해 보세요.
+		},
+	}).open();
+};
 
 // Method	************************************
 
