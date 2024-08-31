@@ -19,37 +19,12 @@
 		</div>
 	</div>
 	<div>
-		<table class="table table-bordered Tbl1">
-			<thead>
-				<tr>
-					<th class="w100">NO</th>
-					<th class="w200">검사상품</th>
-					<th class="w160">가격</th>
-					<th class="w160">상품유형</th>
-					<th class="w160">상품종류</th>
-					<!--<th class="w160">할인율</th>-->
-					<th class="w80">사용여부</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr
-					v-for="(item, idx) in ProdtList"
-					:key="item.ProdtId"
-					class="Poit"
-					@click="ShowProdt('E', item.ProdtId)"
-				>
-					<td>{{ ++idx }}</td>
-					<td>
-						{{ item.ProdtNm }}
-					</td>
-					<td>{{ item.Price }}</td>
-					<td>{{ item.ProdtCateNm }}</td>
-					<td>{{ item.ProdtTypeNm }}</td>
-					<td>{{ item.UseYn }}</td>
-				</tr>
-			</tbody>
-			<tfoot></tfoot>
-		</table>
+		<DataTable
+			:data="ProdtList"
+			:columns="columns"
+			class="table table-bordered Tbl1"
+			:options="tableOptions"
+		/>
 		<br /><br /><br />
 	</div>
 
@@ -69,6 +44,11 @@
 import { onMounted, ref } from 'vue';
 import { useAlert } from '@/hooks/useAlert';
 import { useAxios } from '@/hooks/useAxios';
+import DataTable from 'datatables.net-vue3';
+import DataTablesCore from 'datatables.net-bs5';
+
+// Initialize DataTable with Bootstrap 5
+DataTable.use(DataTablesCore);
 
 import ProdtForm from '@/components/Prodt/ProdtForm.vue';
 
@@ -83,6 +63,41 @@ const ProdtList = ref([]);
 const ProdtParm = ref({
 	prodtId: 0,
 });
+
+// DataTable configuration
+const columns = [
+	{ title: 'NO', data: null, render: (data, type, row, meta) => meta.row + 1 },
+	{ title: '검사상품', data: 'ProdtNm' },
+	{ title: '가격', data: 'Price' },
+	{ title: '상품유형', data: 'ProdtCateNm' },
+	{ title: '상품종류', data: 'ProdtTypeNm' },
+	{ title: '사용여부', data: 'UseYn' },
+];
+
+const tableOptions = {
+	responsive: true,
+	language: {
+		url: '//cdn.datatables.net/plug-ins/1.10.25/i18n/Korean.json',
+	},
+	createdRow: (row, data) => {
+		// Attach click event listener to each row
+		row.addEventListener('click', () => {
+			// Remove 'selected' class from all rows
+			const tableRows = row.parentNode.querySelectorAll('tr');
+			tableRows.forEach(tr => tr.classList.remove('selected'));
+
+			// Add 'selected' class to the clicked row
+			row.classList.add('selected');
+
+			// Trigger the row click action
+			onRowClicked(data);
+		});
+	},
+};
+
+const onRowClicked = rowData => {
+	ShowProdt('E', rowData.ProdtId);
+};
 
 // Html ref  ********************************
 
@@ -112,7 +127,6 @@ const { data, execUrl, reqUrl } = useAxios(
 		},
 		onError: err => {
 			vAlert(err.message);
-			// Procs의 모든 속성에 대해 반복문을 실행하여 loading 값을 true로 변경
 			for (const key in Procs.value) {
 				if (Object.hasOwnProperty.call(Procs.value, key)) {
 					Procs.value[key].loading = false;
@@ -149,17 +163,11 @@ const ShowProdt = (procType, prodtId) => {
 	ShowHide('Prodt', true);
 };
 
-// Watch ************************************
-
-// Method	***********************************
-
 // 상품 조회
 const getProdtList = () => {
 	Modal.value.Prodt.showYn = false;
 	execUrl(Procs.value.getProdtList.path, ProdtParm.value);
 };
-
-// Etc	**************************************
 </script>
 
 <style></style>
