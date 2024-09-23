@@ -84,8 +84,10 @@
 						<td>{{ item.AcuntId }}</td>
 						<td>{{ item.Phone }}</td>
 						<td>{{ item.ProdtNm }}</td>
-						<td>{{ getDateFormat(item.StartDt) }}</td>
-						<td>{{ getDateFormat(item.EndDt) }}</td>
+						<td>
+							{{ item.StartDt == null ? '-' : getDateFormat(item.StartDt) }}
+						</td>
+						<td>{{ item.EndDt == null ? '-' : getDateFormat(item.EndDt) }}</td>
 						<td>
 							<div v-if="item.DoneYn == 'Y'">
 								<buton
@@ -105,6 +107,9 @@
 									@click.stop="popupTestRslt(item)"
 									>PRINT</buton
 								>
+							</div>
+							<div v-else-if="item.StartDt == null && item.EndDt == null">
+								-
 							</div>
 							<div v-else>진행중</div>
 						</td>
