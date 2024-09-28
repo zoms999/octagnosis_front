@@ -71,6 +71,7 @@ onMounted(() => {
 
 const Parm = ref({
 	ansPrgrsId: 0,
+	rank: 15
 });
 
 const Rslt1 = ref({});
