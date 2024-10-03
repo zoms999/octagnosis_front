@@ -17,6 +17,7 @@
 			<div
 				v-show="RsltItems[0].activeYn == 'Y'"
 				v-if="ShowRsltItems.filter(o => o.id == '1').length > 0"
+				class="centered-section"
 			>
 				<div class="TabTit">개인정보</div>
 				<UserInfo :ListItem="ListItem"></UserInfo>
@@ -24,11 +25,13 @@
 			<div
 				v-show="RsltItems[1].activeYn == 'Y'"
 				v-if="ShowRsltItems.filter(o => o.id == '2').length > 0"
+				class="centered-section"
 			>
 				<div class="TabTit">성향진단</div>
 				<RsltTedcy1 :ListItem="ListItem"></RsltTedcy1>
 			</div>
 			<div
+				class="centered-section"
 				v-show="RsltItems[2].activeYn == 'Y'"
 				v-if="ShowRsltItems.filter(o => o.id == '3').length > 0"
 			>
@@ -36,6 +39,7 @@
 				<RsltTedcy2 :ListItem="ListItem"></RsltTedcy2>
 			</div>
 			<div
+				class="centered-section"
 				v-show="RsltItems[3].activeYn == 'Y'"
 				v-if="ShowRsltItems.filter(o => o.id == '4').length > 0"
 			>
@@ -43,6 +47,7 @@
 				<RsltThink :ListItem="ListItem"></RsltThink>
 			</div>
 			<div
+				class="centered-section"
 				v-show="RsltItems[4].activeYn == 'Y'"
 				v-if="ShowRsltItems.filter(o => o.id == '5').length > 0"
 			>
@@ -50,6 +55,7 @@
 				<RsltTedcyJob :ListItem="ListItem"></RsltTedcyJob>
 			</div>
 			<div
+				class="centered-section"
 				v-show="RsltItems[5].activeYn == 'Y'"
 				v-if="ShowRsltItems.filter(o => o.id == '6').length > 0"
 			>
@@ -57,6 +63,7 @@
 				<RsltAbility :ListItem="ListItem"></RsltAbility>
 			</div>
 			<div
+				class="centered-section"
 				v-show="RsltItems[6].activeYn == 'Y'"
 				v-if="ShowRsltItems.filter(o => o.id == '7').length > 0"
 			>
@@ -64,6 +71,7 @@
 				<RsltAbilityJob :ListItem="ListItem"></RsltAbilityJob>
 			</div>
 			<div
+				class="centered-section"
 				v-show="RsltItems[7].activeYn == 'Y'"
 				v-if="ShowRsltItems.filter(o => o.id == '8').length > 0"
 			>
@@ -71,6 +79,7 @@
 				<RsltStudy :ListItem="ListItem"></RsltStudy>
 			</div>
 			<div
+				class="centered-section"
 				v-show="RsltItems[8].activeYn == 'Y'"
 				v-if="ShowRsltItems.filter(o => o.id == '9').length > 0"
 			>
@@ -78,6 +87,7 @@
 				<RsltSubjt :ListItem="ListItem"></RsltSubjt>
 			</div>
 			<div
+				class="centered-section"
 				v-show="RsltItems[9].activeYn == 'Y'"
 				v-if="ShowRsltItems.filter(o => o.id == '10').length > 0"
 			>
@@ -85,6 +95,7 @@
 				<RsltJobDuty :ListItem="ListItem"></RsltJobDuty>
 			</div>
 			<div
+				class="centered-section"
 				v-show="RsltItems[10].activeYn == 'Y'"
 				v-if="ShowRsltItems.filter(o => o.id == '11').length > 0"
 			>
@@ -252,15 +263,90 @@ onBeforeUnmount(() => {
 }
 
 .Box1 {
-	padding: 10px;
+	padding: 20px;
 }
 
 .btnRemove {
 	display: none;
 }
+@media print {
+	/* 페이지 상단 및 하단 여백 제거 */
+	@page {
+		margin: 0;
+	}
+
+	/* 페이지 하단 주소 숨기기 */
+	body::after {
+		content: none !important;
+	}
+
+	/* 브라우저 기본 헤더/푸터 숨기기 */
+	@page {
+		size: A4;
+	}
+
+	/* 상단 날짜와 "옥타그노시스 - Admin" 텍스트 숨기기 */
+	body > *:first-child,
+	body > *:last-child {
+		display: none !important;
+	}
+
+	/* 프린트 시 불필요한 요소 숨기기 */
+	.ActionBtn,
+	header,
+	footer,
+	.print-header,
+	.print-footer {
+		display: none !important;
+	}
+
+	/* 프린트 영역 전체 너비로 확장 */
+	.Box1 {
+		width: 100% !important;
+		padding: 0 !important;
+		margin: 0 !important;
+	}
+
+	/* 모든 고정 위치 요소 제거 */
+	* {
+		position: static !important;
+	}
+}
 </style>
+
 <style>
 body {
 	overflow: auto !important;
+}
+
+/* 프린트 시 페이지 나누기 방지 */
+.Box1 > div {
+	page-break-inside: avoid;
+}
+
+/* 프린트 시 모든 배경 이미지 및 색상 제거 */
+@media print {
+	* {
+		-webkit-print-color-adjust: exact !important;
+		color-adjust: exact !important;
+		print-color-adjust: exact !important;
+	}
+}
+</style>
+
+<style scoped>
+.centered-section {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	margin-top: 10px;
+	margin-left: 10px;
+}
+
+.centered-section .TabTit {
+	text-align: center;
+	width: 100%;
+	margin-top: 30px;
 }
 </style>
