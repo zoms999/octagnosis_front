@@ -1,26 +1,22 @@
 <template>
-	<div class="header">
-		<div class="d-flex justify-content-between">
-			<div class="TopLeft">
-				<img src="@/assets/img/logo3.png" class="logo" />
+	<header class="header">
+		<div
+			class="container-fluid d-flex justify-content-between align-items-center"
+		>
+			<div class="header-left">
+				<img src="@/assets/img/logo3.png" alt="로고" class="logo" />
 			</div>
-			<div class="TopRight">
-				<div class="d-flex mt-1">
-					<div class="me-3" v-if="isAuthenticated">
-						{{ userEmail }}님 안녕하세요
-					</div>
-					<div v-if="!isAuthenticated">
-						<router-link to="/login" class="text-white"></router-link>
-					</div>
-					<div v-if="isAuthenticated">
-						<button @click="handleLogout" class="text-white btn btn-link">
-							로그아웃
-						</button>
-					</div>
+			<div class="header-right">
+				<div v-if="isAuthenticated" class="user-info">
+					<span class="welcome-text">{{ userEmail }}님 환영합니다</span>
+					<button @click="handleLogout" class="logout-btn">로그아웃</button>
+				</div>
+				<div v-else>
+					<router-link to="/login" class="login-link">로그인</router-link>
 				</div>
 			</div>
 		</div>
-	</div>
+	</header>
 </template>
 
 <script setup>
@@ -51,20 +47,49 @@ const handleLogout = () => {
 </script>
 
 <style scoped>
-.TopRight {
-	background-color: transparent;
-	height: 40px;
-	margin: 20px 30px !important;
-	color: #ffffff;
+.header {
+	background-color: #34495e;
+	padding: 10px 0;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .logo {
-	width: 230px;
-	margin: 15px 0 0 14px;
+	width: 180px;
+	height: auto;
+	margin-left: 15px;
 }
 
-.header {
-	background: linear-gradient(135deg, #1db1ad 0%, #3d7aed 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1db1ad', endColorstr='#3d7aed',GradientType=1 );
+.header-right {
+	display: flex;
+	align-items: center;
+	margin-right: 15px;
+}
+
+.user-info {
+	display: flex;
+	align-items: center;
+}
+
+.welcome-text {
+	color: #ecf0f1;
+	margin-right: 15px;
+	font-size: 14px;
+}
+
+.logout-btn,
+.login-link {
+	background-color: #3498db;
+	color: white;
+	border: none;
+	padding: 8px 15px;
+	border-radius: 4px;
+	font-size: 14px;
+	text-decoration: none;
+	transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover,
+.login-link:hover {
+	background-color: #2980b9;
 }
 </style>

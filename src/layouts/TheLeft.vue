@@ -1,29 +1,33 @@
 <template>
-	<div class="mt-3">
-		<div v-for="item in MenuList" :key="item.MenuId" class="Menu">
-			<div
-				:class="{
-					Lvl1: item.Lvl == 1,
-					Lvl2: item.Lvl == 2,
-					Lvl3: item.Lvl == 3,
-					Active: item.ActiveYn,
-				}"
-				@click="Go(item)"
-			>
-				<img src="@/assets/img/PointWhite_8.png" class="Dot" />{{ item.MenuNm }}
+	<div class="left-menu">
+		<div class="mt-3">
+			<div v-for="item in MenuList" :key="item.MenuId" class="Menu">
+				<div
+					:class="{
+						Lvl1: item.Lvl == 1,
+						Lvl2: item.Lvl == 2,
+						Lvl3: item.Lvl == 3,
+						Active: item.ActiveYn,
+					}"
+					@click="Go(item)"
+				>
+					<img src="@/assets/img/PointWhite_8.png" class="Dot" />{{
+						item.MenuNm
+					}}
+				</div>
 			</div>
 		</div>
-	</div>
-	<hr
-		class="w90p"
-		style="
-			border: 1px solid #ffffff;
-			margin: 20px auto;
-			background-color: #ffffff;
-		"
-	/>
-	<div class="copyright">
-		Copyright © 한국진로적성센터. All Rights Reserved.
+		<hr
+			class="w90p"
+			style="
+				border: 1px solid #ffffff;
+				margin: 20px auto;
+				background-color: #ffffff;
+			"
+		/>
+		<div class="copyright">
+			Copyright © 한국진로적성센터. All Rights Reserved.
+		</div>
 	</div>
 </template>
 
@@ -108,10 +112,25 @@ const Go = item => {
 </script>
 
 <style scoped>
+.left-menu {
+	background-color: #2c3e50; /* 어두운 회색빛 파란색 */
+	height: 100%; /* 전체 높이를 차지하도록 설정 */
+	padding: 20px; /* 내부 여백 추가 */
+}
+
 .Menu > div {
 	font-size: 1.2rem;
-	cursor: pointer;
+	cursor: pointer; /* 모든 메뉴 항목에 포인터 커서 적용 */
+	color: #ffffff;
+	transition: all 0.3s ease; /* 부드러운 전환 효과 추가 */
 }
+
+.Menu > div:hover {
+	background-color: rgba(255, 255, 255, 0.1); /* 호버 시 배경색 변경 */
+	padding-left: 5px; /* 호버 시 살짝 들여쓰기 */
+	cursor: pointer; /* 호버 시 손 모양 커서로 변경 */
+}
+
 .Menu > div .Dot {
 	margin: -2px 10px 0 0;
 }
@@ -120,13 +139,16 @@ const Go = item => {
 	font-size: 1.2rem;
 	margin: 2px 0 10px 20px;
 }
+
 .Menu > div.Lvl2 {
 	font-size: 1.05rem;
 	margin: 2px 0 8px 40px;
 }
+
 .Menu > div.Lvl3 {
 	margin: 2px 0 8px 70px;
 }
+
 .copyright {
 	font-size: 0.9rem;
 	padding: 10px;
@@ -134,6 +156,16 @@ const Go = item => {
 }
 
 .Active {
-	color: yellow;
+	color: #ffd700;
+	cursor: default; /* 활성 메뉴 항목에 기본 커서 적용 */
 }
+
+/* 커서 스타일 제거 (더 이상 필요하지 않음) */
+/* .Menu > div:not(.Active) {
+	cursor: pointer;
+}
+
+.Menu > div.Active {
+	cursor: default;
+} */
 </style>
