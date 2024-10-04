@@ -1,10 +1,7 @@
 <template>
-	<div class="TitPage">
-		<div>상품</div>
-		<div></div>
-	</div>
-	<div class="container-fluid mt-2">
-		<div class="row">
+	<div class="payment-management">
+		<h1 class="page-title">상품</h1>
+		<div class="table-controls">
 			<div class="col-4"></div>
 			<div class="col-5"></div>
 			<div class="col-3 text-end">
@@ -17,18 +14,16 @@
 				</button>
 			</div>
 		</div>
-	</div>
-	<div>
-		<DataTable
-			:data="ProdtList"
-			:columns="columns"
-			class="table table-bordered Tbl1"
-			:options="tableOptions"
-		/>
-		<br /><br /><br />
+		<div class="table-container">
+			<DataTable
+				:data="ProdtList"
+				:columns="columns"
+				class="payment-table"
+				:options="tableOptions"
+			/>
+		</div>
 	</div>
 
-	<!--	검사문항 ------------------------------->
 	<Teleport to="#modal">
 		<AppModalV1 v-model="Modal.Prodt.showYn" title="상품" width="600">
 			<ProdtForm
@@ -170,4 +165,41 @@ const getProdtList = () => {
 };
 </script>
 
-<style></style>
+<style lang="scss">
+@import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
+
+.payment-management {
+	padding: 2rem;
+	background-color: #f8f9fa;
+	min-height: 100vh;
+}
+
+.page-title {
+	font-size: 2rem;
+	color: #333;
+	margin-bottom: 1.5rem;
+	border-bottom: 2px solid #007bff;
+	padding-bottom: 0.5rem;
+}
+
+.table-controls {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 1rem;
+}
+
+// ... 나머지 스타일 코드 유지 ...
+
+@media (max-width: 768px) {
+	.table-controls {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.dataTables_length,
+	.dataTables_filter {
+		margin: 0.5rem 0;
+	}
+}
+</style>

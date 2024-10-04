@@ -1,140 +1,143 @@
 <template>
-	<div class="TitPage">
-		<div>
-			검사결과 > 개인용 <span>{{ pnlPath }}</span>
+	<div class="test-result-management">
+		<div class="TitPage">
+			<div>
+				검사결과 > 개인용 <span>{{ pnlPath }}</span>
+			</div>
+			<div></div>
 		</div>
-		<div></div>
-	</div>
 
-	<AppError v-if="error" :message="error.message"></AppError>
-	<template v-else>
-		<div v-if="Pnl.RsltList.show">
-			<div class="SrchBox">
-				<div class="row">
-					<div class="col-9"></div>
-					<div class="col-3 text-end">
-						<div class="input-group w100p">
-							<input
-								type="text"
-								class="form-control"
-								ref="txtSrchStr"
-								v-model="Parm.srchStr"
-								placeholder="이름"
-								@keyup.enter="getTestRsltPayList()"
-							/>
-							<button class="btn btn-primary w80" @click="getTestRsltPayList()">
-								<template v-if="loading">
-									<span
-										class="spinner-grow spinner-grow-sm"
-										role="status"
-										aria-hidden="true"
-									></span>
-									<span class="visually-hidden">Loading...</span>
-								</template>
-								<template v-else> 검색 </template>
-							</button>
+		<AppError v-if="error" :message="error.message"></AppError>
+		<template v-else>
+			<div v-if="Pnl.RsltList.show">
+				<div class="SrchBox">
+					<div class="row">
+						<div class="col-9"></div>
+						<div class="col-3 text-end">
+							<div class="input-group w100p">
+								<input
+									type="text"
+									class="form-control"
+									ref="txtSrchStr"
+									v-model="Parm.srchStr"
+									placeholder="이름"
+									@keyup.enter="getTestRsltPayList()"
+								/>
+								<button
+									class="btn btn-primary w80"
+									@click="getTestRsltPayList()"
+								>
+									<template v-if="loading">
+										<span
+											class="spinner-grow spinner-grow-sm"
+											role="status"
+											aria-hidden="true"
+										></span>
+										<span class="visually-hidden">Loading...</span>
+									</template>
+									<template v-else> 검색 </template>
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="FunBox">
-				<div>
-					<div class="w100">Total : {{ TotCnt }}</div>
+				<div class="FunBox">
 					<div>
-						<select
-							class="form-select"
-							v-model="Parm.paging.rowCntInPage"
-							@change="chageRowCntInPage"
-						>
-							<option value="5">5 줄</option>
-							<option value="10" selected="selected">10 줄</option>
-							<option value="20">20 줄</option>
-							<option value="30">30 줄</option>
-							<option value="50">50 줄</option>
-						</select>
+						<div class="w100">Total : {{ TotCnt }}</div>
+						<div>
+							<select
+								class="form-select"
+								v-model="Parm.paging.rowCntInPage"
+								@change="chageRowCntInPage"
+							>
+								<option value="5">5 줄</option>
+								<option value="10" selected="selected">10 줄</option>
+								<option value="20">20 줄</option>
+								<option value="30">30 줄</option>
+								<option value="50">50 줄</option>
+							</select>
+						</div>
 					</div>
 				</div>
-			</div>
-			<table
-				class="table table-bordered Tbl1"
-				id="dataTable"
-				width="100%"
-				cellspacing="0"
-			>
-				<thead>
-					<tr>
-						<th class="w80">No</th>
-						<th>이름</th>
-						<th>아이디</th>
-						<th>연락처</th>
-						<th>검사상품</th>
-						<th class="w180">시작일자</th>
-						<th class="w180">완료일자</th>
-						<th class="w250">결과</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr
-						v-for="(item, idx) in TestRsltPayList"
-						:key="item.orgId"
-						class="Poit"
+				<div class="table-responsive">
+					<table
+						class="table table-bordered Tbl1"
+						id="dataTable"
+						width="100%"
+						cellspacing="0"
 					>
-						<td>{{ VirNum - idx }}</td>
-						<td>{{ item.PersnNm }}</td>
-						<td>{{ item.AcuntId }}</td>
-						<td>{{ item.Phone }}</td>
-						<td>{{ item.ProdtNm }}</td>
-						<td>
-							{{ item.StartDt == null ? '-' : getDateFormat(item.StartDt) }}
-						</td>
-						<td>{{ item.EndDt == null ? '-' : getDateFormat(item.EndDt) }}</td>
-						<td>
-							<div v-if="item.DoneYn == 'Y'">
-								<buton
-									class="btn btn-primary btn-sm w80"
-									@click.stop="showPnl('RsltView', item)"
-									>결과보기</buton
-								>
-								<!--
-								<buton
-									class="btn btn-primary btn-sm w80 ms-2"
-									@click.stop="showPnl('RsltAll', item)"
-									>Down</buton
-								>
-								-->
-								<buton
-									class="btn btn-primary btn-sm w80 ms-2"
-									@click.stop="popupTestRslt(item)"
-									>PRINT</buton
-								>
-							</div>
-							<div v-else-if="item.StartDt == null && item.EndDt == null">
-								-
-							</div>
-							<div v-else>진행중</div>
-						</td>
-					</tr>
-				</tbody>
-				<tfoot></tfoot>
-			</table>
-			<div class="mt-3">
-				<AppPagination
-					:CurPage="CurPage"
-					:CurBlock="CurBlock"
-					:TotCnt="TotCnt"
-					:RowCntInPage="Parm.paging.rowCntInPage"
-					:PageCntInBlock="Parm.paging.pageCntInBlock"
-					@Page="getTestRsltPayList"
-				></AppPagination>
+						<thead>
+							<tr>
+								<th class="w80">No</th>
+								<th>이름</th>
+								<th>아이디</th>
+								<th>연락처</th>
+								<th>검사상품</th>
+								<th class="w180">시작일자</th>
+								<th class="w180">완료일자</th>
+								<th class="w250">결과</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr
+								v-for="(item, idx) in TestRsltPayList"
+								:key="item.orgId"
+								class="Poit"
+							>
+								<td>{{ VirNum - idx }}</td>
+								<td>{{ item.PersnNm }}</td>
+								<td>{{ item.AcuntId }}</td>
+								<td>{{ item.Phone }}</td>
+								<td>{{ item.ProdtNm }}</td>
+								<td>
+									{{ item.StartDt == null ? '-' : getDateFormat(item.StartDt) }}
+								</td>
+								<td>
+									{{ item.EndDt == null ? '-' : getDateFormat(item.EndDt) }}
+								</td>
+								<td>
+									<div v-if="item.DoneYn == 'Y'">
+										<button
+											class="btn btn-primary btn-sm w80"
+											@click.stop="showPnl('RsltView', item)"
+										>
+											결과보기
+										</button>
+										<button
+											class="btn btn-primary btn-sm w80 ms-2"
+											@click.stop="popupTestRslt(item)"
+										>
+											PRINT
+										</button>
+									</div>
+									<div v-else-if="item.StartDt == null && item.EndDt == null">
+										-
+									</div>
+									<div v-else>진행중</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="mt-3">
+					<AppPagination
+						:CurPage="CurPage"
+						:CurBlock="CurBlock"
+						:TotCnt="TotCnt"
+						:RowCntInPage="Parm.paging.rowCntInPage"
+						:PageCntInBlock="Parm.paging.pageCntInBlock"
+						@Page="getTestRsltPayList"
+					></AppPagination>
+				</div>
 			</div>
-		</div>
-		<div v-if="Pnl.RsltView.show">
-			<RsltMain :ListItem="ListItem" @showPnl="showPnl"></RsltMain>
-		</div>
-		<div v-if="Pnl.RsltAll.show">
-			<RsltAll :ListItem="ListItem" @showPnl="showPnl"></RsltAll>
-		</div>
-	</template>
+			<div v-if="Pnl.RsltView.show">
+				<RsltMain :ListItem="ListItem" @showPnl="showPnl"></RsltMain>
+			</div>
+			<div v-if="Pnl.RsltAll.show">
+				<RsltAll :ListItem="ListItem" @showPnl="showPnl"></RsltAll>
+			</div>
+		</template>
+	</div>
 </template>
 
 <script setup>
@@ -145,16 +148,6 @@ import { useBase64Utils } from '@/plugins/base64.js';
 
 import RsltMain from '@/components/TestRslt/RsltMain.vue';
 import RsltAll from '@/components/TestRslt/RsltAll.vue';
-
-// Props / Emit  ****************************
-
-// Hook	 ************************************
-
-onMounted(() => {
-	getTestRsltPayList(1);
-});
-
-// Model / Data *****************************
 
 const { vAlert, vSuccess } = useAlert();
 const dayjs = inject('dayjs');
@@ -188,14 +181,12 @@ const CurPage = ref(1);
 const CurBlock = ref(1);
 const TestRsltPayList = ref([]);
 const VirNum = ref(1);
+const loading = ref(false);
+const error = ref(null);
 
-var windowRef = null;
-
-// Html ref  ********************************
+let windowRef = null;
 
 const txtSrchStr = ref(null);
-
-// Axios / Route  ***************************
 
 const Procs = ref({
 	getTestRsltPayList: { path: '/api/Test/getTestRsltPayList', loading: false },
@@ -217,68 +208,44 @@ const { data, execUrl, reqUrl } = useAxios(
 						(Parm.value.paging.page - 1) * Parm.value.paging.rowCntInPage;
 
 					if (TotCnt.value == 0) vSuccess('조회된 데이터가 없습니다.');
-
 					break;
 			}
+			loading.value = false;
 		},
 		onError: err => {
 			vAlert(err.message);
-			// Procs의 모든 속성에 대해 반복문을 실행하여 loading 값을 true로 변경
-			for (const key in Procs.value) {
-				if (Object.hasOwnProperty.call(Procs.value, key)) {
-					Procs.value[key].loading = false;
-				}
-			}
+			error.value = err;
+			loading.value = false;
 		},
 	},
 );
 
-// Modal ************************************
-
-// Watch *************************************
-
-// Method ************************************
-
-// Route	***********************************
+onMounted(() => {
+	getTestRsltPayList(1);
+});
 
 const showPnl = (pnlNm, item) => {
-	//router.push({ name: nm, params: p });
-	switch (pnlNm) {
-		case 'RsltList':
-			Pnl.value.RsltList.show = true;
-			Pnl.value.RsltView.show = false;
-			Pnl.value.RsltAll.show = false;
-			pnlPath.value = '';
+	Object.keys(Pnl.value).forEach(key => {
+		Pnl.value[key].show = key === pnlNm;
+	});
 
-			break;
-		case 'RsltView':
-			Pnl.value.RsltList.show = false;
-			Pnl.value.RsltView.show = true;
-			Pnl.value.RsltAll.show = false;
-			pnlPath.value = ' > 결과보기';
-
-			ListItem.value = item;
-			break;
-		case 'RsltAll':
-			Pnl.value.RsltList.show = false;
-			Pnl.value.RsltView.show = false;
-			Pnl.value.RsltAll.show = true;
-			pnlPath.value = ' > 결과보기';
-
-			ListItem.value = item;
-			break;
+	if (pnlNm !== 'RsltList') {
+		pnlPath.value = ' > 결과보기';
+		ListItem.value = item;
+	} else {
+		pnlPath.value = '';
 	}
 };
-
-// Method	************************************
 
 const chageRowCntInPage = () => {
 	getTestRsltPayList(1);
 };
 
-// 검사결과자 조회
 const getTestRsltPayList = async page => {
-	page = typeof no === 'object' && page !== null ? 1 : page;
+	loading.value = true;
+	error.value = null;
+
+	page = typeof page === 'object' && page !== null ? 1 : page;
 	CurBlock.value = Math.ceil(page / Parm.value.paging.pageCntInBlock);
 	CurPage.value = page;
 	Parm.value.paging.page = page;
@@ -288,7 +255,7 @@ const getTestRsltPayList = async page => {
 };
 
 const getDateFormat = dt => {
-	return dt == '' ? '-' : dayjs(dt).format('YYYY-MM-DD');
+	return dt ? dayjs(dt).format('YYYY-MM-DD') : '-';
 };
 
 const popupTestRslt = item => {
@@ -301,8 +268,6 @@ const popupTestRslt = item => {
 	const parm = encodeBase64(JSON.stringify(Parm));
 	let uri = `TestRsltAll?p=${parm}`;
 
-	//localhost:5200/QuestMain?TestId=1&QuestPageId=2
-
 	if (windowRef != null && !windowRef.closed) {
 		windowRef.focus();
 		return;
@@ -310,34 +275,12 @@ const popupTestRslt = item => {
 
 	const width = screen.width;
 	const height = screen.height;
+	let left = (screen.width - width) / 2;
+	let top = (screen.height - height) / 2;
+	let attr = `top=${top}, left=${left}, width=${width}, height=${height}, resizable=yes,status=no,scrollbars=yes`;
 
-	let left = screen.width ? (screen.width - width) / 2 : 0;
-	let top = screen.height ? (screen.height - height) / 2 : 0;
-
-	let attr =
-		'top=' +
-		top +
-		', left=' +
-		left +
-		', width=' +
-		width +
-		', height=' +
-		height +
-		', resizable=yes,status=no,scrollbars=yes';
-
-	// 1. 윈도우 팝업 띄우기
 	windowRef = window.open(uri, '', attr);
-	//	window.open(uri, '', attr);
-	/**
-	if (!windowRef && windowRef.closed) {
-		//windowRef.addEventListener('beforeunload', this.evtClose);
-	} else {
-		windowRef.focus();
-	}
-		 */
 };
-
-// Etc  **************************************
 
 const validNotBlank = (val, tit, obj) => {
 	val = typeof val != 'string' ? val.toString() : val;
@@ -353,4 +296,109 @@ const validNotBlank = (val, tit, obj) => {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+@import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
+
+.test-result-management {
+	padding: 20px;
+}
+
+.TitPage {
+	font-size: 24px;
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+
+.SrchBox,
+.FunBox {
+	margin-bottom: 20px;
+}
+
+.Tbl1 {
+	width: 100%;
+	margin-bottom: 1rem;
+	color: #212529;
+	vertical-align: top;
+	border-color: #dee2e6;
+
+	th,
+	td {
+		padding: 0.75rem;
+		vertical-align: middle;
+		color: #000; // Ensure the text is visible
+	}
+
+	thead th {
+		background-color: #f8f9fa;
+		border-bottom: 2px solid #dee2e6;
+		color: #000; // Ensure the text is visible in the header
+	}
+
+	tbody tr:hover {
+		background-color: rgba(0, 123, 255, 0.075);
+	}
+}
+
+.btn-sm {
+	padding: 0.25rem 0.5rem;
+	font-size: 0.875rem;
+}
+
+.w80 {
+	width: 80px;
+}
+.w100 {
+	width: 100px;
+}
+.w180 {
+	width: 180px;
+}
+.w250 {
+	width: 250px;
+}
+
+// DataTables specific styles
+.dataTables_wrapper {
+	.dataTables_length,
+	.dataTables_filter {
+		margin-bottom: 1rem;
+	}
+
+	.dataTables_info,
+	.dataTables_paginate {
+		margin-top: 1rem;
+	}
+
+	.paginate_button {
+		padding: 0.5rem 0.75rem;
+		margin-left: 2px;
+		border: 1px solid #dee2e6;
+		background-color: #fff;
+		color: #007bff;
+
+		&:hover,
+		&.current {
+			background-color: #007bff;
+			color: #fff;
+		}
+	}
+}
+
+@media (max-width: 768px) {
+	.SrchBox,
+	.FunBox {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.dataTables_length,
+	.dataTables_filter {
+		margin: 0.5rem 0;
+	}
+
+	.table-responsive {
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+}
+</style>

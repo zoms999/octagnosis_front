@@ -49,7 +49,7 @@ const handleLogout = () => {
 <style scoped>
 .header {
 	background-color: #34495e;
-	padding: 10px 0;
+	padding: 22px 0;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 

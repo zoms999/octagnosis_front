@@ -1,35 +1,27 @@
 <template>
-	<div class="main">
-		<div class="container-flude">
+	<div class="dashboard">
+		<div class="container">
 			<div class="row">
-				<div class="col-3">
-					<div class="tit">최근등록 - 개인 & 멤버</div>
-					<div class="box1 color1" v-for="(item, idx) in List1" :key="idx">
-						<div>{{ dayjs(item.RegDt).format('YYYY-MM-DD') }}</div>
-						<div>{{ item.PersnNm }} ({{ item.AcuntId }})</div>
-					</div>
-				</div>
-				<div class="col-3">
-					<div class="tit">최근등록 기관</div>
-					<div class="box1 color2" v-for="(item, idx) in List2" :key="idx">
-						<div>{{ dayjs(item.RegDt).format('YYYY-MM-DD') }}</div>
-						<div>{{ item.CompyNm }} ({{ item.AcuntId }})</div>
-					</div>
-				</div>
-				<div class="col-3">
-					<div class="tit">검사완료 - 멤버</div>
-					<div class="box1 color3" v-for="(item, idx) in List3" :key="idx">
-						<div>
-							{{ dayjs(item.EndDt).format('YYYY-MM-DD') }} / {{ item.CompyNm }}
+				<div
+					class="col-md-3"
+					v-for="(list, index) in [List1, List2, List3, List4]"
+					:key="index"
+				>
+					<div class="card">
+						<div class="card-header">{{ titles[index] }}</div>
+						<div class="card-body">
+							<div class="item" v-for="(item, idx) in list" :key="idx">
+								<div class="date">
+									{{ dayjs(item.RegDt || item.EndDt).format('YYYY-MM-DD') }}
+								</div>
+								<div class="name">
+									{{ item.PersnNm || item.CompyNm }} ({{ item.AcuntId }})
+								</div>
+								<div class="company" v-if="item.CompyNm && index === 2">
+									{{ item.CompyNm }}
+								</div>
+							</div>
 						</div>
-						<div>{{ item.PersnNm }} ({{ item.AcuntId }})</div>
-					</div>
-				</div>
-				<div class="col-3">
-					<div class="tit">검사완료 - 개인</div>
-					<div class="box1 color4" v-for="(item, idx) in List4" :key="idx">
-						<div>{{ dayjs(item.EndDt).format('YYYY-MM-DD') }}</div>
-						<div>{{ item.PersnNm }} ({{ item.AcuntId }})</div>
 					</div>
 				</div>
 			</div>
@@ -130,105 +122,81 @@ const validNotBlank = (val, tit, obj) => {
 	}
 	return true;
 };
+
+const titles = [
+	'최근등록 - 개인 & 멤버',
+	'최근등록 기관',
+	'검사완료 - 멤버',
+	'검사완료 - 개인',
+];
 </script>
 
 <style scoped>
-.main {
+.dashboard {
 	padding: 30px;
+	background-color: #f5f5f5;
 }
 
-.tit {
-	font-size: 1.2rem;
-	border: 1px solid #cacaca;
+.card {
+	border-radius: 10px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	margin-bottom: 20px;
+	overflow: hidden;
+	transition: all 0.3s ease;
+}
+
+.card:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
 	background-color: #418b89;
-	color: #ffffff;
-	padding: 5px 5px 5px 10px;
-	border-radius: 10px 10px 0px 0px;
+	color: white;
+	font-size: 1.2rem;
+	padding: 15px;
+	border-bottom: none;
 }
 
-.box1 {
-	border-radius: 5px;
-	border: 1px solid #cacaca;
-	margin: 10px 0 5px 0;
-	padding: 3px 8px 3px 8px;
-}
-.box1.color1 {
-	border-bottom: 2px solid #db2828;
-}
-.box1.color2 {
-	border-bottom: 2px solid #2185d0;
-}
-.box1.color3 {
-	border-bottom: 2px solid #21ba45;
-}
-.box1.color4 {
-	border-bottom: 2px solid #a333c8;
-}
-.box1 > div:nth-child(1) {
-	font-size: 1.05rem;
-	padding: 5px 5px 0px 5px;
-}
-.box1 > div:nth-child(2) {
-	font-size: 1.2rem;
-	padding: 5px;
-	margin: 0 0 0 30px;
-	color: rgb(120, 120, 120);
+.card-body {
+	padding: 0;
 }
 
-.box2 {
-	border-radius: 5px;
-	border: 1px solid #cacaca;
-	margin: 10px 0 5px 0;
-	padding: 5px 8px 5px 8px;
-	border-bottom: 2px solid #cacaca;
-	border-right: 2px solid #cacaca;
-}
-.box2 > div:nth-child(1) {
-	font-size: 1.2rem;
-	padding: 5px 5px 0px 5px;
-}
-.box2 > div:nth-child(2) {
-	font-size: 1.05rem;
-	padding: 5px;
-	margin: 0 0 0 20px;
-	color: rgb(120, 120, 120);
+.item {
+	border-bottom: 1px solid #e0e0e0;
+	padding: 15px;
+	transition: background-color 0.2s ease;
 }
 
-.box3 {
-	border-radius: 5px;
-	border: 1px solid #cacaca;
-	margin: 10px 0 5px 0;
-	padding: 5px 8px 5px 8px;
-	border-bottom: 2px solid #cacaca;
-	border-right: 2px solid #cacaca;
-}
-.box3 > div:nth-child(1) {
-	font-size: 1.2rem;
-	padding: 5px 5px 0px 5px;
-}
-.box3 > div:nth-child(2) {
-	font-size: 1.05rem;
-	padding: 5px;
-	margin: 0 0 0 20px;
-	color: rgb(120, 120, 120);
+.item:last-child {
+	border-bottom: none;
 }
 
-.box4 {
-	border-radius: 5px;
-	border: 1px solid #cacaca;
-	margin: 10px 0 5px 0;
-	padding: 5px 8px 5px 8px;
-	border-bottom: 2px solid #cacaca;
-	border-right: 2px solid #cacaca;
+.item:hover {
+	background-color: #f9f9f9;
 }
-.box4 > div:nth-child(1) {
-	font-size: 1.2rem;
-	padding: 5px 5px 0px 5px;
+
+.date {
+	font-size: 0.9rem;
+	color: #666;
+	margin-bottom: 5px;
 }
-.box4 > div:nth-child(2) {
-	font-size: 1.05rem;
-	padding: 5px;
-	margin: 0 0 0 20px;
-	color: rgb(120, 120, 120);
+
+.name {
+	font-size: 1.1rem;
+	color: #333;
+	font-weight: 500;
+}
+
+.company {
+	font-size: 0.9rem;
+	color: #666;
+	margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+	.col-md-3 {
+		margin-bottom: 20px;
+	}
 }
 </style>

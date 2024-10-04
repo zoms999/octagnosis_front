@@ -30,7 +30,7 @@
 					Remember me
 				</label>
 			</div>
-			<button class="btn btn-lg btn-primary" @click="submit()">Sign in</button>
+			<button class="btn btn-lg btn-primary" @click="submit()">로그인</button>
 			<p class="mt-5 mb-3 text-muted">
 				&copy; Copyright 1999. 한국진로적성센터. All rights reserved.
 			</p>

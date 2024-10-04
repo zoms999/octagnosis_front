@@ -401,114 +401,127 @@ const getQuestList = questPageId => {
 // Etc	**************************************
 </script>
 
-<style>
-.th1 {
-	padding: 1px;
-}
-.th1 th {
-	padding: 1px !important;
-	font-size: 1rem;
-	background-color: rgb(120, 120, 120) !important;
-}
-.th2 {
-	padding: 1px;
-}
-.th2 th {
-	height: 40px !important;
-	padding: 1px !important;
-	font-size: 1rem;
-}
-.seprator1 {
-	border-right: 2px solid #ffffff !important;
-}
-.seprator1 {
-	border-right: 2px solid #ffffff !important;
+<style scoped>
+/* 페이지 제목 */
+.page-header {
+	font-size: 24px;
+	font-weight: bold;
+	margin-bottom: 20px;
+	padding-bottom: 10px;
+	border-bottom: 2px solid #007bff; /* 파란색 선 추가 */
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
-.QuestList {
-	border-bottom: 1px solid #cacaca;
-	margin: 0px !important;
-	padding: 3px;
+/* 파란색 선과 맞춰지는 레이아웃 */
+.page-header::after {
+	content: '';
+	flex-grow: 1;
+	height: 2px;
+	background-color: #007bff; /* 파란색 선 */
+	margin-left: 10px; /* 타이틀과 선 사이 여백 */
 }
-.QuestList > div:nth-child(1) {
-	width: 50px;
+
+/* 검색 및 페이지당 줄 수 선택 */
+.input-group-text {
+	font-size: 14px;
+}
+
+.search-input {
+	font-size: 14px;
+	padding: 6px 10px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}
+
+/* 테이블 */
+.table {
+	width: 100%;
+	margin-top: 20px;
+	border-collapse: collapse;
+}
+
+.table-bordered {
+	border: 1px solid #dee2e6;
+}
+
+.table thead th {
+	background-color: #f7f7f7;
+	border-bottom: 2px solid #dee2e6;
 	text-align: center;
-	border: 0px solid red;
-	padding: 4px 0 0 0;
-}
-.QuestList > div:nth-child(2) {
-	padding: 4px 5px 0 5px;
-	text-align: left;
-}
-.QuestList > div:nth-child(3) {
-	width: 100px;
-	padding: 4px 0 0 0;
-}
-.QuestList > div:nth-child(4) {
-	width: 100px;
-	padding: 4px 0 0 0;
-}
-.QuestList > div:nth-child(5) {
-	width: 100px;
-	padding: 4px 0 0 0;
-}
-.QuestList > div:nth-child(6) {
-	width: 60px;
-	padding: 2px;
+	padding: 10px;
+	font-size: 14px;
+	font-weight: bold;
 }
 
-.Tbl11 {
-	border-top: 1px solid #ffffff;
-	border-left: 1px solid #ffffff;
-	border-right: 1px solid #ffffff;
-	border-bottom: 1px solid #ffffff;
-	border-collapse: collapse !important;
-	margin: 10px 0px 10px 0px !important;
-}
-
-.Tbl11 thead tr {
-	padding: 1rem 1rem;
+.table tbody td {
 	text-align: center;
+	padding: 8px;
+	font-size: 14px;
+	border: 1px solid #dee2e6;
 }
 
-.Tbl11 thead th {
-	padding: 0.6rem 0.3rem;
-	border: 1px solid #cacaca;
-	background-color: #418b89;
-	color: #ffffff;
-	font-size: 1.1rem;
+.table-striped tbody tr:nth-of-type(odd) {
+	background-color: #f9f9f9;
 }
 
-.Tbl11 thead td {
-	padding: 0.6rem 0.3rem;
-	border: 1px solid #cacaca;
-	background-color: #418b89;
-	color: #ffffff;
-	font-size: 1.1rem;
-}
-
-.Tbl11 tbody tr {
-	border: 1px solid #cacaca;
-}
-
-.Tbl11 tbody tr:hover {
+.table-hover tbody tr:hover {
 	background-color: #f1f1f1;
 }
 
-.Tbl11 tbody td {
-	padding: 3px;
-	font-size: 1rem;
-	text-align: center;
-	line-height: 1.85rem;
-	border: 1px solid #cacaca;
-	color: rgb(50, 50, 50);
-	background-color: transparent;
-	vertical-align: middle;
+/* 페이지네이션 */
+.pagination-controls {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 15px;
 }
 
+.pagination-controls button {
+	margin-left: 5px;
+	padding: 5px 10px;
+	font-size: 14px;
+	background-color: #007bff;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.pagination-controls button:disabled {
+	background-color: #d6d6d6;
+	cursor: not-allowed;
+}
+
+.pagination-controls span {
+	margin: 0 10px;
+	font-size: 14px;
+}
+/* 중앙 정렬 */
 .NotSelect {
 	padding: 100px;
 	text-align: center;
 	color: #aaaaaa;
+	font-size: 16px; /* 필요 시 폰트 크기 조정 */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%; /* 부모 요소 높이 전체 사용 */
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+	.input-group-text,
+	.search-input {
+		font-size: 12px;
+	}
+	.table thead th,
+	.table tbody td {
+		font-size: 12px;
+	}
+	.pagination-controls button {
+		font-size: 12px;
+	}
 }
 </style>
