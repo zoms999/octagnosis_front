@@ -97,7 +97,7 @@
 								:value="zip"
 								@input="$emit('update:zip', $event.target.value)"
 							/>
-							<button class="btn btn-primary IconBtn">
+							<button class="btn btn-primary IconBtn" @click="popupAddr">
 								<span class="material-icons"> search </span>
 							</button>
 						</div>
@@ -140,6 +140,7 @@
 							class="form-control"
 							:value="addr3"
 							@input="$emit('update:addr3', $event.target.value)"
+							ref="txtAddr3"
 						/>
 					</div>
 				</div>
@@ -546,12 +547,19 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAlert } from '@/hooks/useAlert';
 import axios from 'axios';
 
 import ManagerLogList from '@/components/manager/ManagerLogList.vue';
+
+onMounted(() => {
+	const script = document.createElement('script');
+	script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+	script.async = true;
+	document.body.appendChild(script);
+});
 
 defineOptions({
 	inheritAttrs: false,
@@ -599,6 +607,7 @@ defineEmits([
 	'update:addr3',
 ]);
 console.log('member.email' + member.email);
+const txtAddr3 = ref();
 
 const route = useRoute();
 // Computed property to determine if readonly should be applied
@@ -650,6 +659,23 @@ const closeModal = () => {
 	connectionLogShow.value = false;
 	authChangeLogShow.value = false;
 	resultHisLogShow.value = false;
+};
+
+// 우편번호
+const popupAddr = () => {
+	new daum.Postcode({
+		oncomplete: function (data) {
+			props.member.zip = data.zonecode;
+			props.member.addrStret = data.roadAddress;
+			props.member.addrLotNum = data.jibunAddress;
+			props.member.addr2 = data.buildingName;
+			txtAddr3.value.focus();
+
+			//alert(data);
+			// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+			// 예제를 참고하여 다양한 활용법을 확인해 보세요.
+		},
+	}).open();
 };
 </script>
 
