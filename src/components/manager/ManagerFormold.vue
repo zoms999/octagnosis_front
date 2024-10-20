@@ -56,13 +56,13 @@
 						<div class="card-body">
 							<form>
 								<div class="mb-3">
-									<label class="small mb-1" for="email">이메일</label>
+									<label class="small mb-1" for="이메일">이메일</label>
 									<div class="input-group">
 										<input
 											class="form-control"
 											id="email"
 											type="text"
-											placeholder="Enter your email"
+											placeholder="이메일을 입력하세요"
 											:value="email"
 											@input="$emit('update:email', $event.target.value)"
 										/>
@@ -77,7 +77,7 @@
 											class="form-control"
 											id="mngrNm"
 											type="text"
-											placeholder="Enter your name"
+											placeholder="이름을 입력하세요"
 											:value="mngrNm"
 											@input="$emit('update:mngrNm', $event.target.value)"
 										/>
@@ -95,7 +95,7 @@
 											class="form-control"
 											id="phone"
 											type="text"
-											placeholder="Enter your phone"
+											placeholder="휴대전화를 입력하세요."
 											:value="phone"
 											@input="$emit('update:phone', $event.target.value)"
 										/>

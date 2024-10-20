@@ -51,15 +51,6 @@ button,
 textarea,
 select { appearance: none; -moz-appearance: none; -webkit-appearance: none; }
 
-input::-ms-expand,
-button::-ms-expand,
-textarea::-ms-expand,
-select::-ms-expand{ display: none; }
-
-*::placeholder{ color: #CFD4DA; }
-*::-webkit-input-placeholder{ color: #CFD4DA; }
-*:-ms-input-placeholder{ color: #CFD4DA; }
-*:-mos-input-placeholder{ color: #CFD4DA; }
 
 @media screen and (max-width:1212px) {
     

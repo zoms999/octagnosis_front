@@ -23,7 +23,7 @@
 
 		<div class="FunBox">
 			<div>
-				<div class="w100">Total : {{ TotCnt }}</div>
+				<div class="w100">전체개수 : {{ TotCnt }}</div>
 				<div>
 					<select
 						class="form-select"
@@ -57,7 +57,7 @@
 				>
 					<thead>
 						<tr>
-							<th>No.</th>
+							<th>순번</th>
 							<th>활동</th>
 							<th>이름</th>
 							<th>이메일</th>

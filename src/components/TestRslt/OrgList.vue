@@ -9,7 +9,7 @@
 		>
 			<thead>
 				<tr>
-					<th class="w60">No</th>
+					<th class="w60">순번</th>
 					<th>기관명</th>
 					<th class="w170">사업자번호</th>
 					<th class="w160">연락처</th>

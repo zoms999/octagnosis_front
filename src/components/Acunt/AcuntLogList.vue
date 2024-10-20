@@ -36,7 +36,7 @@
 		>
 			<thead>
 				<tr>
-					<th class="w60">No</th>
+					<th class="w60">순번</th>
 					<th class="w100">처리자</th>
 					<th class="w180">처리일</th>
 					<th class="w220">조작유형</th>
@@ -56,7 +56,7 @@
 		</table>
 		<div class="FunBox mt-4">
 			<div class="d-flex justify-content-start align-items-center">
-				<div class="w100">Total : {{ TotCnt }}</div>
+				<div class="w100">전체개수 : {{ TotCnt }}</div>
 				<div>
 					<select
 						class="form-select"

@@ -100,7 +100,7 @@
 		>
 			<thead>
 				<tr>
-					<th class="w60">No</th>
+					<th class="w60">순번</th>
 					<th class="w120">이름</th>
 					<th class="w120">휴대전화</th>
 					<th class="w120">이메일</th>
@@ -134,7 +134,7 @@
 		</table>
 		<div class="FunBox mt-4">
 			<div class="d-flex justify-content-start align-items-center">
-				<div class="w100">Total : {{ TotCnt }}</div>
+				<div class="w100">전체개수 : {{ TotCnt }}</div>
 				<div>
 					<select
 						class="form-select"

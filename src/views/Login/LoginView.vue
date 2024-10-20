@@ -11,7 +11,7 @@
 					@keyup.enter="submit()"
 					v-model="state.form.email"
 				/>
-				<label for="floatingInput">Email address</label>
+				<label for="floatingInput">이메일</label>
 			</div>
 			<div class="form-floating">
 				<input
@@ -22,12 +22,12 @@
 					@keyup.enter="submit()"
 					v-model="state.form.password"
 				/>
-				<label for="floatingPassword">Password</label>
+				<label for="floatingPassword">비밀번호</label>
 			</div>
 			<div class="checkbox mb-3 text-center">
 				<label>
 					<input type="checkbox" value="remember-me" @keyup.enter="submit()" />
-					Remember me
+					저장
 				</label>
 			</div>
 			<button class="btn btn-lg btn-primary" @click="submit()">로그인</button>

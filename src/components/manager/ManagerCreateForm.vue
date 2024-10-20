@@ -16,7 +16,7 @@
 							id="email"
 							class="form-control"
 							type="text"
-							placeholder="Enter your email"
+							placeholder="이메일을 입력하세요"
 							:value="email"
 							@input="$emit('update:email', $event.target.value)"
 						/>
@@ -30,7 +30,7 @@
 							id="mngrNm"
 							class="form-control"
 							type="text"
-							placeholder="Enter your name"
+							placeholder="이름을 입력하세요"
 							:value="mngrNm"
 							@input="$emit('update:mngrNm', $event.target.value)"
 						/>
@@ -55,7 +55,7 @@
 						class="form-control"
 						id="phone"
 						type="text"
-						placeholder="Enter your phone"
+						placeholder="휴대전화를 입력하세요."
 						:value="phone"
 						@input="$emit('update:phone', $event.target.value)"
 					/>
@@ -67,7 +67,7 @@
 							class="form-control"
 							id="tel"
 							type="text"
-							placeholder="연락처"
+							placeholder="추가연락처를 입력하세요"
 							:value="tel"
 							@input="$emit('update:tel', $event.target.value)"
 						/>
