@@ -15,13 +15,13 @@
 								<dt>
 									<img src="@/assets/img/img_star.png" alt="" />
 								</dt>
-								<dd>{{ Rslt1[0].thkm }}</dd>
+								<dd><div class="Box1">{{ Rslt1[0].thkm }}</div></dd>
 							</dl>
 							<dl>
 								<dt>
 									<img src="@/assets/img/img_star.png" alt="" />
 								</dt>
-								<dd>{{ Rslt1[0].thks }}</dd>
+								<dd><div class="Box1">{{ Rslt1[0].thks }}</div></dd>
 							</dl>
 						</div>
 					</div>
@@ -221,6 +221,11 @@ const setChart = () => {
 }
 .chart2 {
 	width:50%; height:300px;
+}
+
+.Box1 {
+	margin:8px 0 0 0;
+	font-weight:semi-bold;
 }
 
 </style>

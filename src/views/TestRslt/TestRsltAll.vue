@@ -139,6 +139,7 @@ onMounted(() => {
 	ListItem.value = JSON.parse(decodeBase64(route.query.p));
 
 	console.log('Props.ListItem.ProdtId', ListItem.value.ProdtId);
+
 	switch (ListItem.value.ProdtId) {
 		case 6:
 		case 7:
@@ -153,6 +154,39 @@ onMounted(() => {
 			ShowRsltItems.value = RsltItems.value.filter(o =>
 				['1', '2', '3', '11'].includes(o.id),
 			);
+			break;
+		case 10001:
+			ShowRsltItems.value = RsltItems.value.filter(o => ['1'].includes(o.id));
+			break;
+		case 10002:
+			ShowRsltItems.value = RsltItems.value.filter(o => ['2'].includes(o.id));
+			break;
+		case 10003:
+			ShowRsltItems.value = RsltItems.value.filter(o => ['3'].includes(o.id));
+			break;
+		case 10004:
+			ShowRsltItems.value = RsltItems.value.filter(o => ['4'].includes(o.id));
+			break;
+		case 10005:
+			ShowRsltItems.value = RsltItems.value.filter(o => ['5'].includes(o.id));
+			break;
+		case 10006:
+			ShowRsltItems.value = RsltItems.value.filter(o => ['6'].includes(o.id));
+			break;
+		case 10007:
+			ShowRsltItems.value = RsltItems.value.filter(o => ['7'].includes(o.id));
+			break;
+		case 10008:
+			ShowRsltItems.value = RsltItems.value.filter(o => ['8'].includes(o.id));
+			break;
+		case 10009:
+			ShowRsltItems.value = RsltItems.value.filter(o => ['9'].includes(o.id));
+			break;
+		case 10010:
+			ShowRsltItems.value = RsltItems.value.filter(o => ['10'].includes(o.id));
+			break;
+		case 10011:
+			ShowRsltItems.value = RsltItems.value.filter(o => ['11'].includes(o.id));
 			break;
 	}
 });

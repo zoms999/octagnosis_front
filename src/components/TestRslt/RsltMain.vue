@@ -20,6 +20,10 @@
 				<template v-else> 수정 </template>
 			</button>
 			-->
+			<button type="button" class="btn btn-primary ms-2" @click="popupTestRslt">
+				인쇄
+			</button>
+
 			<button
 				type="button"
 				class="btn btn-primary ms-2"
@@ -51,6 +55,7 @@
 			</div>
 		</div>
 	</div>
+
 	<AppError v-if="error" :message="error.message"></AppError>
 	<template v-else>
 		<div
@@ -127,6 +132,7 @@ import { useAxios } from '@/hooks/useAxios';
 import { ref, inject, defineEmits, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAlert } from '@/hooks/useAlert';
+import { useBase64Utils } from '@/plugins/base64.js';
 
 import UserInfo from '@/components/TestRslt/UserInfo.vue';
 import RsltTedcy1 from '@/components/TestRslt/RsltTedcy1.vue';
@@ -140,9 +146,13 @@ import RsltSubjt from '@/components/TestRslt/RsltSubjt.vue';
 import RsltJobDuty from '@/components/TestRslt/RsltJobDuty.vue';
 import RsltPrefer from '@/components/TestRslt/RsltPrefer.vue';
 
+const { encodeBase64 } = useBase64Utils();
+
 const { vAlert, vSuccess } = useAlert();
 const dayjs = inject('dayjs');
 const router = useRouter();
+
+let windowRef = null;
 
 // Props / Emit  ****************************
 
@@ -181,17 +191,17 @@ const Parm = ref({
 });
 
 const RsltItems = ref([
-	{ id: '1', activeYn: 'Y', tit: '개인정보' },
-	{ id: '2', activeYn: 'N', tit: '성향진단' },
-	{ id: '3', activeYn: 'N', tit: '성향분석' },
-	{ id: '4', activeYn: 'N', tit: '사고력' },
-	{ id: '5', activeYn: 'N', tit: '성향적합직업학과' },
-	{ id: '6', activeYn: 'N', tit: '역량진단' },
-	{ id: '7', activeYn: 'N', tit: '역량적합직업학과' },
-	{ id: '8', loadYn: 'Y', activeYn: 'N', tit: '학습' },
-	{ id: '9', loadYn: 'Y', activeYn: 'N', tit: '교과목' },
-	{ id: '10', loadYn: 'Y', activeYn: 'N', tit: '직무' },
-	{ id: '11', loadYn: 'Y', activeYn: 'N', tit: '선호도' },
+	{ id: '1', activeYn: 'Y', tit: '개인정보', TempProdtId: 10001 },
+	{ id: '2', activeYn: 'N', tit: '성향진단', TempProdtId: 10002 },
+	{ id: '3', activeYn: 'N', tit: '성향분석', TempProdtId: 10003 },
+	{ id: '4', activeYn: 'N', tit: '사고력', TempProdtId: 10004 },
+	{ id: '5', activeYn: 'N', tit: '성향적합직업학과', TempProdtId: 10005 },
+	{ id: '6', activeYn: 'N', tit: '역량진단', TempProdtId: 10006 },
+	{ id: '7', activeYn: 'N', tit: '역량적합직업학과', TempProdtId: 10007 },
+	{ id: '8', loadYn: 'Y', activeYn: 'N', tit: '학습', TempProdtId: 10008 },
+	{ id: '9', loadYn: 'Y', activeYn: 'N', tit: '교과목', TempProdtId: 10009 },
+	{ id: '10', loadYn: 'Y', activeYn: 'N', tit: '직무', TempProdtId: 10010 },
+	{ id: '11', loadYn: 'Y', activeYn: 'N', tit: '선호도', TempProdtId: 10011 },
 ]);
 
 const ShowRsltItems = ref([]);
@@ -254,6 +264,29 @@ const goTab = item => {
 	});
 };
 
+const popupTestRslt = () => {
+	const Parm = {
+		PersnNm: Props.ListItem.PersnNm,
+		AnsPrgrsId: Props.ListItem.AnsPrgrsId,
+		ProdtId: RsltItems.value.find(o => o.activeYn == 'Y').TempProdtId,
+		PersnId: Props.ListItem.PersnId,
+	};
+	const parm = encodeBase64(JSON.stringify(Parm));
+	let uri = `TestRsltAll?p=${parm}`;
+
+	if (windowRef != null && !windowRef.closed) {
+		windowRef.focus();
+		return;
+	}
+
+	const width = screen.width;
+	const height = screen.height;
+	let left = (screen.width - width) / 2;
+	let top = (screen.height - height) / 2;
+	let attr = `top=${top}, left=${left}, width=${width}, height=${height}, resizable=yes,status=no,scrollbars=yes`;
+
+	windowRef = window.open(uri, '', attr);
+};
 // Etc  *************************************
 </script>
 

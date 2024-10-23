@@ -20,14 +20,18 @@
 								<div class="tbl-row">
 									<div class="tbl-col data" style="width: 14.5rem">성별</div>
 									<div class="tbl-col data" style="width: calc(100% - 14.5rem)">
-										<strong>{{ Persn.sex == 'M' ? '남' : '여' }}</strong>
+										<strong>{{
+											Persn.sex == '' ? '=' : Persn.sex == 'M' ? '남' : '여'
+										}}</strong>
 									</div>
 								</div>
 								<div class="tbl-row">
 									<div class="tbl-col data" style="width: 14.5rem">생일</div>
 									<div class="tbl-col data" style="width: calc(100% - 14.5rem)">
 										<strong>{{
-											`${Persn.birthDate.toString().substring(0, 4)}-${Persn.birthDate.toString().substring(4, 6)}-${Persn.birthDate.toString().substring(6, 8)}`
+											Persn.birthDate !== null && Persn.birthDate.length == 8
+												? `${Persn.birthDate.toString().substring(0, 4)}-${Persn.birthDate.toString().substring(4, 6)}-${Persn.birthDate.toString().substring(6, 8)}`
+												: ''
 										}}</strong>
 									</div>
 								</div>
