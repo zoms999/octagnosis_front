@@ -79,8 +79,17 @@
 				<div class="col-1 lbl"><i></i>우편번호</div>
 				<div class="col-3">
 					<div class="input-group">
-						<input type="text" class="form-control" />
-						<button class="btn btn-primary IconBtn">
+						<input
+							type="text"
+							class="form-control"
+							:value="zip"
+							@input="$emit('update:zip', $event.target.value)"
+						/>
+						<button
+							type="button"
+							class="btn btn-primary IconBtn"
+							@click="popupAddr"
+						>
 							<span class="material-icons"> search </span>
 						</button>
 					</div>
@@ -123,6 +132,7 @@
 						class="form-control"
 						:value="addr3"
 						@input="$emit('update:addr3', $event.target.value)"
+						ref="txtAddr3"
 					/>
 				</div>
 			</div>
@@ -400,6 +410,20 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue';
+
+onMounted(() => {
+	const script = document.createElement('script');
+	script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+	script.async = true;
+	document.body.appendChild(script);
+});
+const txtAddr3 = ref();
+
+defineOptions({
+	inheritAttrs: false,
+});
+
 const props = defineProps({
 	mngrId: {
 		type: Number,
@@ -458,7 +482,7 @@ const props = defineProps({
 	addr2: String,
 	addr3: String,
 });
-defineEmits([
+const Emit = defineEmits([
 	'update:useYn',
 	'update:email',
 	'update:mngrNm',
@@ -478,6 +502,27 @@ defineEmits([
 	'update:addr2',
 	'update:addr3',
 ]);
+
+// 우편번호
+const popupAddr = () => {
+	new daum.Postcode({
+		oncomplete: function (data) {
+			//member.zip = data.zonecode;
+			//member.addrStret = data.roadAddress;
+			//member.addrLotNum = data.jibunAddress;
+			//member.addr2 = data.buildingName;
+			Emit('update:zip', data.zonecode);
+			Emit('update:addrStret', data.roadAddress);
+			Emit('update:addrLotNum', data.jibunAddress);
+			Emit('update:addr2', data.buildingName);
+			txtAddr3.value.focus();
+
+			//alert(data);
+			// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+			// 예제를 참고하여 다양한 활용법을 확인해 보세요.
+		},
+	}).open();
+};
 </script>
 
 <style lang="scss" scoped></style>

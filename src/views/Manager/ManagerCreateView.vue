@@ -18,6 +18,11 @@
 		v-model:authRsltView="form.authRsltView"
 		v-model:authLogView="form.authLogView"
 		v-model:authStati="form.authStati"
+		v-model:zip="form.zip"
+		v-model:addrStret="form.addrStret"
+		v-model:addrLotNum="form.addrLotNum"
+		v-model:addr2="form.addr2"
+		v-model:addr3="form.addr3"
 		@submit.prevent="save"
 	>
 		<template #actions>
@@ -68,10 +73,6 @@ const form = ref({
 	mngrNm: null,
 	phone: null,
 	tel: null,
-	addrStret: '',
-	addrLotNum: '',
-	addr2: '',
-	addr3: '',
 	authAdmin: null,
 	authOrg: null,
 	authPersn: null,
@@ -79,6 +80,11 @@ const form = ref({
 	authRsltView: null,
 	authLogView: null,
 	authStati: null,
+	zip: null,
+	addrStret: '',
+	addrLotNum: '',
+	addr2: '',
+	addr3: '',
 	insId: userMngrId.value,
 });
 

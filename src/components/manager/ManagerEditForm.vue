@@ -97,7 +97,11 @@
 								:value="zip"
 								@input="$emit('update:zip', $event.target.value)"
 							/>
-							<button class="btn btn-primary IconBtn" @click="popupAddr">
+							<button
+								type="button"
+								class="btn btn-primary IconBtn"
+								@click="popupAddr"
+							>
 								<span class="material-icons"> search </span>
 							</button>
 						</div>
@@ -586,7 +590,7 @@ const member = defineProps({
 	addr2: String,
 	addr3: String,
 });
-defineEmits([
+const Emit = defineEmits([
 	'update:useYn',
 	'update:email',
 	'update:mngrNm',
@@ -665,10 +669,14 @@ const closeModal = () => {
 const popupAddr = () => {
 	new daum.Postcode({
 		oncomplete: function (data) {
-			props.member.zip = data.zonecode;
-			props.member.addrStret = data.roadAddress;
-			props.member.addrLotNum = data.jibunAddress;
-			props.member.addr2 = data.buildingName;
+			//member.zip = data.zonecode;
+			//member.addrStret = data.roadAddress;
+			//member.addrLotNum = data.jibunAddress;
+			//member.addr2 = data.buildingName;
+			Emit('update:zip', data.zonecode);
+			Emit('update:addrStret', data.roadAddress);
+			Emit('update:addrLotNum', data.jibunAddress);
+			Emit('update:addr2', data.buildingName);
 			txtAddr3.value.focus();
 
 			//alert(data);

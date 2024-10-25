@@ -373,7 +373,11 @@
 						v-model="Org.zip"
 						disabled="disabled"
 					/>
-					<button class="btn btn-primary IconBtn" @click="popupAddr">
+					<button
+						type="button"
+						class="btn btn-primary IconBtn"
+						@click="popupAddr"
+					>
 						<span class="material-icons"> search </span>
 					</button>
 				</div>
