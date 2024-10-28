@@ -60,7 +60,12 @@ const { vAlert, vSuccess } = useAlert();
 
 // Props / Emit  ****************************
 
-const Props = defineProps({ ListItem: { type: Object } });
+const Props = defineProps({
+	ListItem: {
+		type: Object,
+		required: true
+	}
+});
 
 // Hook  ************************************
 onMounted(() => {

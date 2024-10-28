@@ -24,11 +24,11 @@
 			</div>
 			<div
 				v-show="RsltItems[1].activeYn == 'Y'"
-				v-if="ShowRsltItems.filter(o => o.id == '2').length > 0"
+				v-if="ShowRsltItems.filter(o => o.id == '2').length > 0 && ListItem"
 				class="centered-section"
 			>
 				<div class="TabTit">성향진단</div>
-				<RsltTedcy1 :ListItem="ListItem"></RsltTedcy1>
+				<RsltTedcy1 v-if="ListItem" :ListItem="ListItem"></RsltTedcy1>
 			</div>
 			<div
 				class="centered-section"
@@ -135,59 +135,71 @@ const route = useRoute();
 
 // Hook  ************************************
 
-onMounted(() => {
-	ListItem.value = JSON.parse(decodeBase64(route.query.p));
+onMounted(async () => {
+	try {
+		if (!route.query.p) return;
+		ListItem.value = JSON.parse(decodeBase64(route.query.p));
 
-	console.log('Props.ListItem.ProdtId', ListItem.value.ProdtId);
+		console.log('Props.ListItem.ProdtId', ListItem.value?.ProdtId);
 
-	switch (ListItem.value.ProdtId) {
-		case 6:
-		case 7:
-		case 8:
-			ShowRsltItems.value = RsltItems.value.filter(o =>
-				['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'].includes(
-					o.id,
-				),
-			);
-			break;
-		case 9:
-			ShowRsltItems.value = RsltItems.value.filter(o =>
-				['1', '2', '3', '11'].includes(o.id),
-			);
-			break;
-		case 10001:
-			ShowRsltItems.value = RsltItems.value.filter(o => ['1'].includes(o.id));
-			break;
-		case 10002:
-			ShowRsltItems.value = RsltItems.value.filter(o => ['2'].includes(o.id));
-			break;
-		case 10003:
-			ShowRsltItems.value = RsltItems.value.filter(o => ['3'].includes(o.id));
-			break;
-		case 10004:
-			ShowRsltItems.value = RsltItems.value.filter(o => ['4'].includes(o.id));
-			break;
-		case 10005:
-			ShowRsltItems.value = RsltItems.value.filter(o => ['5'].includes(o.id));
-			break;
-		case 10006:
-			ShowRsltItems.value = RsltItems.value.filter(o => ['6'].includes(o.id));
-			break;
-		case 10007:
-			ShowRsltItems.value = RsltItems.value.filter(o => ['7'].includes(o.id));
-			break;
-		case 10008:
-			ShowRsltItems.value = RsltItems.value.filter(o => ['8'].includes(o.id));
-			break;
-		case 10009:
-			ShowRsltItems.value = RsltItems.value.filter(o => ['9'].includes(o.id));
-			break;
-		case 10010:
-			ShowRsltItems.value = RsltItems.value.filter(o => ['10'].includes(o.id));
-			break;
-		case 10011:
-			ShowRsltItems.value = RsltItems.value.filter(o => ['11'].includes(o.id));
-			break;
+		if (!ListItem.value?.ProdtId) return;
+
+		switch (ListItem.value.ProdtId) {
+			case 6:
+			case 7:
+			case 8:
+				ShowRsltItems.value = RsltItems.value.filter(o =>
+					['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'].includes(
+						o.id,
+					),
+				);
+				break;
+			case 9:
+				ShowRsltItems.value = RsltItems.value.filter(o =>
+					['1', '2', '3', '11'].includes(o.id),
+				);
+				break;
+			case 10001:
+				ShowRsltItems.value = RsltItems.value.filter(o => ['1'].includes(o.id));
+				break;
+			case 10002:
+				ShowRsltItems.value = RsltItems.value.filter(o => ['2'].includes(o.id));
+				break;
+			case 10003:
+				ShowRsltItems.value = RsltItems.value.filter(o => ['3'].includes(o.id));
+				break;
+			case 10004:
+				ShowRsltItems.value = RsltItems.value.filter(o => ['4'].includes(o.id));
+				break;
+			case 10005:
+				ShowRsltItems.value = RsltItems.value.filter(o => ['5'].includes(o.id));
+				break;
+			case 10006:
+				ShowRsltItems.value = RsltItems.value.filter(o => ['6'].includes(o.id));
+				break;
+			case 10007:
+				ShowRsltItems.value = RsltItems.value.filter(o => ['7'].includes(o.id));
+				break;
+			case 10008:
+				ShowRsltItems.value = RsltItems.value.filter(o => ['8'].includes(o.id));
+				break;
+			case 10009:
+				ShowRsltItems.value = RsltItems.value.filter(o => ['9'].includes(o.id));
+				break;
+			case 10010:
+				ShowRsltItems.value = RsltItems.value.filter(o =>
+					['10'].includes(o.id),
+				);
+				break;
+			case 10011:
+				ShowRsltItems.value = RsltItems.value.filter(o =>
+					['11'].includes(o.id),
+				);
+				break;
+		}
+	} catch (error) {
+		console.error('Error in onMounted:', error);
+		vAlert('데이터 로드 중 오류가 발생했습니다.');
 	}
 });
 
@@ -209,7 +221,7 @@ const RsltItems = ref([
 
 const ShowRsltItems = ref([]);
 
-const ListItem = ref({});
+const ListItem = ref(null); // null로 초기화
 const PrintingYn = ref(true);
 
 // Html ref  ********************************

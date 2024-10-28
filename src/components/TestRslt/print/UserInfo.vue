@@ -1,8 +1,8 @@
 <template>
-	<div class="result">
+	<div class="result" v-if="Persn">
 		<div class="result-sheet">
 			<div class="result-view">
-				<p class="name">{{ Persn.persnNm }} 님</p>
+				<p class="name">{{ Persn?.persnNm }} 님</p>
 
 				<div class="layout">
 					<div class="item full">
@@ -14,20 +14,22 @@
 								<div class="tbl-row">
 									<div class="tbl-col data" style="width: 8rem">이름</div>
 									<div class="tbl-col data" style="width: calc(100% - 8rem)">
-										<strong>{{ Persn.persnNm }}</strong>
+										<strong>{{ Persn?.persnNm }}</strong>
 									</div>
 								</div>
 								<div class="tbl-row">
 									<div class="tbl-col data" style="width: 8rem">성별</div>
 									<div class="tbl-col data" style="width: calc(100% - 8rem)">
-										<strong>{{ Persn.sex == 'M' ? '남' : '여' }}</strong>
+										<strong>{{ Persn?.sex == 'M' ? '남' : '여' }}</strong>
 									</div>
 								</div>
 								<div class="tbl-row">
 									<div class="tbl-col data" style="width: 8rem">생일</div>
 									<div class="tbl-col data" style="width: calc(100% - 8rem)">
 										<strong>{{
-											`${Persn.birthDate.toString().substring(0, 4)}-${Persn.birthDate.toString().substring(4, 6)}-${Persn.birthDate.toString().substring(6, 8)}`
+											Persn?.birthDate
+												? `${Persn.birthDate.toString().substring(0, 4)}-${Persn.birthDate.toString().substring(4, 6)}-${Persn.birthDate.toString().substring(6, 8)}`
+												: ''
 										}}</strong>
 									</div>
 								</div>
@@ -36,7 +38,7 @@
 								<div class="tbl-row">
 									<div class="tbl-col data" style="width: 8rem">휴대전화</div>
 									<div class="tbl-col data" style="width: calc(100% - 8rem)">
-										<strong>{{ Persn.phone }}</strong>
+										<strong>{{ Persn?.phone }}</strong>
 									</div>
 								</div>
 								<div class="tbl-row">
@@ -44,13 +46,13 @@
 										(추가) 연락처
 									</div>
 									<div class="tbl-col data" style="width: calc(100% - 9rem)">
-										<strong>{{ Persn.tel }}</strong>
+										<strong>{{ Persn?.tel }}</strong>
 									</div>
 								</div>
 								<div class="tbl-row">
 									<div class="tbl-col data" style="width: 9rem">이메일</div>
 									<div class="tbl-col data" style="width: calc(100% - 9rem)">
-										<strong>{{ Persn.email }}</strong>
+										<strong>{{ Persn?.email }}</strong>
 									</div>
 								</div>
 							</div>
@@ -70,25 +72,25 @@
 									<tr>
 										<td>학업군</td>
 										<td>
-											<strong>{{ Persn.eductNm }}</strong>
+											<strong>{{ Persn?.eductNm }}</strong>
 										</td>
 									</tr>
 									<tr>
 										<td>학교명</td>
 										<td>
-											<strong>{{ Persn.scholNm }}</strong>
+											<strong>{{ Persn?.scholNm }}</strong>
 										</td>
 									</tr>
 									<tr>
 										<td>학년</td>
 										<td>
-											<strong>{{ Persn.scholGrade }}</strong>
+											<strong>{{ Persn?.scholGrade }}</strong>
 										</td>
 									</tr>
 									<tr>
 										<td>전공</td>
 										<td>
-											<strong>{{ Persn.scholMajor }}</strong>
+											<strong>{{ Persn?.scholMajor }}</strong>
 										</td>
 									</tr>
 								</tbody>
@@ -108,19 +110,19 @@
 									<tr>
 										<td>직업군</td>
 										<td>
-											<strong>{{ Persn.jobCdNm }}</strong>
+											<strong>{{ Persn?.jobCdNm }}</strong>
 										</td>
 									</tr>
 									<tr>
 										<td>직장명</td>
 										<td>
-											<strong>{{ Persn.jobNm }}</strong>
+											<strong>{{ Persn?.jobNm }}</strong>
 										</td>
 									</tr>
 									<tr>
 										<td>하는일</td>
 										<td>
-											<strong>{{ Persn.jobDuty }}</strong>
+											<strong>{{ Persn?.jobDuty }}</strong>
 										</td>
 									</tr>
 								</tbody>
@@ -151,35 +153,7 @@ onMounted(() => {
 
 // Model / Data  ****************************
 
-const Persn = ref({
-	persnId: 0,
-	persnNm: '',
-	birthDate: '',
-	birthYear: '',
-	birthMonth: '',
-	birthDay: '',
-	sex: '',
-	phone: '',
-	tel: '',
-	email: '',
-	zip: '',
-	addrStret: '',
-	addrLotNum: '',
-	addr2: '',
-	addr3: '',
-	educt: '',
-	eductStus: '',
-	scholNm: '',
-	scholMajor: '',
-	scholGrade: '',
-	job: '',
-	jobNm: '',
-	jobDuty: '',
-	orgId: '',
-	eductNm: '',
-	eductStusNm: '',
-	jobCdNm: '',
-});
+const Persn = ref(null); // null로 초기화
 
 const Parm = ref({
 	persnId: 0,
@@ -224,10 +198,16 @@ const { data, execUrl, reqUrl } = useAxios(
 
 // Method  **********************************
 
-const getPersn = () => {
-	Parm.value.persnId = Props.ListItem.PersnId;
+const getPersn = async () => {
+	try {
+		if (!Props.ListItem?.PersnId) return;
 
-	execUrl(Procs.value.getPersn.path, Parm.value);
+		Parm.value.persnId = Props.ListItem.PersnId;
+		await execUrl(Procs.value.getPersn.path, Parm.value);
+	} catch (error) {
+		console.error('getPersn error:', error);
+		vAlert('사용자 정보를 불러오는데 실패했습니다.');
+	}
 };
 
 // Etc  *************************************
