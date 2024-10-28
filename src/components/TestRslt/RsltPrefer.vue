@@ -84,14 +84,17 @@
 				</div>
 				<p class="tit v3 mt-4">
 					{{ Props.ListItem.PersnNm }}님은
-					<strong class="txt-mint">{{ Rslt2[0].rrate2 }}%</strong>의 비율로
-					<strong class="txt-mint">{{ Rslt2[0].tdname2 }} </strong>을
-					선호하셨습니다.
+					<strong class="txt-mint"
+						>{{ Rslt2[0] == null ? '-' : Rslt2[0].rrate2 }}%</strong
+					>의 비율로
+					<strong class="txt-mint"
+						>{{ Rslt2[0] == null ? '-' : Rslt2[0].tdname2 }} </strong
+					>을 선호하셨습니다.
 				</p>
 
 				<p class="txt-comment mt5">
-					<strong>{{ Rslt2[0].tdname2 }} </strong> :
-					{{ Rslt2[0].exp2 }}
+					<strong>{{ Rslt2[0] == null ? '-' : Rslt2[0].tdname2 }} </strong> :
+					{{ Rslt2[0] == null ? '-' : Rslt2[0].exp2 }}
 				</p>
 
 				<div class="tbl-wrap v2">
@@ -129,14 +132,17 @@
 
 				<p class="tit v3 mt-4">
 					{{ Props.ListItem.PersnNm }}님은
-					<strong class="txt-mint">{{ Rslt2[0].rrate3 }}%</strong>의 비율로
-					<strong class="txt-mint">{{ Rslt2[0].tdname3 }} </strong>을
-					선호하셨습니다.
+					<strong class="txt-mint"
+						>{{ Rslt2[0] == null ? '-' : Rslt2[0].rrate3 }}%</strong
+					>의 비율로
+					<strong class="txt-mint"
+						>{{ Rslt2[0] == null ? '-' : Rslt2[0].tdname3 }} </strong
+					>을 선호하셨습니다.
 				</p>
 
 				<p class="txt-comment mt5">
-					<strong>{{ Rslt2[0].tdname3 }} </strong> :
-					{{ Rslt2[0].exp3 }}
+					<strong>{{ Rslt2[0] == null ? '-' : Rslt2[0].tdname3 }} </strong> :
+					{{ Rslt2[0] == null ? '-' : Rslt2[0].exp3 }}
 				</p>
 
 				<div class="hide-mobile mt10">
