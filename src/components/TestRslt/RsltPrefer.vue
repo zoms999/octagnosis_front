@@ -35,14 +35,17 @@
 
 				<p class="tit v3 mt-4">
 					{{ Props.ListItem.PersnNm }}님은
-					<strong class="txt-mint">{{ Rslt2[0].rrate1 }}%</strong>의 비율로
-					<strong class="txt-mint">{{ Rslt2[0].tdname1 }} </strong>을
-					선호하셨습니다.
+					<strong class="txt-mint"
+						>{{ Rslt2[0] == null ? '-' : Rslt2[0].rrate1 }}%</strong
+					>의 비율로
+					<strong class="txt-mint"
+						>{{ Rslt2[0] == null ? '-' : Rslt2[0].tdname1 }} </strong
+					>을 선호하셨습니다.
 				</p>
 
 				<p class="txt-comment mt5">
-					<strong>{{ Rslt2[0].tdname1 }} </strong> :
-					{{ Rslt2[0].exp1 }}
+					<strong>{{ Rslt2[0] == null ? '-' : Rslt2[0].tdname1 }} </strong> :
+					{{ Rslt2[0] == null ? '-' : Rslt2[0].exp1 }}
 				</p>
 
 				<div class="hide-mobile mt10">
@@ -322,13 +325,6 @@ const setChart = () => {
 	labels1.push(`선호반응율 (${Rslt1.value[0].irate}%)`);
 	data1.push(Rslt1.value[0].irate);
 
-	labels2.push(`${Rslt2.value[0].tdname1} (${Rslt2.value[0].rrate1}%)`);
-	data2.push(Rslt2.value[0].rrate1);
-	labels2.push(`${Rslt2.value[0].tdname2} (${Rslt2.value[0].rrate2}%)`);
-	data2.push(Rslt2.value[0].rrate2);
-	labels2.push(`${Rslt2.value[0].tdname3} (${Rslt2.value[0].rrate3}%)`);
-	data2.push(Rslt2.value[0].rrate3);
-
 	ChartData1 = {
 		labels: labels1,
 		datasets: [
@@ -340,17 +336,26 @@ const setChart = () => {
 		],
 	};
 
-	ChartData2 = {
-		labels: labels2,
+	if (Rslt2.value[0] != null) {
+		labels2.push(`${Rslt2.value[0].tdname1} (${Rslt2.value[0].rrate1}%)`);
+		data2.push(Rslt2.value[0].rrate1);
+		labels2.push(`${Rslt2.value[0].tdname2} (${Rslt2.value[0].rrate2}%)`);
+		data2.push(Rslt2.value[0].rrate2);
+		labels2.push(`${Rslt2.value[0].tdname3} (${Rslt2.value[0].rrate3}%)`);
+		data2.push(Rslt2.value[0].rrate3);
 
-		datasets: [
-			{
-				label: '선호형',
-				backgroundColor: ['#36a2eb', '#ff6384', '#4bc0c0'],
-				data: data2,
-			},
-		],
-	};
+		ChartData2 = {
+			labels: labels2,
+
+			datasets: [
+				{
+					label: '선호형',
+					backgroundColor: ['#36a2eb', '#ff6384', '#4bc0c0'],
+					data: data2,
+				},
+			],
+		};
+	}
 
 	chartLoadYn.value = true;
 };
