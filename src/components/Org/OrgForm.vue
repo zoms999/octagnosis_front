@@ -144,6 +144,7 @@
 				/>
 			</div>
 			<div class="col-4">[ 6~20 자, 영문(대소문자 구분안함), 숫자 ]</div>
+			<!--
 			<div class="col-1 lbl"><i></i>1회차 요청수</div>
 			<div class="col-2">
 				<input
@@ -184,6 +185,7 @@
 			<div class="col-4">
 				[ 10~20 자, 영문(대소문자 구분), 숫자 ] <br />예) abCD1234EFGH5678
 			</div>
+		-->
 		</div>
 		<!-- 수정	----------------------------->
 		<div class="row" v-else-if="ProcType == 'E'">
@@ -657,6 +659,9 @@ const { userMngrId } = storeToRefs(useAuthStore());
 const Org = ref({ actinReasn: '', urlCdSet: '', valid: false, urlCdNew: '' });
 const Acunt = ref({ acuntIdSet: '', valid: false, expirDtNew: '' });
 const OrgTurn = ref({
+	prodtId: 6,
+	useYn: 'Y',
+	turnUseCnt: 0,
 	turnConnCdSet: '',
 	valid: false,
 });
@@ -992,6 +997,7 @@ const cretOrg = () => {
 		return;
 	}
 
+	/*
 	if (
 		!validNotBlank(
 			OrgTurn.value.turnReqCnt,
@@ -1010,6 +1016,7 @@ const cretOrg = () => {
 		vAlert('1회차코드 유효성검사를 진행하세요.');
 		return;
 	}
+*/
 
 	if (!validNotBlank(Org.value.compyNm, '기관명', txtCompyNm.value)) {
 		return;
@@ -1045,7 +1052,7 @@ const cretOrg = () => {
 	let Parm = {
 		Org: Org.value,
 		Acunt: Acunt.value,
-		OrgTurn: OrgTurn.value,
+		//OrgTurn: OrgTurn.value,
 	};
 
 	Procs.value.cretOrg.loading = true;

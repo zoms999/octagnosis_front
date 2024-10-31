@@ -1,20 +1,21 @@
 <template>
 	<div class="SrchBox">
 		<div class="row g-1 borderd">
-			<div class="col-6">
+			<div class="col-7">
 				<select class="form-select" v-model="SelectedTurnId">
 					<option
 						v-for="item in OrgTurnList"
 						:key="item.TurnId"
 						:value="item.TurnId"
 					>
-						{{ item.TurnNum }} 회차 /
+						{{ item.TurnNum }} 회차 / 사용기한 :
 						{{
-							item.insDt
-								.substr(0, 8)
-								.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1-$2-$3')
+							item.ValidEndDt.substr(0, 8).replace(
+								/^(\d{4})(\d{2})(\d{2})$/,
+								'$1-$2-$3',
+							)
 						}}
-						/ {{ item.TurnConnCd }}
+						/ 회차코드 : {{ item.TurnConnCd }}
 					</option>
 				</select>
 			</div>
@@ -239,7 +240,8 @@ const { execute: execInit } = useAxios(
 		immediate: false,
 		onSuccess: res => {
 			OrgTurnList.value = res.data.OrgTurnList;
-			SelectedTurnId.value = OrgTurnList.value[0].TurnId;
+			SelectedTurnId.value =
+				OrgTurnList.value.length > 0 ? OrgTurnList.value[0].TurnId : '';
 			UseYnCnt.value = OrgTurnList.value.filter(o => o.UseYn == 'Y').length;
 		},
 		onError: err => {
@@ -310,9 +312,11 @@ const ShowTurnConnCd = () => {
 watch(
 	() => SelectedTurnId.value,
 	(newValue, oldValue) => {
-		CurOrgTurn.value = OrgTurnList.value.find(o => o.TurnId == newValue);
-		Parm.value.turnId = newValue;
-		GetOrgPersnList(1);
+		if (newValue != '') {
+			CurOrgTurn.value = OrgTurnList.value.find(o => o.TurnId == newValue);
+			Parm.value.turnId = newValue;
+			GetOrgPersnList(1);
+		}
 	},
 );
 
@@ -334,6 +338,9 @@ const { execute: execOrgTurnUse } = useAxios(
 );
 
 const EditOrgTurnUse = () => {
+	if (!confirm('회차를 종료하시겠습니까 ?')) {
+		return;
+	}
 	execOrgTurnUse({
 		orgId: Props.OrgId,
 		turnId: CurOrgTurn.value.TurnId,
