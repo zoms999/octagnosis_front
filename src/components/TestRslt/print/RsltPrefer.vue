@@ -328,7 +328,7 @@ const setChart = () => {
 
 	labels1.push('전체`');
 	data1.push(100);
-	labels1.push(`선호반응율 (${Rslt1.value[0].irate}%)`);
+	labels1.push(`선호반응률 (${Rslt1.value[0].irate}%)`);
 	data1.push(Rslt1.value[0].irate);
 
 	ChartData1 = {

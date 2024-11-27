@@ -222,6 +222,7 @@ ChartJS.register(
 const Props = defineProps({ ListItem: { type: Object } });
 
 // Hook  ************************************
+
 onMounted(() => {
 	getRsltPrefer();
 });
@@ -258,6 +259,38 @@ var ChartData1 = reactive();
 var ChartOptions1 = {
 	responsive: true,
 	maintainAspectRatio: false,
+	scales: {
+		x: {
+			grid: {
+				display: false,
+			},
+			ticks: {
+				font: {
+					size: 12,
+				},
+			},
+		},
+		y: {
+			beginAtZero: true,
+			ticks: {
+				stepSize: 10,
+			},
+		},
+	},
+	plugins: {
+		legend: {
+			display: true,
+		},
+	},
+	layout: {
+		padding: 10, // 차트 전체의 여백 설정
+	},
+	elements: {
+		bar: {
+			barThickness: 10, // 막대의 고정된 너비
+			maxBarThickness: 20, // 최대 막대 너비
+		},
+	},
 };
 
 var ChartData2 = reactive();
@@ -326,9 +359,7 @@ const setChart = () => {
 	var labels2 = [];
 	var data2 = [];
 
-	labels1.push('전체');
-	data1.push(100);
-	labels1.push(`선호반응율 (${Rslt1.value[0].irate}%)`);
+	labels1.push(`선호반응률 (${Rslt1.value[0].irate}%)`);
 	data1.push(Rslt1.value[0].irate);
 
 	ChartData1 = {
@@ -336,7 +367,7 @@ const setChart = () => {
 		datasets: [
 			{
 				label: '선호반응률(%)',
-				backgroundColor: ['#f1f1f1', '#f87979'],
+				backgroundColor: ['#f87979'],
 				data: data1,
 			},
 		],
@@ -356,7 +387,7 @@ const setChart = () => {
 			datasets: [
 				{
 					label: '선호형',
-					backgroundColor: ['#36a2eb', '#ff6384', '#4bc0c0'],
+					backgroundColor: ['#f87979', '#f87979', '#f87979'],
 					data: data2,
 				},
 			],
