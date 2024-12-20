@@ -14,22 +14,12 @@
 					</p>
 				</div>
 
-				<div class="chart-wrap d-flex">
+				<div class="chart-wrap d-flex justify-content-center">
 					<div class="p-3 chart1">
-						<Bar
-							id="Chart1"
-							v-if="chartLoadYn"
-							:data="ChartData1"
-							:options="ChartOptions1"
-						/>
+						<canvas ref="chart1Ref"></canvas>
 					</div>
 					<div class="p-3 chart2">
-						<Bar
-							id="Chart2"
-							v-if="chartLoadYn"
-							:data="ChartData2"
-							:options="ChartOptions2"
-						/>
+						<canvas ref="chart2Ref"></canvas>
 					</div>
 				</div>
 
@@ -185,126 +175,51 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed, watch, reactive } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useAlert } from '@/hooks/useAlert';
 import { useAxios } from '@/hooks/useAxios';
-import { Bar, Radar } from 'vue-chartjs';
-import {
-	Chart as ChartJS,
-	Title,
-	Tooltip,
-	Legend,
-	BarElement,
-	CategoryScale,
-	LinearScale,
-	RadialLinearScale,
-	PointElement,
-	LineElement,
-	Filler,
-} from 'chart.js';
+import { Chart, registerables } from 'chart.js';
 
-const { vAlert, vSuccess } = useAlert();
-ChartJS.register(
-	Title,
-	Tooltip,
-	Legend,
-	BarElement,
-	CategoryScale,
-	LinearScale,
-	RadialLinearScale,
-	PointElement,
-	LineElement,
-	Filler,
-);
+Chart.register(...registerables);
+
+const { vAlert } = useAlert();
 
 // Props / Emit  ****************************
-
 const Props = defineProps({ ListItem: { type: Object } });
 
 // Hook  ************************************
-
 onMounted(() => {
 	getRsltPrefer();
 });
 
 // Model / Data  ****************************
-
 const Parm = ref({
 	ansPrgrsId: 0,
 });
 
 const Rslt1 = ref([{ tcnt: '0', cnt: '0', irate: '0' }]);
-const Rslt2 = ref([
-	{
-		tdname1: '',
-		qcnt1: '',
-		rrate1: '',
-		tdname2: '',
-		qcnt2: '',
-		rrate2: '',
-		tdname3: '',
-		qcnt3: '',
-		rrate3: '',
-		exp1: '',
-		exp2: '',
-		exp: '',
-	},
-]);
+const Rslt2 = ref([{
+	tdname1: '',
+	qcnt1: '',
+	rrate1: '',
+	tdname2: '',
+	qcnt2: '',
+	rrate2: '',
+	tdname3: '',
+	qcnt3: '',
+	rrate3: '',
+	exp1: '',
+	exp2: '',
+	exp: '',
+}]);
 const Rslt3 = ref({});
 const Rslt4 = ref({});
 const Rslt5 = ref({});
 
-// chartData와 chartOptions 상태 정의
-var ChartData1 = reactive();
-var ChartOptions1 = {
-	responsive: true,
-	maintainAspectRatio: false,
-	scales: {
-		x: {
-			grid: {
-				display: false,
-			},
-			ticks: {
-				font: {
-					size: 12,
-				},
-			},
-		},
-		y: {
-			beginAtZero: true,
-			ticks: {
-				stepSize: 10,
-			},
-		},
-	},
-	plugins: {
-		legend: {
-			display: true,
-		},
-	},
-	layout: {
-		padding: 10, // 차트 전체의 여백 설정
-	},
-	elements: {
-		bar: {
-			barThickness: 10, // 막대의 고정된 너비
-			maxBarThickness: 20, // 최대 막대 너비
-		},
-	},
-};
-
-var ChartData2 = reactive();
-var ChartOptions2 = {
-	responsive: true,
-	maintainAspectRatio: false,
-};
-
-const chartLoadYn = ref(false);
-
-// Html ref  ********************************
+const chart1Ref = ref(null);
+const chart2Ref = ref(null);
 
 // Axios / Route  ***************************
-
 const Procs = ref({
 	getRsltPrefer: { path: '/api/Test/getRsltPrefer', loading: false },
 });
@@ -325,13 +240,11 @@ const { data, execUrl, reqUrl } = useAxios(
 					Rslt5.value = data.value.Rslt5;
 
 					setChart();
-
 					break;
 			}
 		},
 		onError: err => {
 			vAlert(err.message);
-			// Procs의 모든 속성에 대해 반복문을 실행하여 loading 값을 true로 변경
 			for (const key in Procs.value) {
 				if (Object.hasOwnProperty.call(Procs.value, key)) {
 					Procs.value[key].loading = false;
@@ -341,76 +254,90 @@ const { data, execUrl, reqUrl } = useAxios(
 	},
 );
 
-// Modal  ***********************************
-
-// Watch  ***********************************
-
 // Method  **********************************
-
 const getRsltPrefer = () => {
 	Parm.value.ansPrgrsId = Props.ListItem.AnsPrgrsId;
-
 	execUrl(Procs.value.getRsltPrefer.path, Parm.value);
 };
 
 const setChart = () => {
-	var labels1 = [];
-	var data1 = [];
-	var labels2 = [];
-	var data2 = [];
-
-	labels1.push(`선호반응률 (${Rslt1.value[0].irate}%)`);
-	data1.push(Rslt1.value[0].irate);
-
-	ChartData1 = {
-		labels: labels1,
-		datasets: [
-			{
-				label: '선호반응률(%)',
-				backgroundColor: ['#f87979'],
-				data: data1,
+	if (chart1Ref.value) {
+		new Chart(chart1Ref.value, {
+			type: 'bar',
+			data: {
+				labels: [`선호반응률 (${Rslt1.value[0].irate}%)`],
+				datasets: [{
+					label: '선호반응률(%)',
+					backgroundColor: '#f87979',
+					data: [Rslt1.value[0].irate],
+					barThickness: 40,
+				}],
 			},
-		],
-	};
-
-	if (Rslt2.value[0] != null) {
-		labels2.push(`${Rslt2.value[0].tdname1} (${Rslt2.value[0].rrate1}%)`);
-		data2.push(Rslt2.value[0].rrate1);
-		labels2.push(`${Rslt2.value[0].tdname2} (${Rslt2.value[0].rrate2}%)`);
-		data2.push(Rslt2.value[0].rrate2);
-		labels2.push(`${Rslt2.value[0].tdname3} (${Rslt2.value[0].rrate3}%)`);
-		data2.push(Rslt2.value[0].rrate3);
-
-		ChartData2 = {
-			labels: labels2,
-
-			datasets: [
-				{
-					label: '선호형',
-					backgroundColor: ['#f87979', '#f87979', '#f87979'],
-					data: data2,
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				scales: {
+					y: {
+						beginAtZero: true,
+						max: 100,
+					},
 				},
-			],
-		};
+			},
+		});
 	}
 
-	chartLoadYn.value = true;
+	if (chart2Ref.value) {
+		new Chart(chart2Ref.value, {
+			type: 'bar',
+			data: {
+				labels: [
+					`선호형1 (${Rslt2.value[0].rrate1}%)`,
+					`선호형2 (${Rslt2.value[0].rrate2}%)`,
+					`선호형3 (${Rslt2.value[0].rrate3}%)`,
+				],
+				datasets: [{
+					label: '선호형',
+					backgroundColor: '#f87979',
+					data: [
+						Rslt2.value[0].rrate1,
+						Rslt2.value[0].rrate2,
+						Rslt2.value[0].rrate3,
+					],
+					barThickness: 40,
+				}],
+			},
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				scales: {
+					y: {
+						beginAtZero: true,
+						max: 100,
+					},
+				},
+			},
+		});
+	}
 };
-
-// Etc  *************************************
 </script>
+
 <style scoped>
 @import url(@/assets/css/common.css);
 @import url(@/assets/css/components.css);
 @import url(@/assets/css/main.css);
 @import url(@/assets/css/sub.css);
 
+.chart-wrap {
+	max-width: 800px;
+	margin: 0 auto;
+}
+
 .chart1 {
-	width: 40%;
-	height: 300px;
+	width: 30%;
+	height: 250px;
 }
 .chart2 {
-	width: 60%;
-	height: 300px;
+	width: 70%;
+	height: 250px;
 }
 </style>

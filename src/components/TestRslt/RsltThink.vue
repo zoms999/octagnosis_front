@@ -30,7 +30,7 @@
 					</p>
 				</div>
 
-				<div class="chart-wrap d-flex ">
+				<div class="chart-wrap d-flex justify-content-center">
 					<div class="p-3 chart1">
 						<Bar
 							id="Chart1"
@@ -217,10 +217,10 @@ const setChart = () => {
 @import url(@/assets/css/sub.css);
 
 .chart1 {
-	width:50%; height:300px;
+	width:30%; height:320px;
 }
 .chart2 {
-	width:50%; height:300px;
+	width:70%; height:320px;
 }
 
 .Box1 {
