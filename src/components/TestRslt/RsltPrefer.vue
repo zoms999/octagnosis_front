@@ -286,23 +286,26 @@ const setChart = () => {
 		});
 	}
 
-	if (chart2Ref.value) {
+	if (chart2Ref.value && Rslt2.value[0]) {
+		const labels = [
+			`${Rslt2.value[0].tdname1} (${Rslt2.value[0].rrate1}%)`,
+			`${Rslt2.value[0].tdname2} (${Rslt2.value[0].rrate2}%)`,
+			`${Rslt2.value[0].tdname3} (${Rslt2.value[0].rrate3}%)`,
+		];
+		const data = [
+			Rslt2.value[0].rrate1,
+			Rslt2.value[0].rrate2,
+			Rslt2.value[0].rrate3,
+		];
+
 		new Chart(chart2Ref.value, {
 			type: 'bar',
 			data: {
-				labels: [
-					`선호형1 (${Rslt2.value[0].rrate1}%)`,
-					`선호형2 (${Rslt2.value[0].rrate2}%)`,
-					`선호형3 (${Rslt2.value[0].rrate3}%)`,
-				],
+				labels: labels,
 				datasets: [{
 					label: '선호형',
-					backgroundColor: '#f87979',
-					data: [
-						Rslt2.value[0].rrate1,
-						Rslt2.value[0].rrate2,
-						Rslt2.value[0].rrate3,
-					],
+					backgroundColor: ['#FF6B6B', '#4ECDC4', '#45B7D1'],
+					data: data,
 					barThickness: 40,
 				}],
 			},
