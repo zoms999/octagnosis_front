@@ -2,9 +2,37 @@
 	<div class="payment-management">
 		<h1 class="page-title">상품 결제 관리</h1>
 
+		<div class="search-container mb-4">
+			<div class="row g-3">
+				<div class="col-md-4">
+					<div class="input-group">
+						<input
+							type="text"
+							class="form-control"
+							placeholder="검색어 입력..."
+							v-model="searchQuery"
+							@keyup.enter="handleSearch"
+						/>
+						<button class="btn btn-primary" @click="handleSearch">검색</button>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<select
+						class="form-select"
+						v-model="paymentStatusFilter"
+						@change="handleSearch"
+					>
+						<option value="">전체 결제상태</option>
+						<option value="Y">결제완료</option>
+						<option value="N">미결제</option>
+					</select>
+				</div>
+			</div>
+		</div>
+
 		<div class="table-container">
 			<DataTable
-				:data="payments"
+				:data="filteredPayments"
 				:columns="columns"
 				class="payment-table"
 				:options="tableOptions"
@@ -30,6 +58,7 @@ const dayjs = inject('dayjs');
 
 const pageSize = ref(10);
 const searchQuery = ref('');
+const paymentStatusFilter = ref('');
 
 const columns = computed(() => [
 	{ data: null, title: 'No', render: (data, type, row, meta) => meta.row + 1 },
@@ -48,15 +77,55 @@ const columns = computed(() => [
 	},
 	{ data: 'orgId', title: '조직Id' },
 	{ data: 'turnId', title: '회차Id' },
-	{ data: 'payYn', title: '결제여부' },
+	{
+		data: 'payYn',
+		title: '결제여부',
+		render: (data, type, row) => {
+			if (type === 'display') {
+				const statusClass =
+					data === 'Y' ? 'badge bg-success' : 'badge bg-danger';
+				const statusText = data === 'Y' ? '결제완료' : '미결제';
+				return `
+					<div class="d-flex align-items-center">
+						<span class="${statusClass} me-2">${statusText}</span>
+						<select class="form-select form-select-sm status-select" data-id="${row.payId}" style="width: auto;">
+							<option value="Y" ${data === 'Y' ? 'selected' : ''}>Y</option>
+							<option value="N" ${data === 'N' ? 'selected' : ''}>N</option>
+						</select>
+					</div>
+				`;
+			}
+			return data;
+		},
+	},
 ]);
 
-const changePageSize = () => {
-	// 페이지 크기 변경 로직 구현
-};
+const filteredPayments = computed(() => {
+	let result = [...payments.value];
+
+	// 결제상태 필터링
+	if (paymentStatusFilter.value) {
+		result = result.filter(
+			payment => payment.payYn === paymentStatusFilter.value,
+		);
+	}
+
+	// 검색어 필터링
+	if (searchQuery.value) {
+		const query = searchQuery.value.toLowerCase();
+		result = result.filter(
+			payment =>
+				payment.persnNm?.toLowerCase().includes(query) ||
+				payment.acuntId?.toLowerCase().includes(query) ||
+				payment.prodTypeName?.toLowerCase().includes(query),
+		);
+	}
+
+	return result;
+});
 
 const handleSearch = () => {
-	// 검색 로직 구현
+	// 검색 또는 필터 변경 시 테이블 새로고침
 };
 
 const tableOptions = {
@@ -65,6 +134,28 @@ const tableOptions = {
 		url: '//cdn.datatables.net/plug-ins/1.10.25/i18n/Korean.json',
 	},
 	pageLength: pageSize.value,
+	createdRow: function (row) {
+		// 결제여부 select 요소에 이벤트 추가
+		const statusSelect = row.querySelector('.status-select');
+		if (statusSelect) {
+			statusSelect.addEventListener('change', () => {
+				const payId = statusSelect.getAttribute('data-id');
+				const newStatus = statusSelect.value === 'Y' ? 'SUCCESS' : 'FAIL';
+				updatePaymentStatus(payId, newStatus);
+			});
+		}
+	},
+};
+
+const updatePaymentStatus = async (payId, status) => {
+	try {
+		await axios.post(`/api/payment/updateStatus/${payId}`, { status });
+		// 상태 변경 후 목록 새로고침
+		fetchPayments();
+	} catch (error) {
+		console.error('결제 상태 변경 중 오류 발생', error);
+		alert('결제 상태 변경에 실패했습니다.');
+	}
 };
 
 const fetchPayments = async () => {
@@ -96,6 +187,14 @@ onMounted(() => {
 	margin-bottom: 1.5rem;
 	border-bottom: 2px solid #007bff;
 	padding-bottom: 0.5rem;
+}
+
+.search-container {
+	background-color: #fff;
+	border-radius: 8px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+	padding: 1.5rem;
+	margin-bottom: 1rem;
 }
 
 .table-controls {
